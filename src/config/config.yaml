@@ -1,0 +1,28 @@
+artifacts_root: artifacts
+
+data_ingestion:
+  root_dir: artifacts/data_ingestion
+  source_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED_xs"
+  dataset_cache_dir: artifacts/data_ingestion/hf_dataset
+
+data_transformation:
+  root_dir: artifacts/data_transformation
+  tokenizer_name: "google/mt5-small" #"Helsinki-NLP/opus-mt-es-en"
+  model_id: "mt5-small" #"marian_mt"
+  save_to_disk: true  # cambiar a 'false' cuando se realice hipertuning 
+  max_input_length: 128
+  max_target_length: 128
+
+model_trainer:
+  root_dir: artifacts/model_trainer
+  model_ckpt: "google/mt5-small" #"Helsinki-NLP/opus-mt-es-en"
+  run_name: "datSint"
+  num_train_epochs: 3
+  lr: 3e-4
+  per_device_train_batch_size: 16
+  per_device_eval_batch_size: 8
+  gradient_accumulation_steps: 2
+  optim: "adamw_torch"
+  fp16: false #true
+  load_best_model: true
+  push_to_hub: true
