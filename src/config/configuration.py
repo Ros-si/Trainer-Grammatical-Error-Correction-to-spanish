@@ -2,7 +2,7 @@ import os
 from src.utils import create_directories, read_yaml
 from src.logger import logging
 from src.entity.config_entity import (DataIngestionConfig, 
-                                      DataTransformationConfig, 
+                                      DataTransformationConfig, ModelEvaluationConfig, 
                                       ModelTrainerConfig)
 from pathlib import Path
 from src.constants import *
@@ -104,3 +104,36 @@ class ConfigurationManager:
             push_to_hub=config.push_to_hub
         )
         return model_trainer_config
+
+
+    def get_model_evaluation_config(self) -> ModelEvaluationConfig:
+        """
+        Método que extrae la configuración de la etapa de evaluación del modelo desde el archivo YAML principal y prepara el entorno necesario.
+
+        1. Accede a la configuración de evaluación del modelo.
+        2. Crea el directorio donde se guardarán los resultados 
+        de la evaluación (source.txt, gold.m2, etc.).
+        3. Mapea los valores del YAML a la entidad 'ModelEvaluationConfig' 
+    
+        Returns
+        -------
+        ModelEvaluationConfig
+            Objeto que contiene las rutas y parámetros necesarios para la evaluación con ERRANT
+        """
+        config = self.config.model_evaluation
+
+        create_directories([config.root_dir])
+
+        model_evaluation_config = ModelEvaluationConfig(
+            root_dir=config.root_dir,
+            data_path=config.data_path,
+            model_path=config.model_path,
+            tokenizer_path=config.tokenizer_path,
+            spacy_model=config.spacy_model,
+            source_file=config.source_file,
+            gold_file=config.gold_file,
+            pred_file=config.pred_file,
+            metric_file_name=config.metric_file_name
+        )
+
+        return model_evaluation_config

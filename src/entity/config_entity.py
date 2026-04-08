@@ -36,3 +36,16 @@ class DataTransformationConfig:
     transformed_validation_path: Path
     preprocessor_obj_file_path: Path # Para guardar el tokenizer.save_pretrained()
     save_to_disk: bool
+
+
+@dataclass(frozen=True)
+class ModelEvaluationConfig:
+    root_dir: Path
+    data_path: Path
+    model_path: Path
+    tokenizer_path: Path
+    spacy_model: str        # "en_core_web_sm"  "es_core_news_lg"
+    source_file: Path
+    gold_file: Path
+    pred_file: Path
+    metric_file_name: Path

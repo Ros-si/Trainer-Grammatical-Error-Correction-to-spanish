@@ -26,3 +26,18 @@ model_trainer:
   fp16: false #true
   load_best_model: true
   push_to_hub: true
+
+model_evaluation:
+  root_dir: artifacts/model_evaluation
+  # Ruta del set de test generado en la etapa de transformación de datos
+  data_path: artifacts/data_transformation/test 
+  # Ruta del modelo final guardado en la etapa de entrenamiento
+  model_path: artifacts/model_trainer/model
+  # Normalmente el tokenizer se guarda junto al modelo
+  tokenizer_path: artifacts/model_trainer/tokenizer
+  spacy_model: "es_core_news_lg"
+  # Nombres de archivos que generará el componente para ERRANT
+  source_file: "source.txt"
+  gold_file: "gold.txt"
+  pred_file: "pred.txt"
+  metric_file_name: "metrics.json"
