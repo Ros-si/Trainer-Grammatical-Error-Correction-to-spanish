@@ -7,23 +7,23 @@ data_ingestion:
 
 data_transformation:
   root_dir: artifacts/data_transformation
-  tokenizer_name: "google/mt5-small" #"Helsinki-NLP/opus-mt-es-en"
-  model_id: "mt5-small" #"marian_mt"
+  tokenizer_name: "Helsinki-NLP/opus-mt-es-en" #"google/mt5-small" #
+  model_id: "marian_mt"
   save_to_disk: true  # cambiar a 'false' cuando se realice hipertuning 
   max_input_length: 128
   max_target_length: 128
 
 model_trainer:
   root_dir: artifacts/model_trainer
-  model_ckpt: "google/mt5-small" #"Helsinki-NLP/opus-mt-es-en"
+  model_ckpt: "Helsinki-NLP/opus-mt-es-en" #"google/mt5-small" #
   run_name: "datSint"
   num_train_epochs: 3
-  lr: 3e-4
+  lr: 5e-4
   per_device_train_batch_size: 16
   per_device_eval_batch_size: 8
   gradient_accumulation_steps: 2
   optim: "adamw_torch"
-  fp16: false #true
+  fp16: true
   load_best_model: true
   push_to_hub: true
 
