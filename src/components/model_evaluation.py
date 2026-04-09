@@ -47,8 +47,8 @@ class ModelEvaluation:
                 
                 prediction = tokenizer.decode(output_tokens[0], skip_special_tokens=True)
                 
-                f_src.write(example['sentence'].strip() + "\n")
-                f_gold.write(example['target'].strip() + "\n")
+                f_src.write(example['corrupted'].strip() + "\n")
+                f_gold.write(example['sentence'].strip() + "\n")
                 f_pred.write(prediction.strip() + "\n")
 
 

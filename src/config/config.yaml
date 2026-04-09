@@ -31,7 +31,6 @@ model_evaluation:
   root_dir: artifacts/model_evaluation
   model_path: artifacts/model_trainer
   tokenizer_path: artifacts/model_trainer
-  spacy_model: "es_core_news_lg"
   source_file: "source.txt"
   gold_file: "gold.txt"
   pred_file: "pred.txt"

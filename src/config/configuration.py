@@ -136,7 +136,6 @@ class ConfigurationManager:
             data_path=self.config.data_ingestion.source_URL,
             model_path=full_model_path,
             tokenizer_path=full_model_path,
-            spacy_model=config.spacy_model,
             source_file=config.source_file,
             gold_file=config.gold_file,
             pred_file=config.pred_file,

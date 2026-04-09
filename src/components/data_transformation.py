@@ -36,11 +36,11 @@ class DataTransformation:
         Parameters
         ----------
         examples : dict
-            un batch de ejemplos del dataset, con claves 'sentence' para las entradas y 'corrupted' para las salidas
+            un batch de ejemplos del dataset, con claves 'corrupted' para las entradas y 'sentence' para las salidas
         """
         try:
-            inputs = examples['sentence']
-            targets = examples['corrupted']
+            inputs = examples['corrupted']
+            targets = examples['sentence']
             
             model_inputs = self.tokenizer(
                 inputs, 
