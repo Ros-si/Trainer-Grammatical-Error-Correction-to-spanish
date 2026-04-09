@@ -121,14 +121,19 @@ class ConfigurationManager:
             Objeto que contiene las rutas y parámetros necesarios para la evaluación con ERRANT
         """
         config = self.config.model_evaluation
+        model_id = self.config.data_transformation.model_id  # Obtener el ID del modelo desde la sección de transformación de datos
 
         create_directories([config.root_dir])
 
+        #unir "artifacts/model_trainer" + model_id + "final_model"
+        full_model_path = os.path.join(self.config.model_path, model_id, "final_model")
+        full_data_path = os.path.join(self.config.data_path, model_id, "test")
+
         model_evaluation_config = ModelEvaluationConfig(
             root_dir=config.root_dir,
-            data_path=config.data_path,
-            model_path=config.model_path,
-            tokenizer_path=config.tokenizer_path,
+            data_path=full_data_path,
+            model_path=full_model_path,
+            tokenizer_path=full_model_path,
             spacy_model=config.spacy_model,
             source_file=config.source_file,
             gold_file=config.gold_file,
