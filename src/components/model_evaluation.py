@@ -12,7 +12,8 @@ class ModelEvaluation:
         self.config = config
 
     def generate_predictions(self):
-        """Genera las correcciones del modelo y las guarda en archivos de texto"""
+        """Genera las correcciones del modelo y las guarda en archivos de texto
+        """
         logging.info("Cargando modelo y datos para generación de predicciones...")
         tokenizer = AutoTokenizer.from_pretrained(self.config.tokenizer_path)
         model = AutoModelForSeq2SeqLM.from_pretrained(self.config.model_path)
@@ -49,27 +50,15 @@ class ModelEvaluation:
                 f_pred.write(prediction.strip() + "\n")
 
 
-    def run_errant_pipeline(self):
-        """Ejecuta errant_parallel y errant_compare"""
-        logging.info("Iniciando pipeline de ERRANT...")
-        root = self.config.root_dir
-        
-        # 1. Crear archivos M2 (Anotaciones de edición)
-        logging.info("Generando archivos M2...")
-        subprocess.run(["errant_parallel", "-orig", f"{root}/source.txt", "-cor", f"{root}/gold.txt", "-out", f"{root}/gold.m2"])
-        subprocess.run(["errant_parallel", "-orig", f"{root}/source.txt", "-cor", f"{root}/pred.txt", "-out", f"{root}/pred.m2"])
-        
-        # 2. Comparar Hyp vs Ref
-        logging.info("Comparando resultados...")
-        result = subprocess.run(
-            ["errant_compare", "-hyp", f"{root}/pred.m2", "-ref", f"{root}/gold.m2"],
-            capture_output=True, text=True
-        )
-        
-        return self._parse_metrics(result.stdout)
-
     def _parse_metrics(self, output):
-        """Extrae las métricas del output tabular de ERRANT"""
+        """
+        Extrae las métricas del output de ERRANT
+
+        Parameters
+        ----------
+        output : str
+            La salida de ERRANT que contiene el resultado de las métricas 
+        """
         for line in output.splitlines():
             if line.strip() and line[0].isdigit():
                 parts = line.split("\t")
@@ -83,3 +72,23 @@ class ModelEvaluation:
                 }
                 return metrics
         return None
+    
+
+    def run_errant_pipeline(self):
+        """Ejecuta errant_parallel y errant_compare"""
+        logging.info("Iniciando pipeline de ERRANT...")
+        root = self.config.root_dir
+        
+        # 1. Crear archivos M2 (anotaciones de edición)
+        logging.info("Generando archivos M2...")
+        subprocess.run(["errant_parallel", "-orig", f"{root}/source.txt", "-cor", f"{root}/gold.txt", "-out", f"{root}/gold.m2"])
+        subprocess.run(["errant_parallel", "-orig", f"{root}/source.txt", "-cor", f"{root}/pred.txt", "-out", f"{root}/pred.m2"])
+        
+        # 2. Comparar Hyp vs Ref
+        logging.info("Comparando resultados...")
+        result = subprocess.run(
+            ["errant_compare", "-hyp", f"{root}/pred.m2", "-ref", f"{root}/gold.m2"],
+            capture_output=True, text=True
+        )
+        
+        return self._parse_metrics(result.stdout)

@@ -1,6 +1,7 @@
 from src.pipeline.data_ingestion_pipeline import DataIngestionTrainingPipeline
 from src.pipeline.data_transformation_pipeline import DataTransformationTrainingPipeline
 from src.pipeline.model_trainer_pipeline import ModelTrainerTrainingPipeline
+from src.pipeline.model_evaluation_pipeline import ModelEvaluationPipeline
 import sys
 from src.logger import logging
 from src.exception import CustomException
@@ -35,6 +36,17 @@ try:
    logging.info(f"--- {STAGE_NAME} iniciada ---") 
    model_trainer = ModelTrainerTrainingPipeline()
    model_trainer.main()
+   logging.info(f"--- {STAGE_NAME} completada ---\n\n============")
+except Exception as e:
+    logging.exception(e)
+    raise CustomException(e, sys)
+
+# Etapa 4: MODEL EVALUATION
+STAGE_NAME = "Etapa: Model Evaluation"
+try:
+   logging.info(f"--- {STAGE_NAME} iniciada ---") 
+   model_evaluation = ModelEvaluationPipeline()
+   model_evaluation.main()
    logging.info(f"--- {STAGE_NAME} completada ---\n\n============")
 except Exception as e:
     logging.exception(e)
