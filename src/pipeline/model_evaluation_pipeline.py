@@ -1,3 +1,4 @@
+import pandas as pd
 from src.config.configuration import ConfigurationManager
 from src.components.model_evaluation import ModelEvaluation
 from src.logger import logging
@@ -15,8 +16,13 @@ class ModelEvaluationPipeline:
         # Obtener métricas ERRANT
         metrics = evaluation.run_errant_pipeline()
         evaluation.save_metrics_to_local(metrics)
+        df = pd.DataFrame([metrics])
+        
+        # Creamos la tabla de WandB a partir del DataFrame
+        metrics_table = wandb.Table(dataframe=df)
+        
         # Guardar metricas en WandB si la sesion existe
-        wandb.log(metrics)
+        wandb.log({"final_evaluation_summary": metrics_table})
         logging.info("Métricas enviadas a WandB:", metrics)
 
 if __name__ == '__main__':
