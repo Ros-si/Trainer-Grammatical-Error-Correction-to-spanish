@@ -125,15 +125,15 @@ class ConfigurationManager:
         config = self.config.model_evaluation
         model_id = self.config.data_transformation.model_id  # Obtener el ID del modelo desde la sección de transformación de datos
 
-        create_directories([config.root_dir])
+        full_eval_path = os.path.join(config.root_dir, model_id)
+        create_directories([full_eval_path])
 
         #unir "artifacts/model_trainer" + model_id 
         full_model_path = os.path.join(config.model_path, model_id)
-        full_data_path = os.path.join(config.data_path, model_id, "test")
 
         model_evaluation_config = ModelEvaluationConfig(
-            root_dir=config.root_dir,
-            data_path=full_data_path,
+            root_dir=full_eval_path,
+            data_path=self.config.data_ingestion.source_URL,
             model_path=full_model_path,
             tokenizer_path=full_model_path,
             spacy_model=config.spacy_model,

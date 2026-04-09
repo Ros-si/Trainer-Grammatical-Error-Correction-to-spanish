@@ -29,7 +29,7 @@ class DataIngestion:
             
             # Descargamos el dataset
             dataset = load_dataset(self.config.source_URL)
-            
+            del(dataset["test"])
             # Guardamos directamente en disco en formato Arrow
             dataset.save_to_disk(self.config.dataset_cache_dir)
             

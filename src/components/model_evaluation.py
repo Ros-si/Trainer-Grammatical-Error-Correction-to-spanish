@@ -1,9 +1,11 @@
 import os
 import subprocess
+
+from seaborn import load_dataset
 import torch
 import pandas as pd
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from datasets import load_from_disk
+from datasets import load_dataset, load_from_disk
 from src.logger import logging
 from src.entity.config_entity import ModelEvaluationConfig
 
@@ -17,7 +19,7 @@ class ModelEvaluation:
         logging.info("Cargando modelo y datos para generación de predicciones...")
         tokenizer = AutoTokenizer.from_pretrained(self.config.tokenizer_path)
         model = AutoModelForSeq2SeqLM.from_pretrained(self.config.model_path)
-        dataset = load_from_disk(self.config.data_path)
+        dataset = load_dataset(self.config.data_path, split="test")
         
         device = "cuda" if torch.cuda.is_available() else "cpu"
         model.to(device)
@@ -34,7 +36,7 @@ class ModelEvaluation:
              open(pred_path, "w", encoding="utf-8") as f_pred:
 
             for example in dataset:
-                inputs = example #tokenizer(example['sentence'], return_tensors="pt", truncation=True).to(device)
+                inputs = tokenizer(example['sentence'], return_tensors="pt", truncation=True).to(device)
                 
                 with torch.no_grad():
                     output_tokens = model.generate(

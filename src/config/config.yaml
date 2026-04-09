@@ -29,9 +29,6 @@ model_trainer:
 
 model_evaluation:
   root_dir: artifacts/model_evaluation
-  # Basado en tu imagen, la ruta correcta del test set es:
-  data_path: artifacts/data_transformation
-  # El modelo y el tokenizador están en la misma carpeta de checkpoint:
   model_path: artifacts/model_trainer
   tokenizer_path: artifacts/model_trainer
   spacy_model: "es_core_news_lg"

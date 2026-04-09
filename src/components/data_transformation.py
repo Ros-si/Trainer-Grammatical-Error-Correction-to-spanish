@@ -76,7 +76,7 @@ class DataTransformation:
             if self.config.save_to_disk:
                 logging.info("Guardando datasets tokenizados en artifacts (Full Dataset Mode)...")
                 tokenized_dataset['train'].save_to_disk(self.config.transformed_train_path)
-                tokenized_dataset['test'].save_to_disk(self.config.transformed_test_path)
+                #tokenized_dataset['test'].save_to_disk(self.config.transformed_test_path)
                 tokenized_dataset['validation'].save_to_disk(self.config.transformed_validation_path)
             else:
                 logging.info("Omitiendo guardado en disco (Hypertuning Mode)")
