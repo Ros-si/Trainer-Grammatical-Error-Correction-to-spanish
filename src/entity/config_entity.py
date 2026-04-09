@@ -44,7 +44,6 @@ class ModelEvaluationConfig:
     data_path: Path
     model_path: Path
     tokenizer_path: Path
-    spacy_model: str        # "en_core_web_sm"  "es_core_news_lg"
     source_file: Path
     gold_file: Path
     pred_file: Path

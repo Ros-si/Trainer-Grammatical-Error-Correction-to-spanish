@@ -14,11 +14,10 @@ class ModelEvaluationPipeline:
         
         # Obtener métricas ERRANT
         metrics = evaluation.run_errant_pipeline()
-        
+        evaluation.save_metrics_to_local(metrics)
         # Guardar metricas en WandB si la sesion existe
-        if wandb.run is not None:
-            wandb.log(metrics)
-            logging.info("Métricas enviadas a WandB:", metrics)
+        wandb.log(metrics)
+        logging.info("Métricas enviadas a WandB:", metrics)
 
 if __name__ == '__main__':
     try:

@@ -5,49 +5,40 @@ from src.pipeline.model_evaluation_pipeline import ModelEvaluationPipeline
 import sys
 from src.logger import logging
 from src.exception import CustomException
+import wandb
 
-# Etapa 1: DATA INGESTION
-STAGE_NAME = "Etapa: Data Ingestion"
 try:
+   # Etapa 1: DATA INGESTION
+   STAGE_NAME = "Etapa: Data Ingestion"
    logging.info(f"--- {STAGE_NAME} iniciada ---") 
    data_ingestion = DataIngestionTrainingPipeline()
    data_ingestion.main()
    logging.info(f"--- {STAGE_NAME} completada ---\n\n============")
-except Exception as e:
-    logging.exception(e)
-    raise CustomException(e, sys)
 
-
-# Etapa 2: DATA TRANSFORMATION
-STAGE_NAME = "Etapa: Data Transformation"
-try:
+   # Etapa 2: DATA TRANSFORMATION
+   STAGE_NAME = "Etapa: Data Transformation"
    logging.info(f"--- {STAGE_NAME} iniciada ---") 
    data_transformation = DataTransformationTrainingPipeline()
    data_transformation.main()
    logging.info(f"--- {STAGE_NAME} completada ---\n\n============")
-except Exception as e:
-    logging.exception(e)
-    raise CustomException(e, sys)
 
-
-# Etapa 3: MODEL TRAINING
-STAGE_NAME = "Etapa: Model Trainer"
-try:
+   # Etapa 3: MODEL TRAINING
+   STAGE_NAME = "Etapa: Model Trainer"
    logging.info(f"--- {STAGE_NAME} iniciada ---") 
    model_trainer = ModelTrainerTrainingPipeline()
    model_trainer.main()
    logging.info(f"--- {STAGE_NAME} completada ---\n\n============")
-except Exception as e:
-    logging.exception(e)
-    raise CustomException(e, sys)
 
-# Etapa 4: MODEL EVALUATION
-STAGE_NAME = "Etapa: Model Evaluation"
-try:
+   # Etapa 4: MODEL EVALUATION
+   STAGE_NAME = "Etapa: Model Evaluation"
    logging.info(f"--- {STAGE_NAME} iniciada ---") 
    model_evaluation = ModelEvaluationPipeline()
    model_evaluation.main()
    logging.info(f"--- {STAGE_NAME} completada ---\n\n============")
+   
+   if wandb.run is not None:
+       wandb.finish() 
+
 except Exception as e:
     logging.exception(e)
     raise CustomException(e, sys)

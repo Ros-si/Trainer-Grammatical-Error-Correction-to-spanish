@@ -1,6 +1,6 @@
 import os
 import subprocess
-
+import json
 from seaborn import load_dataset
 import torch
 import pandas as pd
@@ -51,6 +51,13 @@ class ModelEvaluation:
                 f_gold.write(example['sentence'].strip() + "\n")
                 f_pred.write(prediction.strip() + "\n")
 
+
+    def save_metrics_to_local(self, metrics):
+        path = os.path.join(self.config.root_dir, self.config.metric_file_name)
+        with open(path, "w") as f:
+            json.dump(metrics, f, indent=4)
+        logging.info(f"Metricas guardadas localmente en: {path}")
+        
 
     def _parse_metrics(self, output):
         """
