@@ -81,6 +81,7 @@ class ModelTrainer:
         )
 
         trainer.train()
+        trainer.save_model(os.path.join(self.config.root_dir, f"{model_name}-final_model"))
         if self.config.push_to_hub:
             trainer.push_to_hub(commit_message="Model trained and pushed to Hugging Face Hub")
         wandb.finish()
