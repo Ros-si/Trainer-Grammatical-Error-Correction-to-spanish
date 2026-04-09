@@ -3,7 +3,7 @@ from src.components.model_evaluation import ModelEvaluation
 from src.logger import logging
 import wandb
 
-class ModelEvaluationTrainingPipeline:
+class ModelEvaluationPipeline:
     def main(self):
         config = ConfigurationManager()
         eval_config = config.get_model_evaluation_config()
@@ -19,3 +19,11 @@ class ModelEvaluationTrainingPipeline:
         if wandb.run is not None:
             wandb.log(metrics)
             logging.info("Métricas enviadas a WandB:", metrics)
+
+if __name__ == '__main__':
+    try:
+        obj = ModelEvaluationPipeline()
+        obj.main()
+    except Exception as e:
+        logging.exception(e)
+        raise e

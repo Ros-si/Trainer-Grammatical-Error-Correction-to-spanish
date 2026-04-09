@@ -34,7 +34,7 @@ class ModelEvaluation:
              open(pred_path, "w", encoding="utf-8") as f_pred:
 
             for example in dataset:
-                inputs = tokenizer(example['sentence'], return_tensors="pt", truncation=True).to(device)
+                inputs = example.to(device) #tokenizer(example['sentence'], return_tensors="pt", truncation=True).to(device)
                 
                 with torch.no_grad():
                     output_tokens = model.generate(
