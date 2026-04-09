@@ -85,12 +85,14 @@ class ConfigurationManager:
 
         """
         config = self.config.model_trainer
-        
+        model_id = self.config.data_transformation.model_id
+        final_output_dir = os.path.join(config.root_dir, model_id)
         # Crear el directorio raíz del entrenamiento
-        create_directories([config.root_dir])
+        create_directories([final_output_dir ])
+
 
         model_trainer_config = ModelTrainerConfig(
-            root_dir=Path(config.root_dir),
+            root_dir=Path(final_output_dir),
             model_ckpt=config.model_ckpt,
             run_name=config.run_name,
             epochs=config.num_train_epochs,
@@ -125,9 +127,9 @@ class ConfigurationManager:
 
         create_directories([config.root_dir])
 
-        #unir "artifacts/model_trainer" + model_id + "final_model"
-        full_model_path = os.path.join(self.config.model_path, model_id, "final_model")
-        full_data_path = os.path.join(self.config.data_path, model_id, "test")
+        #unir "artifacts/model_trainer" + model_id 
+        full_model_path = os.path.join(config.model_path, model_id)
+        full_data_path = os.path.join(config.data_path, model_id, "test")
 
         model_evaluation_config = ModelEvaluationConfig(
             root_dir=config.root_dir,
