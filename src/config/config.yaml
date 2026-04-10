@@ -2,7 +2,7 @@ artifacts_root: artifacts
 
 data_ingestion:
   root_dir: artifacts/data_ingestion
-  source_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED_toTEST_mini" #"Ro551/WikiCorrupted_spanish_to_GEC-GED_xs"
+  source_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED" #"Ro551/WikiCorrupted_spanish_to_GEC-GED_xs"
   dataset_cache_dir: artifacts/data_ingestion/hf_dataset
 
 data_transformation:
