@@ -52,7 +52,7 @@ class ModelEvaluationConfig:
     metric_file_name: Path
 
 @dataclass(frozen=True)
-class HipertuningConfig(frozen=True):
+class HypertuningConfig():
     root_dir: Path
     source_data_URL: str
     models_ckpt: list

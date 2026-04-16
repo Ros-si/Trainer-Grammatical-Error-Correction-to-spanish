@@ -4,7 +4,7 @@ from src.logger import logging
 from src.entity.config_entity import (DataIngestionConfig, 
                                       DataTransformationConfig, ModelEvaluationConfig, 
                                       ModelTrainerConfig,
-                                      HipertuningConfig)
+                                      HypertuningConfig)
 from pathlib import Path
 from src.constants import *
 
@@ -148,7 +148,7 @@ class ConfigurationManager:
     
 
 
-    def get_hypertuning_config(self) -> ModelTrainerConfig:
+    def get_hypertuning_config(self) -> HypertuningConfig:
         """
         Método para obtener la configuración de la etapa de búsqueda de hiperparámetros. Lee los parámetros necesarios del config.yaml, crea los directorios necesarios y devuelve un objeto HipertuningConfig con las rutas y parámetros configurados.
 
@@ -159,16 +159,15 @@ class ConfigurationManager:
 
         """
         config = self.config.hiperparameter_tuning
-        model_id = self.config.data_transformation.model_id
-        final_output_dir = os.path.join(config.root_dir, model_id)
-        create_directories([final_output_dir ])
+        
+        final_output_dir = os.path.join(config.root_dir)
+        create_directories([final_output_dir])
 
-
-        hipertuning_config = HipertuningConfig(
+        hipertuning_config = HypertuningConfig(
             root_dir=Path(config.root_dir),
             models_ckpt=config.models_ckpt,
-            project_name=self.config.project_name,
-            run_name=self.config.run_name,
+            project_name=config.project_name,
+            run_name=config.run_name,
             n_trials=config.n_trials,
             lr=config.lr,
             wd=config.wd,

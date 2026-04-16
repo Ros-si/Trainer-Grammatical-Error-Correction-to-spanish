@@ -8,12 +8,12 @@ import wandb
 from transformers import AutoTokenizer
 from datasets import load_dataset
 from src.exception import CustomException
-from src.entity.config_entity import HipertuningConfig, ModelTrainerConfig, DataTransformationConfig
+from src.entity.config_entity import HypertuningConfig, ModelTrainerConfig, DataTransformationConfig
 from src.components.data_transformation import DataTransformation
 from src.components.model_trainer import ModelTrainer
 
 class HyperparameterTuner:
-    def __init__(self, model_checkpoint:str, config: HipertuningConfig, trainer_config: ModelTrainerConfig, data_transformation_config: DataTransformationConfig):
+    def __init__(self, model_checkpoint:str, config: HypertuningConfig, trainer_config: ModelTrainerConfig, data_transformation_config: DataTransformationConfig):
         self.model_checkpoint = model_checkpoint
         self.config = config
         self.trainer_config = trainer_config

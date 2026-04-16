@@ -37,7 +37,7 @@ model_evaluation:
   pred_file: "pred.txt"
   metric_file_name: "metrics.json"
 
-hiperparameter_tuning:
+hyperparameter_tuning:
   root_dir: artifacts/hiperparameter_tuning
   source_data_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED_toTEST_mini" 
   models_ckpt: ["Helsinki-NLP/opus-mt-es-en", "google/mt5-small", "facebook/m2m100_418M"]#, "facebook/mbart-large-50"]
