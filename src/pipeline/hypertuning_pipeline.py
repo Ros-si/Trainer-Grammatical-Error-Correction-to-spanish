@@ -18,7 +18,7 @@ class HypertuningPipeline:
         model_trainer_config = config_manager.get_model_trainer_config() 
         data_transformation_config = config_manager.get_data_transformation_config()
 
-        checkpoints = hypertune_config.model_ckpt
+        checkpoints = hypertune_config.models_ckpt
         for checkpoint in checkpoints :
             logging.info(f"Busqueda de hiperparametros para {checkpoint} iniciada....")
             tuner = HyperparameterTuner(checkpoint, hypertune_config, model_trainer_config, data_transformation_config)

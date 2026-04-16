@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 
-@dataclass(frozen=True)
+@dataclass()
 class ModelTrainerConfig:
     root_dir: Path       
     model_ckpt: str      
@@ -17,14 +17,14 @@ class ModelTrainerConfig:
     load_best_model: bool 
     push_to_hub: bool     
 
-@dataclass(frozen=True)
+@dataclass()
 class DataIngestionConfig:
     root_dir: Path
     source_URL: str
     dataset_cache_dir: Path
 
 
-@dataclass(frozen=True)    
+@dataclass()    
 class DataTransformationConfig:
     root_dir: Path
     dataset_cache_dir: Path
@@ -39,7 +39,7 @@ class DataTransformationConfig:
     save_to_disk: bool
 
 
-@dataclass(frozen=True)
+@dataclass()
 class ModelEvaluationConfig:
     root_dir: Path
     data_path: Path
@@ -51,7 +51,7 @@ class ModelEvaluationConfig:
     pred_file: Path
     metric_file_name: Path
 
-@dataclass(frozen=True)
+@dataclass()
 class HypertuningConfig():
     root_dir: Path
     source_data_URL: str

@@ -96,7 +96,7 @@ class ConfigurationManager:
             root_dir=Path(final_output_dir),
             model_ckpt=config.model_ckpt,
             run_name=config.run_name,
-            project_name=self.config.project_name,
+            project_name=config.project_name,
             epochs=config.num_train_epochs,
             lr=float(config.lr),
             train_batch_size=config.per_device_train_batch_size,
@@ -158,13 +158,14 @@ class ConfigurationManager:
             Configuración para la etapa de búsqueda de hiperparámetros
 
         """
-        config = self.config.hiperparameter_tuning
+        config = self.config.hyperparameter_tuning
         
         final_output_dir = os.path.join(config.root_dir)
         create_directories([final_output_dir])
 
         hipertuning_config = HypertuningConfig(
             root_dir=Path(config.root_dir),
+            source_data_URL=config.source_data_URL,
             models_ckpt=config.models_ckpt,
             project_name=config.project_name,
             run_name=config.run_name,
