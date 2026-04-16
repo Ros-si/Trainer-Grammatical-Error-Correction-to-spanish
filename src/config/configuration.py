@@ -54,8 +54,9 @@ class ConfigurationManager:
         config = self.config.data_transformation
         
         # Definir la subcarpeta específica para el modelo (ej: artifacts/data_transformation/marian_mt)
-        model_specific_dir = os.path.join(config.root_dir, config.model_id)
-        create_directories([model_specific_dir])
+        if config.save_to_disk:
+            model_specific_dir = os.path.join(config.root_dir, config.model_id)
+            create_directories([model_specific_dir])
 
         data_transformation_config = DataTransformationConfig(
             root_dir=Path(config.root_dir),
@@ -86,6 +87,7 @@ class ConfigurationManager:
 
         """
         config = self.config.model_trainer
+      
         model_id = self.config.data_transformation.model_id
         final_output_dir = os.path.join(config.root_dir, model_id)
         # Crear el directorio raíz del entrenamiento

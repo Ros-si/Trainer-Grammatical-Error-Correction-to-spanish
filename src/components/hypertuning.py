@@ -29,8 +29,8 @@ class HyperparameterTuner:
 
         data_transformation = DataTransformation(config=self.data_transformation_config)
 
-        ds = load_dataset(self.config.source_URL)
-        self.dataset = ds.map(data_transformation.preprocess_function(), batched=True, remove_columns=ds['train'].columns_names)
+        ds = load_dataset(self.config.source_data_URL)
+        self.dataset = ds.map(data_transformation.preprocess_function, batched=True, remove_columns=ds['train'].column_names)
 
 
     def objective(self, trial):
@@ -57,9 +57,9 @@ class HyperparameterTuner:
 
             tokenizer = AutoTokenizer.from_pretrained(self.model_checkpoint)
 
-            model_trainer = ModelTrainer(self.model_trainer_config)
+            model_trainer = ModelTrainer(self.trainer_config)
             trainer = model_trainer.initiate_model_training(self.dataset['train'], self.dataset['validation'], tokenizer, config_wb=config_wb)
-
+            print(trainer)
             eval_results = trainer['eval_loss']
 
             trial.set_user_attr("eval_loss", eval_results)

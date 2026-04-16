@@ -55,10 +55,10 @@ class ModelEvaluationConfig:
 class HypertuningConfig():
     root_dir: Path
     source_data_URL: str
-    models_ckpt: list
+    models_ckpt: list[str]
     project_name: str   
     run_name: str 
     n_trials: int
-    lr: list
-    wd: list
-    bs: list
+    lr: list[float]
+    wd: list[float]
+    bs: list[int]
