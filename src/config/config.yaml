@@ -46,5 +46,5 @@ hyperparameter_tuning:
   run_name: "dataSint"
   n_trials: 10
   lr: [0.000001, 0.0005]
-  wd: [0.0, 0.1]
+  wd: [0.01, 0.1]
   bs: [4, 8, 16]

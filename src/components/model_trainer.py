@@ -58,7 +58,6 @@ class ModelTrainer:
             logging_steps=100,
             optim=self.config.optim,               
             max_grad_norm=1.0,
-            weight_decay=0.01,
             load_best_model_at_end=self.config.load_best_model,      
             metric_for_best_model="eval_loss",# La métrica para decidir cuál es el mejor
             greater_is_better=False,          # Queremos que el Loss sea lo más bajo posible
