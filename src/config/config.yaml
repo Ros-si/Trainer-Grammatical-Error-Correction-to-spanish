@@ -2,7 +2,7 @@ artifacts_root: artifacts
 
 data_ingestion:
   root_dir: artifacts/data_ingestion
-  source_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED" #"Ro551/WikiCorrupted_spanish_to_GEC-GED_xs"
+  source_URL: "Ro551/Wiki-Corrupted_spanish_to_GEC-GED" #"Ro551/WikiCorrupted_spanish_to_GEC-GED_xs"
   dataset_cache_dir: artifacts/data_ingestion/hf_dataset
 
 data_transformation:
@@ -39,7 +39,7 @@ model_evaluation:
 
 hyperparameter_tuning:
   root_dir: artifacts/hiperparameter_tuning
-  source_data_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED_toTEST_mini" 
+  source_data_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED_mini" 
   models_ckpt: ["Helsinki-NLP/opus-mt-es-en", "google/mt5-small", "facebook/m2m100_418M"]#, "facebook/mbart-large-50"]
   project_name: "Hypertuning_GEC"
   run_name: "dataSint"
