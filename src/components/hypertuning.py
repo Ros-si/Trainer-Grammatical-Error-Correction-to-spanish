@@ -85,7 +85,7 @@ class HyperparameterTuner:
                 del trainer_obj
             self.cleanup()
 
-        return trainer["eval_loss"]
+        return eval_loss
 
     def run_tuning(self):
         self.prepare_data()
