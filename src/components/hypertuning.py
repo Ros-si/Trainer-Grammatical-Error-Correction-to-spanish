@@ -60,11 +60,16 @@ class HyperparameterTuner:
             model_trainer = ModelTrainer(self.trainer_config)
             trainer = model_trainer.initiate_model_training(self.dataset['train'], self.dataset['validation'], tokenizer, config_wb=config_wb)
             print(trainer)
-            eval_results = trainer['eval_loss']
+            metrics = trainer.evaluate() 
+            print("metrcs:", metrics)
+            eval_loss = metrics['eval_loss']
 
-            trial.set_user_attr("eval_loss", eval_results)
+            # Ahora usamos eval_loss para Optuna
+            trial.set_user_attr("eval_loss", eval_loss)
+            
+            trial.set_user_attr("eval_loss", eval_loss)
             wandb.log({
-                "eval_loss": eval_results
+                "eval_loss": eval_loss
             })
 
             wandb.finish()
