@@ -49,6 +49,8 @@ class HyperparameterTuner:
             self.trainer_config.train_batch_size= bs
             self.trainer_config.weight_decay = wd
             self.trainer_config.lr =lr
+            if "mt5" in self.trainer_config.model_ckpt:
+                self.trainer_config.fp16 = False
 
             config_wb = {
             "lr": lr,
