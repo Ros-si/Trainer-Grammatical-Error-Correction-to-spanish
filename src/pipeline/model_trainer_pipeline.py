@@ -4,6 +4,7 @@ from src.logger import logging
 from transformers import AutoTokenizer
 from datasets import load_from_disk
 import sys
+import wandb
 from src.exception import CustomException
 
 class ModelTrainerTrainingPipeline:
@@ -36,12 +37,12 @@ class ModelTrainerTrainingPipeline:
             logging.info("Iniciando componente ModelTrainer...")
             model_trainer = ModelTrainer(config=model_trainer_config)
             
-            model_trainer.initiate_model_training(
+            trainer = model_trainer.initiate_model_training(
                 train_dataset=train_dataset,
                 eval_dataset=eval_dataset,
                 tokenizer=tokenizer
             )            
-            logging.info("Etapa de Model Trainer finalizada con éxito.")
+            logging.info("Etapa de Model Trainer finalizada")
 
         except Exception as e:
             raise CustomException(e, sys)

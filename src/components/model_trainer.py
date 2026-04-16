@@ -16,7 +16,7 @@ class ModelTrainer:
         self.config = config
 
 
-    def initiate_model_training(self, train_dataset, eval_dataset, tokenizer):
+    def initiate_model_training(self, train_dataset, eval_dataset, tokenizer, config_wb=None):
         """
         Inicia el proceso de entrenamiento del modelo. Carga el modelo desde el checkpoint especificado en el config.yaml, configura los argumentos de entrenamiento y ejecuta el entrenamiento utilizando Seq2SeqTrainer, finaliza subiendo el modelo al Hugging Face Hub si así se ha configurado. El proceso de entrenamiento se monitorea con WandB
 
@@ -33,14 +33,13 @@ class ModelTrainer:
         model = AutoModelForSeq2SeqLM.from_pretrained(self.config.model_ckpt)
         model_name = self.config.model_ckpt.split("/")[-1]
         run_name = self.config.run_name
-
         wandb.init(
-            project="GEC-Spanish-trainer", 
+            project=self.config.project_name, 
             group=f"{model_name}-experiments", 
             name=f"{model_name}-{run_name}",
-            reinit=True
-        )
-
+            reinit=True,
+            config=config_wb
+            )
         data_collator = DataCollatorForSeq2Seq(tokenizer, model=model)
 
         # Configuración de entrenamiento
@@ -85,3 +84,4 @@ class ModelTrainer:
         if self.config.push_to_hub:
             trainer.push_to_hub(commit_message="Model trained and pushed to Hugging Face Hub")
         #wandb.finish()
+        return trainer

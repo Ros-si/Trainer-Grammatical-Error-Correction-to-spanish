@@ -6,6 +6,7 @@ class ModelTrainerConfig:
     root_dir: Path       
     model_ckpt: str      
     run_name: str         
+    project_name: str    
     epochs: int           
     lr: float             
     train_batch_size: int 
@@ -43,8 +44,21 @@ class ModelEvaluationConfig:
     root_dir: Path
     data_path: Path
     model_path: Path
+
     tokenizer_path: Path
     source_file: Path
     gold_file: Path
     pred_file: Path
     metric_file_name: Path
+
+@dataclass(frozen=True)
+class HipertuningConfig(frozen=True):
+    root_dir: Path
+    source_data_URL: str
+    models_ckpt: list
+    project_name: str   
+    run_name: str 
+    n_trials: int
+    lr: list
+    wd: list
+    bs: list

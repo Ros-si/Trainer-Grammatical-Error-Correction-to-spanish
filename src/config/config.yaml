@@ -17,6 +17,7 @@ model_trainer:
   root_dir: artifacts/model_trainer
   model_ckpt: "Helsinki-NLP/opus-mt-es-en" #"google/mt5-small" #
   run_name: "datSint"
+  project_name: "GEC-Spanish-trainer"
   num_train_epochs: 3
   lr: 5e-4
   per_device_train_batch_size: 16
@@ -35,3 +36,14 @@ model_evaluation:
   gold_file: "gold.txt"
   pred_file: "pred.txt"
   metric_file_name: "metrics.json"
+
+hiperparameter_tuning:
+  root_dir: artifacts/hiperparameter_tuning
+  source_data_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED" 
+  models_ckpt: ["Helsinki-NLP/opus-mt-es-en", "google/mt5-small", "facebook/m2m100_418M"]#, "facebook/mbart-large-50"]
+  project_name: "Hypertuning_GEC"
+  run_name: "dataSint"
+  n_trials: 10
+  lr: [1e-5, 5e-4]
+  wd: [0.0, 0.1]
+  bs: [4, 8, 16]

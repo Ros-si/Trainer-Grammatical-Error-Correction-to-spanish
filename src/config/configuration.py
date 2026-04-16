@@ -3,7 +3,8 @@ from src.utils import create_directories, read_yaml
 from src.logger import logging
 from src.entity.config_entity import (DataIngestionConfig, 
                                       DataTransformationConfig, ModelEvaluationConfig, 
-                                      ModelTrainerConfig)
+                                      ModelTrainerConfig,
+                                      HipertuningConfig)
 from pathlib import Path
 from src.constants import *
 
@@ -95,6 +96,7 @@ class ConfigurationManager:
             root_dir=Path(final_output_dir),
             model_ckpt=config.model_ckpt,
             run_name=config.run_name,
+            project_name=self.config.project_name,
             epochs=config.num_train_epochs,
             lr=float(config.lr),
             train_batch_size=config.per_device_train_batch_size,
@@ -143,3 +145,33 @@ class ConfigurationManager:
         )
 
         return model_evaluation_config
+    
+
+
+    def get_hypertuning_config(self) -> ModelTrainerConfig:
+        """
+        Método para obtener la configuración de la etapa de búsqueda de hiperparámetros. Lee los parámetros necesarios del config.yaml, crea los directorios necesarios y devuelve un objeto HipertuningConfig con las rutas y parámetros configurados.
+
+        Returns
+        -------
+        HipertuningConfig
+            Configuración para la etapa de búsqueda de hiperparámetros
+
+        """
+        config = self.config.hiperparameter_tuning
+        model_id = self.config.data_transformation.model_id
+        final_output_dir = os.path.join(config.root_dir, model_id)
+        create_directories([final_output_dir ])
+
+
+        hipertuning_config = HipertuningConfig(
+            root_dir=Path(config.root_dir),
+            models_ckpt=config.models_ckpt,
+            project_name=self.config.project_name,
+            run_name=self.config.run_name,
+            n_trials=config.n_trials,
+            lr=config.lr,
+            wd=config.wd,
+            bs=config.bs
+        )
+        return hipertuning_config
