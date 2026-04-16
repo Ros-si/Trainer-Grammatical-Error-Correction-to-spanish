@@ -53,6 +53,7 @@ class ModelTrainer:
             per_device_train_batch_size=self.config.train_batch_size,
             per_device_eval_batch_size=self.config.eval_batch_size,
             gradient_accumulation_steps=self.config.gradient_accumulation_steps,
+            weight_decay=self.config.weight_decay,
             logging_strategy='steps',
             logging_steps=100,
             optim=self.config.optim,               

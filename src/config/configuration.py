@@ -104,6 +104,7 @@ class ConfigurationManager:
             train_batch_size=config.per_device_train_batch_size,
             eval_batch_size=config.per_device_eval_batch_size,
             gradient_accumulation_steps=config.gradient_accumulation_steps,
+            weight_decay=config.weight_decay,
             optim=config.optim,
             fp16=config.fp16,
             load_best_model=config.load_best_model,

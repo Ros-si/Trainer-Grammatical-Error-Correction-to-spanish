@@ -36,8 +36,8 @@ class HyperparameterTuner:
     def objective(self, trial):
         try:
             lr = trial.suggest_float("learning_rate", self.config.lr[0], self.config.lr[-1], log=True)
-            #wd = trial.suggest_float("weight_decay", self.config.wd[0], self.config.wd[-1])
-            #bs = trial.suggest_categorical("batch_size", self.config.bs)
+            wd = trial.suggest_float("weight_decay", self.config.wd[0], self.config.wd[-1])
+            bs = trial.suggest_categorical("batch_size", self.config.bs)
             self.trainer_config.lr =lr
 
             # Actualizar el config de ModelTrainer para la búsqueda de hiperpárametros 
@@ -46,13 +46,15 @@ class HyperparameterTuner:
             self.trainer_config.run_name = f"{self.config.run_name}-trial-{trial.number}"
             self.trainer_config.load_best_model = False
             self.trainer_config.push_to_hub = False
+            self.trainer_config.train_batch_size= bs
+            self.trainer_config.weight_decay = wd
             self.trainer_config.lr =lr
 
             config_wb = {
             "lr": lr,
-            #"weight_decay": wd,
+            "weight_decay": wd,
             "checkpoint": self.model_checkpoint,
-            #"batch_size": bs
+            "per_device_train_batch_size": bs
             }
 
             tokenizer = AutoTokenizer.from_pretrained(self.model_checkpoint)

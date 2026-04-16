@@ -23,6 +23,7 @@ model_trainer:
   per_device_train_batch_size: 16
   per_device_eval_batch_size: 8
   gradient_accumulation_steps: 2
+  weight_decay: 0.01
   optim: "adamw_torch"
   fp16: true
   load_best_model: true
@@ -44,6 +45,6 @@ hyperparameter_tuning:
   project_name: "Hypertuning_GEC"
   run_name: "dataSint"
   n_trials: 10
-  lr: [0.00001, 0.0005]
+  lr: [0.000001, 0.0005]
   wd: [0.0, 0.1]
   bs: [4, 8, 16]
