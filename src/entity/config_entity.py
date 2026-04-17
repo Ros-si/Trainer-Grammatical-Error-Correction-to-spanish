@@ -12,6 +12,7 @@ class ModelTrainerConfig:
     train_batch_size: int 
     eval_batch_size: int
     gradient_accumulation_steps: int
+    generation_max_length:int
     weight_decay: float
     optim: str            
     fp16: bool            

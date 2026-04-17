@@ -28,8 +28,13 @@ class DataIngestion:
             logging.info(f"Descargando dataset desde el Hub: {self.config.source_URL}...")
             
             # Descargamos el dataset
-            dataset = load_dataset(self.config.source_URL)
-            del(dataset["test"])
+            ds = load_dataset(self.config.source_URL)
+
+            # Se elimina el split y las columnas que no se usaran durante el entrenamiento
+            del(ds["test"])
+            dataset =ds.remove_columns(['sentence','tokens', 'error_tags', 'error_type', 'span', 'annotation', 'corrupted_tagged'])
+            del(ds)
+            
             # Guardamos directamente en disco en formato Arrow
             dataset.save_to_disk(self.config.dataset_cache_dir)
             

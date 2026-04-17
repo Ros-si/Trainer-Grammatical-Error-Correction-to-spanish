@@ -7,6 +7,9 @@ from src.logger import logging
 from transformers import AutoModelForSeq2SeqLM, Seq2SeqTrainer, Seq2SeqTrainingArguments, DataCollatorForSeq2Seq
 from src.entity.config_entity import ModelTrainerConfig
 import wandb
+import numpy as np
+from gec_metrics import get_metric
+from functools import partial
 
 class ModelTrainer:
     """
@@ -14,9 +17,42 @@ class ModelTrainer:
     """
     def __init__(self, config: ModelTrainerConfig):
         self.config = config
+        metric_cls = get_metric('gleu')
+        self.gleu_metric = metric_cls(metric_cls.Config())
 
 
-    def initiate_model_training(self, train_dataset, eval_dataset, tokenizer, config_wb=None):
+    def compute_metrics(self, eval_preds, tokenizer, eval_dataset_raw):
+        """
+        Calcula GLEU usando el dataset original (texto plano)
+        """
+        preds, labels = eval_preds
+        if isinstance(preds, tuple):
+            preds = preds[0]
+
+        # Decodificar predicciones y etiquetas reales
+        decoded_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)
+        labels = np.where(labels != -100, labels, tokenizer.pad_token_id)
+        decoded_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
+
+        # Extraer fuentes (frases con errores) del dataset
+        srcs = [ex for ex in eval_dataset_raw]
+        
+        # Hipotesis (predicciones del modelo)
+        hyps = [p.strip() for p in decoded_preds]
+        
+        # Referencias (texto correcto)
+        refs = [[l.strip() for l in decoded_labels]] 
+     
+        # Calcular GLEU
+        corpus_score = self.gleu_metric.score_corpus(
+            sources=srcs,
+            hypotheses=hyps,
+            references=refs  
+        )
+        return {"gleu": corpus_score}
+    
+
+    def initiate_model_training(self, train_dataset, eval_dataset, tokenizer, eval_dataset_raw, config_wb=None):
         """
         Inicia el proceso de entrenamiento del modelo. Carga el modelo desde el checkpoint especificado en el config.yaml, configura los argumentos de entrenamiento y ejecuta el entrenamiento utilizando Seq2SeqTrainer, finaliza subiendo el modelo al Hugging Face Hub si así se ha configurado. El proceso de entrenamiento se monitorea con WandB
 
@@ -28,6 +64,10 @@ class ModelTrainer:
             El dataset de evaluación ya tokenizado
         tokenizer : AutoTokenizer
             El tokenizador utilizado para el preprocesamiento
+        eval_dataset_raw: Column
+            El dataset de validación ANTES de ser tokenizado y limpiado
+        config_wb:
+
         """
         # El modelo se carga desde el config.yaml
         model = AutoModelForSeq2SeqLM.from_pretrained(self.config.model_ckpt)
@@ -40,6 +80,11 @@ class ModelTrainer:
             reinit=True,
             config=config_wb
             )
+        
+        custom_compute_metrics = partial(self.compute_metrics, 
+                                         tokenizer=tokenizer, 
+                                         eval_dataset=eval_dataset_raw
+                                        )
         data_collator = DataCollatorForSeq2Seq(tokenizer, model=model)
 
         # Configuración de entrenamiento
@@ -59,8 +104,9 @@ class ModelTrainer:
             optim=self.config.optim,               
             max_grad_norm=1.0,
             load_best_model_at_end=self.config.load_best_model,      
-            metric_for_best_model="eval_loss",# La métrica para decidir cuál es el mejor
-            greater_is_better=False,          # Queremos que el Loss sea lo más bajo posible
+            metric_for_best_model="gleu", #"eval_loss",# La métrica para decidir cuál es el mejor
+            greater_is_better=True, #False para eval_loss # Queremos que el Loss sea lo más bajo posible
+            generation_max_length=self.config.generation_max_length,
             save_total_limit=1,
             predict_with_generate=True,
             fp16=self.config.fp16,
@@ -76,7 +122,8 @@ class ModelTrainer:
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             processing_class=tokenizer,
-            data_collator=data_collator
+            data_collator=data_collator,
+            compute_metrics=custom_compute_metrics
         )
 
         trainer.train()

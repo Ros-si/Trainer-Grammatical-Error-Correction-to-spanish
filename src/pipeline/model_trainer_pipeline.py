@@ -24,11 +24,15 @@ class ModelTrainerTrainingPipeline:
             config_manager = ConfigurationManager()
             model_trainer_config = config_manager.get_model_trainer_config()
             data_transformation_config = config_manager.get_data_transformation_config()
+            #data_ingestion_config = config_manager.get_data_ingestion_config()
 
             # 2. Cargar recursos desde artifacts 
+            dataset = load_from_disk(data_transformation_config.dataset_cache_dir)
             logging.info("Cargando datasets tokenizados desde artifacts...")
             train_dataset = load_from_disk(data_transformation_config.transformed_train_path)
             eval_dataset = load_from_disk(data_transformation_config.transformed_validation_path)
+
+            
 
             logging.info(f"Cargando tokenizador desde: {data_transformation_config.preprocessor_obj_file_path}")
             tokenizer = AutoTokenizer.from_pretrained(data_transformation_config.preprocessor_obj_file_path)
@@ -40,7 +44,8 @@ class ModelTrainerTrainingPipeline:
             trainer = model_trainer.initiate_model_training(
                 train_dataset=train_dataset,
                 eval_dataset=eval_dataset,
-                tokenizer=tokenizer
+                tokenizer=tokenizer,
+                eval_dataset_raw=dataset["validation"]['corrupted']
             )            
             logging.info("Etapa de Model Trainer finalizada")
 
