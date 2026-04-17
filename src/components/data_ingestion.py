@@ -32,9 +32,9 @@ class DataIngestion:
 
             # Se elimina el split y las columnas que no se usaran durante el entrenamiento
             del(ds["test"])
-            dataset =ds.remove_columns(['sentence','tokens', 'error_tags', 'error_type', 'span', 'annotation', 'corrupted_tagged'])
+            dataset =ds.remove_columns(['tokens', 'error_tags', 'error_type', 'span', 'annotation', 'corrupted_tagged'])
             del(ds)
-            
+
             # Guardamos directamente en disco en formato Arrow
             dataset.save_to_disk(self.config.dataset_cache_dir)
             
