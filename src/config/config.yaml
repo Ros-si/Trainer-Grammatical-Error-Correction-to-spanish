@@ -2,7 +2,7 @@ artifacts_root: artifacts
 
 data_ingestion:
   root_dir: artifacts/data_ingestion
-  source_URL: "Ro551/Wiki-Corrupted_spanish_to_GEC-GED" #"Ro551/WikiCorrupted_spanish_to_GEC-GED_xs"
+  source_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED_mini" #"Ro551/Wiki-Corrupted_spanish_to_GEC-GED" #"Ro551/WikiCorrupted_spanish_to_GEC-GED_xs"
   dataset_cache_dir: artifacts/data_ingestion/hf_dataset
 
 data_transformation:
@@ -17,13 +17,13 @@ model_trainer:
   root_dir: artifacts/model_trainer
   model_ckpt: "Helsinki-NLP/opus-mt-es-en" #"google/mt5-small" #
   run_name: "datSint"
-  project_name: "GEC-Spanish-trainer"
+  project_name: "TEST-GEC"#"GEC-Spanish-trainer"
   num_train_epochs: 3
   lr: 5e-4
   per_device_train_batch_size: 16
   per_device_eval_batch_size: 8
   gradient_accumulation_steps: 2
-  generation_max_length:128
+  generation_max_length: 128
   weight_decay: 0.01
   optim: "adamw_torch"
   fp16: true
