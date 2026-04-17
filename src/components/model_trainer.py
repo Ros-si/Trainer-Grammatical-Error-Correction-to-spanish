@@ -63,7 +63,7 @@ class ModelTrainer:
             greater_is_better=False,          # Queremos que el Loss sea lo más bajo posible
             save_total_limit=1,
             predict_with_generate=True,
-            fp16=self.config.fp16, # Si usas GPU con soporte
+            fp16=self.config.fp16,
             push_to_hub=self.config.push_to_hub, 
             hub_model_id=f"Ro551/{model_name}-GEC-spanish-{run_name}", 
             hub_strategy="end", # Sube el checkpoint en cada época -> every_save

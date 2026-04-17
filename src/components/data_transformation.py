@@ -3,7 +3,7 @@ from datasets import load_from_disk
 from transformers import AutoTokenizer
 from src.exception import CustomException
 from src.logger import logging
-from datasets import load_from_disk
+
 from src.entity.config_entity import DataTransformationConfig
 
 class DataTransformation:
