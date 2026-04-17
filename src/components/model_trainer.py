@@ -83,7 +83,7 @@ class ModelTrainer:
         
         custom_compute_metrics = partial(self.compute_metrics, 
                                          tokenizer=tokenizer, 
-                                         eval_dataset=eval_dataset_raw
+                                         eval_dataset_raw=eval_dataset_raw
                                         )
         data_collator = DataCollatorForSeq2Seq(tokenizer, model=model)
 
