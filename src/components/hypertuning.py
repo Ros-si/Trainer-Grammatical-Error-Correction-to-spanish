@@ -17,7 +17,8 @@ class HyperparameterTuner:
         self.model_checkpoint = model_checkpoint
         self.config = config
         self.trainer_config = trainer_config
-        self.data_transformation_config = data_transformation_config    
+        self.data_transformation_config = data_transformation_config 
+        self.raw_dataset=None   
         self.dataset =None
     
     
@@ -29,8 +30,8 @@ class HyperparameterTuner:
 
         data_transformation = DataTransformation(config=self.data_transformation_config)
 
-        ds = load_dataset(self.config.source_data_URL)
-        self.dataset = ds.map(data_transformation.preprocess_function, batched=True, remove_columns=ds['train'].column_names)
+        self.raw_dataset = load_dataset(self.config.source_data_URL)
+        self.dataset = self.raw_dataset.map(data_transformation.preprocess_function, batched=True, remove_columns=ds['train'].column_names)
 
 
     def objective(self, trial):
@@ -62,19 +63,18 @@ class HyperparameterTuner:
             tokenizer = AutoTokenizer.from_pretrained(self.model_checkpoint)
 
             model_trainer = ModelTrainer(self.trainer_config)
-            trainer = model_trainer.initiate_model_training(self.dataset['train'], self.dataset['validation'], tokenizer, config_wb=config_wb)
+            trainer = model_trainer.initiate_model_training(self.dataset['train'], self.dataset['validation'], tokenizer, eval_dataset_raw=self.raw_dataset['validation']['corrupted'], config_wb=config_wb)
             print(trainer)
             metrics = trainer.evaluate() 
             print("metrics:", metrics)
             eval_loss = metrics['eval_loss']
+            gleu = metrics['eval_gleu']
 
             # Ahora usamos eval_loss para Optuna
-            trial.set_user_attr("eval_loss", eval_loss)
-            
-            trial.set_user_attr("eval_loss", eval_loss)
-            wandb.log({
-                "eval_loss": eval_loss
-            })
+            trial.set_user_attr("eval_loss", eval_loss)            
+            trial.set_user_attr("gleu", gleu)
+
+            wandb.log({"trial_gleu": gleu, "trial_loss": eval_loss})
 
             wandb.finish()
         except Exception as e:
@@ -87,11 +87,11 @@ class HyperparameterTuner:
                 del trainer_obj
             self.cleanup()
 
-        return eval_loss
+        return gleu
 
     def run_tuning(self):
         self.prepare_data()
-        study = optuna.create_study(direction="minimize")
+        study = optuna.create_study(direction="maximize")
         study.optimize(self.objective, n_trials=self.config.n_trials)
         
         # Guardar resultados en un JSON
