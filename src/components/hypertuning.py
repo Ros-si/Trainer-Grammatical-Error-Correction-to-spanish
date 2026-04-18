@@ -31,7 +31,7 @@ class HyperparameterTuner:
         data_transformation = DataTransformation(config=self.data_transformation_config)
 
         self.raw_dataset = load_dataset(self.config.source_data_URL)
-        self.dataset = self.raw_dataset.map(data_transformation.preprocess_function, batched=True, remove_columns=ds['train'].column_names)
+        self.dataset = self.raw_dataset.map(data_transformation.preprocess_function, batched=True, remove_columns=self.raw_dataset['train'].column_names)
 
 
     def objective(self, trial):
