@@ -9,7 +9,7 @@ data_transformation:
   root_dir: artifacts/data_transformation
   tokenizer_name: "Helsinki-NLP/opus-mt-es-en" #"google/mt5-small" #
   model_id: "marian_mt"
-  save_to_disk: true  # cambiar a 'false' cuando se realice hipertuning 
+  save_to_disk: true  
   max_input_length: 128
   max_target_length: 128
 

@@ -29,11 +29,17 @@ class ModelTrainer:
         if isinstance(preds, tuple):
             preds = preds[0]
 
-        # Decodificar predicciones y etiquetas reales
-        decoded_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)
+        # Asegurar que sean enteros (por si acaso vienen floats)
+        preds = np.where(preds < 0, tokenizer.pad_token_id, preds)
+        # Filtrar tokens fuera de rango (índices que no existen en el vocabulario)
+        preds = np.where(preds >= tokenizer.vocab_size, tokenizer.pad_token_id, preds)
+        preds = preds.astype(np.int64)
+
+        # Decodificar
+        decoded_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)        
         labels = np.where(labels != -100, labels, tokenizer.pad_token_id)
         decoded_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
-
+        
         # Extraer fuentes (frases con errores) del dataset
         srcs = [ex for ex in eval_dataset_raw]
         
