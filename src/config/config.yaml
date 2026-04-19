@@ -46,6 +46,6 @@ hyperparameter_tuning:
   project_name: "Hypertuning_GEC"
   run_name: "dataSint"
   n_trials: 10
-  lr: [0.000001, 0.0005]
+  lr: [0.00001, 0.0005]
   wd: [0.01, 0.1]
   bs: [4, 8, 16]
