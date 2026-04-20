@@ -47,7 +47,7 @@ class ModelTrainer:
         hyps = [p.strip() for p in decoded_preds]
         
         # Referencias (texto correcto)
-        refs = [[l.strip()] for l in decoded_labels] 
+        refs = [[l.strip() for l in decoded_labels]]
      
         # Calcular GLEU
         corpus_score = self.gleu_metric.score_corpus(
