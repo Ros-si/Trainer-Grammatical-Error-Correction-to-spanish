@@ -64,3 +64,4 @@ class HypertuningConfig():
     lr: list[float]
     wd: list[float]
     bs: list[int]
+    gradient_accumulation_steps: list[int]

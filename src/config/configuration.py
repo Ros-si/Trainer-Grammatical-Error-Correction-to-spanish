@@ -176,6 +176,7 @@ class ConfigurationManager:
             n_trials=config.n_trials,
             lr=config.lr,
             wd=config.wd,
-            bs=config.bs
+            bs=config.bs,
+            gradient_accumulation_steps=config.gradient_accumulation_steps
         )
         return hipertuning_config

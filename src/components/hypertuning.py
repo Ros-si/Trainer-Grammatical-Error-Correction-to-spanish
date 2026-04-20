@@ -39,8 +39,7 @@ class HyperparameterTuner:
             lr = trial.suggest_float("learning_rate", self.config.lr[0], self.config.lr[-1], log=True)
             wd = trial.suggest_float("weight_decay", self.config.wd[0], self.config.wd[-1])
             bs = trial.suggest_categorical("batch_size", self.config.bs)
-            self.trainer_config.lr =lr
-
+            gradient_accumulation_steps = trial.suggest_int("gradient_accumulation_steps", self.config.gradient_accumulation_steps[0], self.config.gradient_accumulation_steps[-1])
             # Actualizar el config de ModelTrainer para la búsqueda de hiperpárametros 
             self.trainer_config.project_name = self.config.project_name
             self.trainer_config.model_ckpt = self.model_checkpoint
@@ -50,6 +49,7 @@ class HyperparameterTuner:
             self.trainer_config.train_batch_size= bs
             self.trainer_config.weight_decay = wd
             self.trainer_config.lr =lr
+            self.trainer_config.gradient_accumulation_steps=gradient_accumulation_steps
             if "mt5" in self.trainer_config.model_ckpt:
                 self.trainer_config.fp16 = False
 
@@ -77,14 +77,18 @@ class HyperparameterTuner:
             wandb.log({"trial_gleu": gleu, "trial_loss": eval_loss})
 
             wandb.finish()
+            # Limpieza
+            del trainer
+            del model_trainer
+            
         except Exception as e:
+            gc.collect()
+            torch.cuda.empty_cache()
             raise CustomException(e, sys)
         finally:          
             # Limpieza de memoria
-            if 'model_trainer' in locals():
-                del model_trainer
-            if 'trainer_obj' in locals():
-                del trainer_obj
+            gc.collect()
+            torch.cuda.empty_cache()
             self.cleanup()
 
         return gleu
