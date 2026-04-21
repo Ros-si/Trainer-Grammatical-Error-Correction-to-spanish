@@ -59,6 +59,7 @@ class HypertuningConfig():
     source_data_URL: str
     models_ckpt: list[str]
     project_name: str   
+    epochs: int
     run_name: str 
     n_trials: int
     lr: list[float]

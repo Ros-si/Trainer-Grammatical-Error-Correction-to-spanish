@@ -44,6 +44,7 @@ class HyperparameterTuner:
             self.trainer_config.project_name = self.config.project_name
             self.trainer_config.model_ckpt = self.model_checkpoint
             self.trainer_config.run_name = f"{self.config.run_name}-trial-{trial.number}"
+            self.trainer_config.epochs = self.config.epochs
             self.trainer_config.load_best_model = False
             self.trainer_config.push_to_hub = False
             self.trainer_config.train_batch_size= bs

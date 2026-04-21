@@ -45,6 +45,7 @@ hyperparameter_tuning:
   models_ckpt:  ["facebook/m2m100_418M"] # ["Helsinki-NLP/opus-mt-es-en", "google/mt5-small", "facebook/m2m100_418M"]#, "facebook/mbart-large-50"]
   project_name: "Hypertuning_GEC"
   run_name: "dataSint"
+  epochs: 3
   n_trials: 10
   lr: [0.00001, 0.0005]
   wd: [0.01, 0.1]
