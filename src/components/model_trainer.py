@@ -10,6 +10,7 @@ import wandb
 import numpy as np
 from gec_metrics import get_metric
 from functools import partial
+from peft import LoraConfig, get_peft_model, TaskType
 
 class ModelTrainer:
     """
@@ -79,6 +80,19 @@ class ModelTrainer:
         model = AutoModelForSeq2SeqLM.from_pretrained(self.config.model_ckpt)
         model_name = self.config.model_ckpt.split("/")[-1]
         run_name = self.config.run_name
+
+        # 2. Configurar LoRA si está activado
+        if self.config.use_lora:
+            peft_config = LoraConfig(
+                r=self.config.lora_config.r,
+                lora_alpha=self.config.lora_config.lora_alpha,
+                #target_modules=self.config.lora_config.target_modules,
+                lora_dropout=self.config.lora_config.lora_dropout,
+                #bias=self.config.lora_config.bias,
+                task_type=TaskType.SEQ_2_SEQ_LM 
+            )
+            model = get_peft_model(model, peft_config)
+            logging.info(f"Parametros entrenables: {model.print_trainable_parameters()}")
         wandb.init(
             project=self.config.project_name, 
             group=f"{model_name}-experiments", 

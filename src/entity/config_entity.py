@@ -1,6 +1,14 @@
 from dataclasses import dataclass
 from pathlib import Path
+from typing import List, Optional
 
+@dataclass()
+class LoRAConfig:
+    r: int
+    lora_alpha: int
+    target_modules: List[str]
+    lora_dropout: float
+    bias: str
 @dataclass()
 class ModelTrainerConfig:
     root_dir: Path       
@@ -18,6 +26,8 @@ class ModelTrainerConfig:
     fp16: bool            
     load_best_model: bool 
     push_to_hub: bool     
+    use_lora: bool
+    lora_config: Optional[LoRAConfig] = None
 
 @dataclass()
 class DataIngestionConfig:

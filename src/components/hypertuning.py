@@ -99,7 +99,14 @@ class HyperparameterTuner:
 
     def run_tuning(self):
         self.prepare_data()
-        study = optuna.create_study(direction="maximize")
+        storage_name = "sqlite:////kaggle/working/db.sqlite3" # Ruta de la base de datos
+        study = optuna.create_study(
+            study_name="gec-tuning",
+            storage=storage_name,
+            load_if_exists=True,
+            direction="maximize"
+            )
+        
         study.optimize(self.objective, n_trials=self.config.n_trials)
         
         # Guardar resultados en un JSON
