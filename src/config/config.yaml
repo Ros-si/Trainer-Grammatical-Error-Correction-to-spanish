@@ -52,8 +52,14 @@ hyperparameter_tuning:
   project_name: "Hypertuning_GEC"
   run_name: "dataSint"
   epochs: 3
-  n_trials: 10
-  lr: [0.00001, 0.0005]
+  n_trials: 15
+  lr: [0.00001, 0.001]
   wd: [0.01, 0.1]
   bs: [1, 2]
   gradient_accumulation_steps: [4, 16]
+  use_lora: true
+  lora_config:
+    r: [4, 8, 16]
+    lora_alpha: [4, 8, 16, 32, 64]
+    lora_dropout: [0.05, 0.15]
+    bias: "none"

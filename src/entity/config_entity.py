@@ -76,3 +76,5 @@ class HypertuningConfig():
     wd: list[float]
     bs: list[int]
     gradient_accumulation_steps: list[int]
+    use_lora: bool
+    lora_config: Optional[LoRAConfig] = None

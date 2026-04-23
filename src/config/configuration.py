@@ -180,6 +180,8 @@ class ConfigurationManager:
             lr=config.lr,
             wd=config.wd,
             bs=config.bs,
-            gradient_accumulation_steps=config.gradient_accumulation_steps
+            gradient_accumulation_steps=config.gradient_accumulation_steps,
+            use_lora=config.use_lora,
+            lora_config=config.lora_config
         )
         return hipertuning_config

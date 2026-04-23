@@ -56,13 +56,30 @@ class HyperparameterTuner:
 
             if "m2m100" in self.trainer_config.model_ckpt:
                 self.trainer_config.optim= "adafactor"
-
+            r = trial.suggest_categorical("r", self.config.lora_config.r)
+            alpha = trial.suggest_categorical("lora_alpha", self.config.lora_config.lora_alpha)
+            dropout = trial.suggest_categorical("lora_dropout", self.config.lora_config.lora_dropout)
+            
             config_wb = {
             "lr": lr,
             "weight_decay": wd,
             "checkpoint": self.model_checkpoint,
             "per_device_train_batch_size": bs
             }
+
+            if self.config.use_lora:
+                self.trainer_config.use_lora = True
+                self.trainer_config.lora_config.lora_alpha = alpha
+                self.trainer_config.lora_config.r = r
+                self.trainer_config.lora_config.lora_dropout = dropout
+
+                config_lora = {
+                    "r":r,
+                    "alpha":alpha,
+                    "dropout":dropout
+                }
+                config_wb.update(config_lora)
+            
 
             tokenizer = AutoTokenizer.from_pretrained(self.model_checkpoint)
 
