@@ -109,7 +109,9 @@ class ConfigurationManager:
             optim=config.optim,
             fp16=config.fp16,
             load_best_model=config.load_best_model,
-            push_to_hub=config.push_to_hub
+            push_to_hub=config.push_to_hub,
+            use_lora=config.use_lora,
+            lora_config=config.lora_config
         )
         return model_trainer_config
 

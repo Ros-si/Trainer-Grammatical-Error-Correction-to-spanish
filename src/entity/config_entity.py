@@ -6,9 +6,9 @@ from typing import List, Optional
 class LoRAConfig:
     r: int
     lora_alpha: int
-    target_modules: List[str]
     lora_dropout: float
     bias: str
+
 @dataclass()
 class ModelTrainerConfig:
     root_dir: Path       

@@ -29,6 +29,12 @@ model_trainer:
   fp16: true
   load_best_model: true
   push_to_hub: true
+  use_lora: false
+  lora_config:
+    r: 8
+    lora_alpha: 32
+    lora_dropout: 0.05
+    bias: "none"
 
 model_evaluation:
   root_dir: artifacts/model_evaluation
