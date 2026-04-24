@@ -114,7 +114,12 @@ class HyperparameterTuner:
 
     def run_tuning(self):
         self.prepare_data()
-        storage_name = "sqlite:////kaggle/working/db.sqlite3" # Ruta de la base de datos
+        tuning_dir = os.path.join("src", "components")
+        db_path = os.path.join(tuning_dir,"db.sqlite3")
+        storage_name = f"sqlite:///{os.path.abspath(db_path)}"        
+        print(f"[*] Iniciando/Retomando estudio en: {db_path}")
+
+        #storage_name = "sqlite:////kaggle/working/db.sqlite3" # Ruta de la base de datos
         study = optuna.create_study(
             study_name="gec-tuning",
             storage=storage_name,
