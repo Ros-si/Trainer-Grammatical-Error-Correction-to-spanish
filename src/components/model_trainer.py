@@ -84,7 +84,7 @@ class ModelTrainer:
         # Configurar LoRA si está activado
         if self.config.use_lora:
             peft_config = LoraConfig(
-                target_modules=["q", "v"],
+                target_modules="all-linear",
                 r=self.config.lora_config.r,
                 lora_alpha=self.config.lora_config.lora_alpha,
                 lora_dropout=self.config.lora_config.lora_dropout,
