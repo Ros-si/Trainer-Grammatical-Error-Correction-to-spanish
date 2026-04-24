@@ -20,6 +20,7 @@ class HyperparameterTuner:
         self.data_transformation_config = data_transformation_config 
         self.raw_dataset=None   
         self.dataset =None
+        self.tokenizer=None
     
     
     def prepare_data(self):
@@ -32,6 +33,7 @@ class HyperparameterTuner:
 
         self.raw_dataset = load_dataset(self.config.source_data_URL)
         self.dataset = self.raw_dataset.map(data_transformation.preprocess_function, batched=True, remove_columns=self.raw_dataset['train'].column_names)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_checkpoint)
 
 
     def objective(self, trial):
@@ -56,9 +58,6 @@ class HyperparameterTuner:
 
             if "m2m100" in self.trainer_config.model_ckpt:
                 self.trainer_config.optim= "adafactor"
-            r = trial.suggest_categorical("r", self.config.lora_config.r)
-            alpha = trial.suggest_categorical("lora_alpha", self.config.lora_config.lora_alpha)
-            dropout = trial.suggest_categorical("lora_dropout", self.config.lora_config.lora_dropout)
             
             config_wb = {
             "lr": lr,
@@ -68,11 +67,14 @@ class HyperparameterTuner:
             }
 
             if self.config.use_lora:
+                r = trial.suggest_categorical("r", self.config.lora_config.r)
+                alpha = trial.suggest_categorical("lora_alpha", self.config.lora_config.lora_alpha)
+                dropout = trial.suggest_categorical("lora_dropout", self.config.lora_config.lora_dropout)
+                
                 self.trainer_config.use_lora = True
                 self.trainer_config.lora_config.lora_alpha = alpha
                 self.trainer_config.lora_config.r = r
                 self.trainer_config.lora_config.lora_dropout = dropout
-
                 config_lora = {
                     "r":r,
                     "alpha":alpha,
@@ -81,10 +83,8 @@ class HyperparameterTuner:
                 config_wb.update(config_lora)
             
 
-            tokenizer = AutoTokenizer.from_pretrained(self.model_checkpoint)
-
             model_trainer = ModelTrainer(self.trainer_config)
-            trainer = model_trainer.initiate_model_training(self.dataset['train'], self.dataset['validation'], tokenizer, eval_dataset_raw=self.raw_dataset['validation']['corrupted'], config_wb=config_wb)
+            trainer = model_trainer.initiate_model_training(self.dataset['train'], self.dataset['validation'], self.tokenizer, eval_dataset_raw=self.raw_dataset['validation']['corrupted'], config_wb=config_wb)
             print(trainer)
             metrics = trainer.evaluate() 
             print("metrics:", metrics)
@@ -103,8 +103,6 @@ class HyperparameterTuner:
             del model_trainer
             
         except Exception as e:
-            gc.collect()
-            torch.cuda.empty_cache()
             raise CustomException(e, sys)
         finally:          
             # Limpieza de memoria
