@@ -114,12 +114,15 @@ class HyperparameterTuner:
 
     def run_tuning(self):
         self.prepare_data()
-        tuning_dir = os.path.join("src", "components")
-        db_path = os.path.join(tuning_dir,"db.sqlite3")
-        storage_name = f"sqlite:///{os.path.abspath(db_path)}"        
+        model_name = self.model_checkpoint.split("/")[-1]
+
+        tuning_dir = os.path.join("artifacts", "hypertuning")
+        os.makedirs(tuning_dir, exist_ok=True)
+        db_path = os.path.join(tuning_dir, f"{model_name}_hypertune.db")     
+        storage_name = f"sqlite:///{os.path.abspath(db_path)}"   
         print(f"[*] Iniciando/Retomando estudio en: {db_path}")
 
-        #storage_name = "sqlite:////kaggle/working/db.sqlite3" # Ruta de la base de datos
+        
         study = optuna.create_study(
             study_name="gec-tuning",
             storage=storage_name,
@@ -130,7 +133,7 @@ class HyperparameterTuner:
         study.optimize(self.objective, n_trials=self.config.n_trials)
         
         # Guardar resultados en un JSON
-        model_name = self.model_checkpoint.split("/")[-1]
+        
         output_path = os.path.join(self.config.root_dir, f"best_params_{model_name}-{self.config.run_name}.json")
         
         with open(output_path, "w") as f:
