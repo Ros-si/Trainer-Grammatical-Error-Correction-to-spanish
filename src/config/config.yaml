@@ -48,16 +48,16 @@ model_evaluation:
 hyperparameter_tuning:
   root_dir: artifacts/hiperparameter_tuning
   source_data_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED_mini" 
-  models_ckpt:  ["facebook/m2m100_418M"] # ["Helsinki-NLP/opus-mt-es-en", "google/mt5-small", "facebook/m2m100_418M"]#, "facebook/mbart-large-50"]
-  project_name: "TEST-Hypertuning_GEC"
+  models_ckpt:  ["google/mt5-small"] # ["Helsinki-NLP/opus-mt-es-en", "google/mt5-small", "facebook/m2m100_418M"]#, "facebook/mbart-large-50"]
+  project_name: "Hypertuning_GEC"
   run_name: "dataSint"
   epochs: 3
   n_trials: 15
-  lr: [0.00001, 0.001]
+  lr: [0.00001, 0.0001]
   wd: [0.01, 0.1]
   bs: [1, 2]
   gradient_accumulation_steps: [4, 16]
-  use_lora: true
+  use_lora: false
   lora_config:
     r: [4, 8, 16]
     lora_alpha: [4, 8, 16, 32, 64]
