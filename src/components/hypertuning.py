@@ -126,7 +126,7 @@ class HyperparameterTuner:
             load_if_exists=True,
             direction="maximize"
             )
-        
+        print(f"Trials completados: {len(study.trials)}")
         study.optimize(self.objective, n_trials=self.config.n_trials)
         
         # Guardar resultados en un JSON
