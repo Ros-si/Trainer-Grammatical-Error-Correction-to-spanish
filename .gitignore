@@ -1,6 +1,6 @@
 notebook/
 logs/
-artifacts/
+artifactss/
 wandb/
 
 # Byte-compiled / optimized / DLL files
