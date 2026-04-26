@@ -36,7 +36,9 @@ class ConfigurationManager:
         data_ingestion_config = DataIngestionConfig(
             root_dir=Path(config.root_dir),
             source_URL=config.source_URL,
-            dataset_cache_dir=Path(config.dataset_cache_dir)
+            source_cowsl2h=config.source_cowsl2h,
+            dataset_cache_dir=Path(config.dataset_cache_dir),
+            mode=config.mode
         )
 
         return data_ingestion_config

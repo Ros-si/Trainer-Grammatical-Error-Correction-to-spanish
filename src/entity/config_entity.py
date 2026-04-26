@@ -29,11 +29,14 @@ class ModelTrainerConfig:
     use_lora: bool
     lora_config: Optional[LoRAConfig] = None
 
+
 @dataclass()
 class DataIngestionConfig:
     root_dir: Path
     source_URL: str
+    source_cowsl2h: str
     dataset_cache_dir: Path
+    mode: str
 
 
 @dataclass()    

@@ -1,16 +1,7 @@
-import os
-import sys
-from pathlib import Path
-import pandas as pd
 from sklearn.model_selection import train_test_split
-from dataclasses import dataclass
-from src.exception import CustomException
 from src.logger import logging  
-from dataclasses import dataclass
-from pathlib import Path
-
 import os
-from datasets import load_dataset
+from datasets import load_dataset, concatenate_datasets, DatasetDict
 from src.entity.config_entity import DataIngestionConfig
 
 class DataIngestion:
@@ -24,6 +15,32 @@ class DataIngestion:
         """
         Descarga y guarda el dataset en formato Arrow
         """
+        if self.config.mode == "synthetic":
+            logging.info("Modo de ingesta: synthetic...")
+            dataset = self.get_data_synthetic()       
+        elif self.config.mode == "cowsl2h":
+            logging.info("Modo de ingesta: COWSL-2H...")
+            dataset = self.get_data_cowsl2h()
+        else:  
+            logging.info(f"Modo de ingesta: synthetic + COWSL-2H...")
+            dataset_synthetic = self.get_data_synthetic()
+            dataset_cowsl2h = self.get_data_cowsl2h()
+            dataset = self.concatenate_datasets(dataset_synthetic, dataset_cowsl2h)
+
+        # Guardamos directamente en disco en formato Arrow
+        dataset.save_to_disk(self.config.dataset_cache_dir)
+            
+        logging.info(f"Dataset guardado en: {self.config.dataset_cache_dir}")
+        
+    def get_data_synthetic(self):
+        """
+        Método para obtener el dataset sintético
+
+        Returns
+        -------
+        Dataset
+            El dataset sintético generado 
+        """
         if not os.path.exists(self.config.dataset_cache_dir):
             logging.info(f"Descargando dataset desde el Hub: {self.config.source_URL}...")
             
@@ -34,10 +51,55 @@ class DataIngestion:
             del(ds["test"])
             dataset =ds.remove_columns(['tokens', 'error_tags', 'error_type', 'span', 'annotation', 'corrupted_tagged'])
             del(ds)
-
-            # Guardamos directamente en disco en formato Arrow
-            dataset.save_to_disk(self.config.dataset_cache_dir)
-            
-            logging.info(f"Dataset guardado en: {self.config.dataset_cache_dir}")
         else:
             logging.info("El dataset ya existe localmente, omitiendo descarga")
+
+        return ds
+    
+
+    def get_data_cowsl2h(self):
+        """
+        Método para obtener el dataset COWSL-2H
+
+        Returns
+        -------
+        Dataset
+            El dataset COWSL-2H  
+        """
+        if not os.path.exists(self.config.dataset_cache_dir):
+            logging.info(f"Descargando dataset desde el Hub: {self.config.source_cowsl2h}...")
+            
+            # Descargamos el dataset
+            ds = load_dataset(self.config.source_cowsl2h)
+        else:
+            logging.info("El dataset ya existe localmente, omitiendo descarga")
+
+        return ds
+    
+
+    def concatenate_datasets(self, ds_synthetic, ds_COWSL2H):
+        """
+        Método para concatenar dos datasets
+
+        Parameters
+        ----------
+        ds_synthetic : Dataset
+            El dataset sintético
+        ds_COWSL2H : Dataset
+            El dataset COWSL-2H
+
+        Returns
+        -------
+        Dataset
+            El dataset concatenado
+        """
+        ds_COWSL2H = ds_COWSL2H.rename_columns({"input_text":"corrupted", "target_text":"sentence"})
+        combined_dataset = DatasetDict()
+
+        for split in ds_synthetic.keys():
+            combined_dataset[split] = concatenate_datasets([
+                ds_synthetic[split], 
+                ds_COWSL2H[split]
+            ])
+        return combined_dataset
+
