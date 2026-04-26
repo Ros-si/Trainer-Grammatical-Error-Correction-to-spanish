@@ -52,8 +52,8 @@ hyperparameter_tuning:
   project_name: "Hypertuning_GEC"
   run_name: "dataSint"
   epochs: 3
-  n_trials: 3
-  lr: [0.0000215, 0.0000464]
+  n_trials: 4
+  lr: [0.0000464, 0.0001]
   wd: [0.01, 0.1]
   bs: [1, 2]
   gradient_accumulation_steps: [4, 16]
