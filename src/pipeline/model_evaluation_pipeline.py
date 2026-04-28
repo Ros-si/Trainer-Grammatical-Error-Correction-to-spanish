@@ -11,7 +11,7 @@ class ModelEvaluationPipeline:
         evaluation = ModelEvaluation(config=eval_config)
         
         # Generar archivos
-        evaluation.generate_predictions()
+        #evaluation.generate_predictions()
         
         # Obtener métricas ERRANT
         metrics = evaluation.run_full_evaluation()
