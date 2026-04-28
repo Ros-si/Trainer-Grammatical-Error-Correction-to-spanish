@@ -106,6 +106,7 @@ class ModelEvaluation:
         # Ejecutar ERRANT para este set
         return self.run_errant_pipeline(src_file, gold_file, pred_file, set_name)
 
+
     def run_full_evaluation(self):
         """
         Carga los datos, realiza la evaluación triple y loguea a WandB.
