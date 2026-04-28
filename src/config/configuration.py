@@ -38,6 +38,7 @@ class ConfigurationManager:
             source_URL=config.source_URL,
             source_cowsl2h=config.source_cowsl2h,
             dataset_cache_dir=Path(config.dataset_cache_dir),
+            dataset_test_cache_dir=Path(config.dataset_test_cache_dir),
             mode=config.mode
         )
 
@@ -144,6 +145,7 @@ class ConfigurationManager:
         model_evaluation_config = ModelEvaluationConfig(
             root_dir=full_eval_path,
             data_path=self.config.data_ingestion.source_URL,
+            data_test_path=self.config.data_ingestion.dataset_test_cache_dir,
             model_path=full_model_path,
             tokenizer_path=full_model_path,
             source_file=config.source_file,

@@ -11,6 +11,22 @@ class DataIngestion:
     def __init__(self, config: DataIngestionConfig):
         self.config = config
 
+    def download_test_datasets(self):
+        """
+        Descarga y guarda los datasets de prueba en formato Arrow
+        """
+        ds_synthetic = load_dataset(self.config.source_URL, split="test")
+        ds_cowsl2h = load_dataset(self.config.source_cowsl2h, split="test")
+
+        ds_cowsl2h = ds_cowsl2h.rename_columns({"input_text":"corrupted", "target_text":"sentence"})
+        ds_synthetic.remove_columns(['tokens', 'error_tags', 'error_type', 'span', 'annotation', 'corrupted_tagged'])
+        
+        ds_synthetic.save_to_disk(os.path.join(self.config.dataset_test_cache_dir, "synthetic"))
+        ds_cowsl2h.save_to_disk(os.path.join(self.config.dataset_test_cache_dir, "cowsl2h"))
+        
+        logging.info(f"Datasets de prueba guardados en: {self.config.dataset_test_cache_dir}")        
+
+                  
     def download_dataset(self):
         """
         Descarga y guarda el dataset en formato Arrow
@@ -54,7 +70,7 @@ class DataIngestion:
         else:
             logging.info("El dataset ya existe localmente, omitiendo descarga")
 
-        return ds
+        return dataset
     
 
     def get_data_cowsl2h(self):
@@ -71,6 +87,7 @@ class DataIngestion:
             
             # Descargamos el dataset
             ds = load_dataset(self.config.source_cowsl2h)
+            del ds['test']
         else:
             logging.info("El dataset ya existe localmente, omitiendo descarga")
 

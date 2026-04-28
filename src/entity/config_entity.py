@@ -36,6 +36,7 @@ class DataIngestionConfig:
     source_URL: str
     source_cowsl2h: str
     dataset_cache_dir: Path
+    dataset_test_cache_dir: Path
     mode: str
 
 
@@ -59,7 +60,7 @@ class ModelEvaluationConfig:
     root_dir: Path
     data_path: Path
     model_path: Path
-
+    data_test_path: Path
     tokenizer_path: Path
     source_file: Path
     gold_file: Path

@@ -14,7 +14,7 @@ class ModelEvaluationPipeline:
         evaluation.generate_predictions()
         
         # Obtener métricas ERRANT
-        metrics = evaluation.run_errant_pipeline()
+        metrics = evaluation.run_full_evaluation()
         evaluation.save_metrics_to_local(metrics)
         df = pd.DataFrame([metrics])
         

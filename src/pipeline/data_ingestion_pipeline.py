@@ -24,7 +24,8 @@ class DataIngestionTrainingPipeline:
             
             logging.info("Iniciando el componente de Data Ingestion...")
             data_ingestion = DataIngestion(config=data_ingestion_config)
-            data_ingestion.download_dataset()            
+            data_ingestion.download_dataset()   
+            data_ingestion.download_test_datasets()         
             logging.info("Etapa de Data Ingestion finalizada.")
             
         except Exception as e:
