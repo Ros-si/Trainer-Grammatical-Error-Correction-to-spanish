@@ -87,11 +87,11 @@ class ModelEvaluation:
 
             for example in dataset:
                 # Generación de la corrección
-                inputs = tokenizer(example['corrupted'], return_tensors="pt", truncation=True).to(self.device)
+                #inputs = tokenizer(example['corrupted'], return_tensors="pt", truncation=True).to(self.device)
                 
                 with torch.no_grad():
                     output_tokens = model.generate(
-                        **inputs, 
+                        **example, 
                         max_length=128, 
                         num_beams=4
                     )
@@ -114,27 +114,27 @@ class ModelEvaluation:
         logging.info("Iniciando Evaluación Triple (Sintético, COWSL2H, Combinado)...")
         
         # Cargar Modelo y Tokenizer
-        tokenizer = AutoTokenizer.from_pretrained(self.config.tokenizer_path)
+        #tokenizer = AutoTokenizer.from_pretrained(self.config.tokenizer_path)
         model = AutoModelForSeq2SeqLM.from_pretrained(self.config.model_path).to(self.device)
 
         # Cargar Datasets de Test
         # Test Sintético
-        ds_synth = load_from_disk(os.path.join(self.config.data_test_path,"synthetic"))
+        #ds_synth = load_from_disk(os.path.join(self.config.data_test_path,"synthetic"))
         # Test COWSL2H 
-        ds_cow = load_from_disk(os.path.join(self.config.data_test_path,"cowsl2h"))
+        #ds_cow = load_from_disk(os.path.join(self.config.data_test_path,"cowsl2h"))
         # Test Combinado
-        ds_combined = concatenate_datasets([ds_synth, ds_cow])
+        #ds_combined = concatenate_datasets([ds_synth, ds_cow])
 
         evaluation_map = {
-            "Test_Sintetico": ds_synth,
-            "Test_COWSL2H": ds_cow,
-            "Test_Combinado": ds_combined
+            "synthetic": load_from_disk(os.path.join(self.config.data_test_path,"synthetic")),
+            "COWSL2H": load_from_disk(os.path.join(self.config.data_test_path,"cowsl2h")),
+            "merged": load_from_disk(os.path.join(self.config.data_test_path,"merged")), 
         }
 
         # Ejecutar bucle de evaluación
         all_metrics = {}
         for name, ds in evaluation_map.items():
-            metrics = self.evaluate_single_dataset(ds, name, model, tokenizer)
+            metrics = self.evaluate_single_dataset(ds, name, model)
             
             if metrics:
                 all_metrics[name] = metrics

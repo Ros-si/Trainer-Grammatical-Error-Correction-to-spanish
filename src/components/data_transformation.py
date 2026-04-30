@@ -1,5 +1,6 @@
+import os
 import sys
-from datasets import load_from_disk
+from datasets import DatasetDict, concatenate_datasets, load_from_disk
 from transformers import AutoTokenizer
 from src.exception import CustomException
 from src.logger import logging
@@ -78,6 +79,7 @@ class DataTransformation:
                 tokenized_dataset['train'].save_to_disk(self.config.transformed_train_path)
                 #tokenized_dataset['test'].save_to_disk(self.config.transformed_test_path)
                 tokenized_dataset['validation'].save_to_disk(self.config.transformed_validation_path)
+                self.data_test_transformation()  # Transformar y guardar los datasets de prueba
             else:
                 logging.info("Omitiendo guardado en disco (Hypertuning Mode)")
 
@@ -88,10 +90,70 @@ class DataTransformation:
 
             return (
                 self.config.transformed_train_path,
-                #self.config.transformed_test_path,
+                self.config.transformed_test_path,
                 self.config.transformed_validation_path,
                 self.config.preprocessor_obj_file_path
             )
 
         except Exception as e:
             raise CustomException(e, sys)
+        
+    def get_data_test(self):
+        ds_synth = load_from_disk(os.path.join(self.config.dataset_test_cache_dir,"synthetic"))
+        # Test COWSL2H 
+        ds_cow = load_from_disk(os.path.join(self.config.dataset_test_cache_dir,"cowsl2h"))
+        # Test Combinado
+        ds_combined = self.concatenate_datasets([ds_synth, ds_cow])
+        evaluation_map = {
+            "synthetic": ds_synth,
+            "COWSL2H": ds_cow,
+            "merged": ds_combined
+        }
+        return evaluation_map
+
+    def data_test_transformation(self):
+        evaluation_map = self.get_data_test()
+        transformed_test_paths = {}
+        for name, ds in evaluation_map.items():
+            logging.info(f"Aplicando tokenizacion al dataset de prueba: {name}...")
+            tokenized_dataset = ds.map(
+                self.preprocess_function,
+                batched=True,
+                remove_columns=ds.column_names 
+            )
+            if self.config.save_to_disk:
+                test_path = os.path.join(self.config.transformed_test_path, name)
+                tokenized_dataset.save_to_disk(test_path)
+                transformed_test_paths[name] = test_path
+                logging.info(f"Dataset de prueba {name} guardado en: {test_path}")
+            else:
+                logging.info(f"Omitiendo guardado en disco para el dataset de prueba: {name} (Hypertuning Mode)")
+                transformed_test_paths[name] = tokenized_dataset
+
+        #return transformed_test_paths
+
+    def concatenate_datasets(self, ds_synthetic, ds_COWSL2H):
+        """
+        Método para concatenar dos datasets
+
+        Parameters
+        ----------
+        ds_synthetic : Dataset
+            El dataset sintético
+        ds_COWSL2H : Dataset
+            El dataset COWSL-2H
+
+        Returns
+        -------
+        Dataset
+            El dataset concatenado
+        """
+        ds_COWSL2H = ds_COWSL2H.rename_columns({"input_text":"corrupted", "target_text":"sentence"})
+        combined_dataset = DatasetDict()
+
+        for split in ds_synthetic.keys():
+            combined_dataset[split] = concatenate_datasets([
+                ds_synthetic[split], 
+                ds_COWSL2H[split]
+            ])
+        return combined_dataset

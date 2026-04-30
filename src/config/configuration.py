@@ -64,6 +64,7 @@ class ConfigurationManager:
         data_transformation_config = DataTransformationConfig(
             root_dir=Path(config.root_dir),
             dataset_cache_dir=Path(self.config.data_ingestion.dataset_cache_dir),
+            dataset_test_cache_dir=Path(self.config.data_ingestion.dataset_test_cache_dir),
             tokenizer_name=config.tokenizer_name,
             max_input_length=config.max_input_length,
             max_target_length=config.max_target_length,
@@ -145,7 +146,7 @@ class ConfigurationManager:
         model_evaluation_config = ModelEvaluationConfig(
             root_dir=full_eval_path,
             data_path=self.config.data_ingestion.source_URL,
-            data_test_path=self.config.data_ingestion.dataset_test_cache_dir,
+            data_test_path=self.config.data_transformation.dataset_test_cache_dir,
             model_path=full_model_path,
             tokenizer_path=full_model_path,
             source_file=config.source_file,

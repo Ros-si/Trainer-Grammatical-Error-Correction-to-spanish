@@ -44,10 +44,10 @@ class DataIngestionConfig:
 class DataTransformationConfig:
     root_dir: Path
     dataset_cache_dir: Path
+    dataset_test_cache_dir: Path
     tokenizer_name: str
     max_input_length: int
-    max_target_length: int
-    
+    max_target_length: int    
     transformed_train_path: Path
     transformed_test_path: Path
     transformed_validation_path: Path
@@ -59,6 +59,7 @@ class DataTransformationConfig:
 class ModelEvaluationConfig:
     root_dir: Path
     data_path: Path
+    data_test_path: Path
     model_path: Path
     data_test_path: Path
     tokenizer_path: Path

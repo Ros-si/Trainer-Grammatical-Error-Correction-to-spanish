@@ -94,29 +94,5 @@ class DataIngestion:
         return ds
     
 
-    def concatenate_datasets(self, ds_synthetic, ds_COWSL2H):
-        """
-        Método para concatenar dos datasets
-
-        Parameters
-        ----------
-        ds_synthetic : Dataset
-            El dataset sintético
-        ds_COWSL2H : Dataset
-            El dataset COWSL-2H
-
-        Returns
-        -------
-        Dataset
-            El dataset concatenado
-        """
-        ds_COWSL2H = ds_COWSL2H.rename_columns({"input_text":"corrupted", "target_text":"sentence"})
-        combined_dataset = DatasetDict()
-
-        for split in ds_synthetic.keys():
-            combined_dataset[split] = concatenate_datasets([
-                ds_synthetic[split], 
-                ds_COWSL2H[split]
-            ])
-        return combined_dataset
+   
 
