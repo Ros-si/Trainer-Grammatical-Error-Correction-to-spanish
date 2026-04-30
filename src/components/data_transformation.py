@@ -106,7 +106,7 @@ class DataTransformation:
         ds_combined = self.concatenate_datasets(ds_synth, ds_cow)
         evaluation_map = {
             "synthetic": ds_synth,
-            "COWSL2H": ds_cow,
+            "cowsl2h": ds_cow,
             "merged": ds_combined
         }
         return evaluation_map
@@ -148,6 +148,7 @@ class DataTransformation:
         Dataset
             El dataset concatenado
         """
+        print(ds_COWSL2H)
         ds_COWSL2H = ds_COWSL2H.rename_columns({"input_text":"corrupted", "target_text":"sentence"})
         combined_dataset = DatasetDict()
 

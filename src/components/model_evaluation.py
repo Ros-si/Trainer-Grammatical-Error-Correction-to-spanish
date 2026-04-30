@@ -127,7 +127,7 @@ class ModelEvaluation:
 
         evaluation_map = {
             "synthetic": load_from_disk(os.path.join(self.config.data_test_path,"synthetic")),
-            "COWSL2H": load_from_disk(os.path.join(self.config.data_test_path,"cowsl2h")),
+            "cowsl2h": load_from_disk(os.path.join(self.config.data_test_path,"cowsl2h")),
             "merged": load_from_disk(os.path.join(self.config.data_test_path,"merged")), 
         }
 
