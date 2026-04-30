@@ -75,11 +75,11 @@ class DataTransformation:
 
             # 3. Guardar dataset tokenizado
             if self.config.save_to_disk:
+                self.data_test_transformation()  # Transformar y guardar los datasets de prueba
                 logging.info("Guardando datasets tokenizados en artifacts...")
                 tokenized_dataset['train'].save_to_disk(self.config.transformed_train_path)
                 #tokenized_dataset['test'].save_to_disk(self.config.transformed_test_path)
                 tokenized_dataset['validation'].save_to_disk(self.config.transformed_validation_path)
-                self.data_test_transformation()  # Transformar y guardar los datasets de prueba
             else:
                 logging.info("Omitiendo guardado en disco (Hypertuning Mode)")
 
@@ -103,6 +103,7 @@ class DataTransformation:
         # Test COWSL2H 
         ds_cow = load_from_disk(os.path.join(self.config.dataset_test_cache_dir,"cowsl2h"))
         # Test Combinado
+        print(f"rutaCO:{os.path.join(self.config.dataset_test_cache_dir,'cowsl2h')}")
         ds_combined = self.concatenate_datasets(ds_synth, ds_cow)
         evaluation_map = {
             "synthetic": ds_synth,
