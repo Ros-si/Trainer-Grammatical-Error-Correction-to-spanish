@@ -59,9 +59,8 @@ class DataTransformationConfig:
 class ModelEvaluationConfig:
     root_dir: Path
     data_path: Path
-    data_test_path: Path
+    data_transformed_test_path: Path
     model_path: Path
-    data_test_path: Path
     tokenizer_path: Path
     source_file: Path
     gold_file: Path
