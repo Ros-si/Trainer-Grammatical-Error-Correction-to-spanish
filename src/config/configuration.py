@@ -143,10 +143,14 @@ class ConfigurationManager:
         #unir "artifacts/model_trainer" + model_id 
         full_model_path = os.path.join(config.model_path, model_id)
 
+        # REPARACIÓN: Reconstruir la ruta del dataset de prueba local (Arrow)
+        transformed_test_base = os.path.join(self.config.data_transformation.root_dir, model_id)
+        transformed_test_path = Path(os.path.join(transformed_test_base, "test"))
+
         model_evaluation_config = ModelEvaluationConfig(
             root_dir=full_eval_path,
             data_path=self.config.data_ingestion.source_URL,
-            data_transformed_test_path=self.config.data_transformation.transformed_test_path,
+            data_transformed_test_path=transformed_test_path, # Ruta corregida            
             model_path=full_model_path,
             tokenizer_path=full_model_path,
             source_file=config.source_file,

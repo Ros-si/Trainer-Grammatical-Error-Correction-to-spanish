@@ -88,10 +88,13 @@ class ModelEvaluation:
             for example in dataset:
                 # Generación de la corrección
                 #inputs = tokenizer(example['corrupted'], return_tensors="pt", truncation=True).to(self.device)
-                
+                inputs = {
+                "input_ids": torch.tensor([example["input_ids"]]).to(self.device),
+                "attention_mask": torch.tensor([example["attention_mask"]]).to(self.device)
+            }
                 with torch.no_grad():
                     output_tokens = model.generate(
-                        **example, 
+                        **inputs, 
                         max_length=128, 
                         num_beams=4
                     )
