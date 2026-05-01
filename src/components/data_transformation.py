@@ -150,7 +150,7 @@ class DataTransformation:
             El dataset concatenado
         """
         print(ds_COWSL2H)
-        ds_COWSL2H = ds_COWSL2H.rename_columns({"input_text":"corrupted", "target_text":"sentence"})
+        #ds_COWSL2H = ds_COWSL2H.rename_columns({"input_text":"corrupted", "target_text":"sentence"})
         combined_dataset = DatasetDict()
 
         for split in ds_synthetic.keys():
