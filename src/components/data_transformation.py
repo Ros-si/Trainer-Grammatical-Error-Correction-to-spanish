@@ -104,7 +104,7 @@ class DataTransformation:
         ds_cow = load_from_disk(os.path.join(self.config.dataset_test_cache_dir,"cowsl2h"))
         # Test Combinado
         print(f"rutaCO:{os.path.join(self.config.dataset_test_cache_dir,'cowsl2h')}")
-        ds_combined = self.concatenate_datasets(ds_synth, ds_cow)
+        ds_combined = concatenate_datasets([ds_synth, ds_cow])
         evaluation_map = {
             "synthetic": ds_synth,
             "cowsl2h": ds_cow,
