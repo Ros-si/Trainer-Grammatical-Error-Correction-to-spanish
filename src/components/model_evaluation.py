@@ -120,15 +120,6 @@ class ModelEvaluation:
         tokenizer = AutoTokenizer.from_pretrained(self.config.tokenizer_path)
         model = AutoModelForSeq2SeqLM.from_pretrained(self.config.model_path).to(self.device)
 
-        # Cargar Datasets de Test
-        # Test Sintético
-        #ds_synth = load_from_disk(os.path.join(self.config.data_test_path,"synthetic"))
-        # Test COWSL2H 
-        #ds_cow = load_from_disk(os.path.join(self.config.data_test_path,"cowsl2h"))
-        # Test Combinado
-        #ds_combined = concatenate_datasets([ds_synth, ds_cow])
-
-        print(f"rutasynthetic: {os.path.join(self.config.data_transformed_test_path,"synthetic")}")
         evaluation_map = {
             "synthetic": load_from_disk(os.path.join(self.config.data_transformed_test_path,"synthetic")),
             "cowsl2h": load_from_disk(os.path.join(self.config.data_transformed_test_path,"cowsl2h")),

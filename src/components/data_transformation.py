@@ -103,7 +103,6 @@ class DataTransformation:
         # Test COWSL2H 
         ds_cow = load_from_disk(os.path.join(self.config.dataset_test_cache_dir,"cowsl2h"))
         # Test Combinado
-        print(f"rutaCO:{os.path.join(self.config.dataset_test_cache_dir,'cowsl2h')}")
         ds_combined = concatenate_datasets([ds_synth, ds_cow])
         evaluation_map = {
             "synthetic": ds_synth,
@@ -120,7 +119,7 @@ class DataTransformation:
             tokenized_dataset = ds.map(
                 self.preprocess_function,
                 batched=True,
-                remove_columns=ds.column_names 
+                remove_columns=None #ds.column_names 
             )
             if self.config.save_to_disk:
                 test_path = os.path.join(self.config.transformed_test_path, name)
