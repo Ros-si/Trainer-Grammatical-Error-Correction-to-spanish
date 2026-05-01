@@ -21,7 +21,7 @@ model_trainer:
   model_ckpt: "facebook/m2m100_418M" #"google/mt5-small" #"Helsinki-NLP/opus-mt-es-en" 
   run_name: "dsSint"
   project_name: "testin-GEC-Spanish-trainer"
-  num_train_epochs: 1
+  num_train_epochs: 2
   lr: 0.000028126
   per_device_train_batch_size: 1
   per_device_eval_batch_size: 8

@@ -146,7 +146,7 @@ class ConfigurationManager:
         model_evaluation_config = ModelEvaluationConfig(
             root_dir=full_eval_path,
             data_path=self.config.data_ingestion.source_URL,
-            data_test_path=self.config.data_transformation.dataset_test_cache_dir,
+            data_test_path=self.config.data_transformation.transformed_test_path,
             model_path=full_model_path,
             tokenizer_path=full_model_path,
             source_file=config.source_file,
