@@ -2,7 +2,7 @@ artifacts_root: artifacts
 
 data_ingestion:
   root_dir: artifacts/data_ingestion
-  source_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED_mini" #"Ro551/Wiki-Corrupted_spanish_to_GEC-GED" #"Ro551/WikiCorrupted_spanish_to_GEC-GED_xs"
+  source_URL: "Ro551/Wiki-Corrupted_spanish_to_GEC-GED" #"Ro551/WikiCorrupted_spanish_to_GEC-GED_xs"
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned"
   dataset_cache_dir: artifacts/data_ingestion/hf_dataset
   dataset_test_cache_dir: artifacts/data_ingestion/hf_dataset_test
@@ -20,8 +20,8 @@ model_trainer:
   root_dir: artifacts/model_trainer
   model_ckpt: "facebook/m2m100_418M" #"google/mt5-small" #"Helsinki-NLP/opus-mt-es-en" 
   run_name: "dsSint"
-  project_name: "testin-GEC-Spanish-trainer"
-  num_train_epochs: 2
+  project_name: "GEC-Spanish-trainer"
+  num_train_epochs: 4
   lr: 0.000028126
   per_device_train_batch_size: 1
   per_device_eval_batch_size: 8

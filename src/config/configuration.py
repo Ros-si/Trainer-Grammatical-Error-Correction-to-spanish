@@ -11,7 +11,7 @@ from src.constants import *
 
 class ConfigurationManager:
     """
-    Clase para gestionar la configuración del proyecto. Se encarga de leer el archivo config.yaml, crear los directorios necesarios y proporcionar métodos para obtener objetos de configuración específicos para cada etapa del pipeline (ingesta, transformación, entrenamiento)
+    Clase para gestionar la configuración del proyecto. Se encarga de leer el archivo config.yaml, crear los directorios necesarios y proporcionar métodos para obtener objetos de configuración específicos para cada etapa del pipeline (ingesta, transformación, entrenamiento, evaluación y búsqueda de hiperparámetros).
     """
     def __init__(self, config_filepath = CONFIG_FILE_PATH):
         # Leer config.yaml
