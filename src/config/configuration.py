@@ -83,7 +83,6 @@ class ConfigurationManager:
     def get_model_trainer_config(self) -> ModelTrainerConfig:
         """
         Método para obtener la configuración de la etapa de entrenamiento del modelo. Lee los parámetros necesarios del config.yaml, crea los directorios necesarios y devuelve un objeto ModelTrainerConfig con las rutas y parámetros configurados
-
         Returns
         -------
         ModelTrainerConfig
@@ -96,7 +95,6 @@ class ConfigurationManager:
         final_output_dir = os.path.join(config.root_dir, model_id)
         # Crear el directorio raíz del entrenamiento
         create_directories([final_output_dir ])
-
 
         model_trainer_config = ModelTrainerConfig(
             root_dir=Path(final_output_dir),
