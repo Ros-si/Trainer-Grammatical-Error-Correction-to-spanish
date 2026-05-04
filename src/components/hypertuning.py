@@ -31,14 +31,13 @@ class HyperparameterTuner:
 
         data_transformation = DataTransformation(config=self.data_transformation_config)
 
-        
-        if "COWS" in self.config.source_data_URL:
-            self.raw_dataset = load_dataset(self.config.source_data_URL, split="validation")
-            self.raw_dataset = self.raw_dataset.rename_columns({"input_text":"corrupted", "target_text":"sentence"})
-            self.dataset = self.raw_dataset.map(data_transformation.preprocess_function, batched=True, remove_columns=self.raw_dataset.column_names)
+        if "COWS" in self.config.source_data_URL:            
+            self.raw_dataset = load_dataset(self.config.source_data_URL, split={'train': 'train[:30%]', 'validation': 'validation[:20%]'})
         else:
             self.raw_dataset = load_dataset(self.config.source_data_URL)
-            self.dataset = self.raw_dataset.map(data_transformation.preprocess_function, batched=True, remove_columns=self.raw_dataset['train'].column_names)
+
+        
+        self.dataset = self.raw_dataset.map(data_transformation.preprocess_function, batched=True, remove_columns=self.raw_dataset['train'].column_names)
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_checkpoint)
 
 
