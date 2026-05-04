@@ -10,26 +10,26 @@ data_ingestion:
 
 data_transformation:
   root_dir: artifacts/data_transformation
-  tokenizer_name: "Helsinki-NLP/opus-mt-es-en" #"google/mt5-small" #"facebook/m2m100_418M" #
-  model_id: "marianMT" #"facebook/m2m100_418M" #"Helsinki-NLP/opus-mt-es-en"
+  tokenizer_name: "google/mt5-small" #"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #
+  model_id: "mT5-Small" #"marianMT" #"facebook/m2m100_418M" #"Helsinki-NLP/opus-mt-es-en"
   save_to_disk: true  
   max_input_length: 128
   max_target_length: 128
 
 model_trainer:
   root_dir: artifacts/model_trainer
-  model_ckpt: "Helsinki-NLP/opus-mt-es-en" #"Helsinki-NLP/opus-mt-es-en" 
+  model_ckpt: "google/mt5-small" #"Helsinki-NLP/opus-mt-es-en" 
   run_name: "dsSint"
   project_name: "GEC-Spanish-trainer"
   num_train_epochs: 4
-  lr: 0.00015888 #0.000028126
+  lr: 0.0003140978 #0.00015888 #0.000028126
   per_device_train_batch_size: 1
   per_device_eval_batch_size: 8
-  gradient_accumulation_steps: 9
+  gradient_accumulation_steps: 12
   generation_max_length: 128
-  weight_decay: 0.0977850 #0.0383990 #0.070
+  weight_decay: 0.03839904 #0.0977850 #0.0383990 #0.070
   optim: "adamw_torch"
-  fp16: true
+  fp16: false
   load_best_model: true
   push_to_hub: true
   use_lora: false
