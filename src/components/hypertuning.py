@@ -33,6 +33,7 @@ class HyperparameterTuner:
 
         if "COWS" in self.config.source_data_URL:            
             self.raw_dataset = load_dataset(self.config.source_data_URL, split={'train': 'train[:30%]', 'validation': 'validation[:20%]'})
+            self.raw_dataset = self.raw_dataset.rename_columns({"input_text":"corrupted", "target_text":"sentence"})
         else:
             self.raw_dataset = load_dataset(self.config.source_data_URL)
 
