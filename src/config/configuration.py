@@ -183,7 +183,6 @@ class ConfigurationManager:
             mode=config.mode,
             models_ckpt=config.models_ckpt,
             project_name=config.project_name,
-            run_name=config.run_name,
             epochs=config.epochs,
             n_trials=config.n_trials,
             lr=config.lr,
