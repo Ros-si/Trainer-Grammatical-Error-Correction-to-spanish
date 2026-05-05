@@ -178,7 +178,9 @@ class ConfigurationManager:
 
         hipertuning_config = HypertuningConfig(
             root_dir=Path(config.root_dir),
-            source_data_URL=config.source_data_URL,
+            source_synthetic=config.source_synthetic,
+            source_cowsl2h=config.source_cowsl2h,
+            mode=config.mode,
             models_ckpt=config.models_ckpt,
             project_name=config.project_name,
             run_name=config.run_name,

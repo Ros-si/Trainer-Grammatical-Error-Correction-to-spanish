@@ -70,11 +70,12 @@ class ModelEvaluationConfig:
 @dataclass()
 class HypertuningConfig():
     root_dir: Path
-    source_data_URL: str
+    source_synthetic: str
+    source_cowsl2h: str
+    mode: str
     models_ckpt: list[str]
     project_name: str   
     epochs: int
-    run_name: str 
     n_trials: int
     lr: list[float]
     wd: list[float]

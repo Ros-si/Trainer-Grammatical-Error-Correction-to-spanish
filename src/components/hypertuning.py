@@ -5,6 +5,7 @@ import os
 import sys
 import optuna
 import wandb
+from datasets import DatasetDict, concatenate_datasets
 from transformers import AutoTokenizer
 from datasets import load_dataset
 from src.exception import CustomException
@@ -22,7 +23,39 @@ class HyperparameterTuner:
         self.dataset =None
         self.tokenizer=None
     
+    def load_dataset_custom(self):
+        """
+        Carga el dataset segun el tipo de escenario (sintético, COWS-L2H o híbrido)
+        """
+        mode = self.config.mode 
     
+        def get_cows():
+            ds = load_dataset(self.config.source_cowsl2h, split={'train': 'train[:30%]', 'validation': 'validation[:20%]'})
+            return ds.rename_columns({"input_text": "corrupted", "target_text": "sentence"})
+
+        def get_synthetic():
+            return load_dataset(self.config.source_synthetic)
+
+        # logica de selección de dataset según el modo configurado
+        if mode == "hybrid":
+            ds_cows = get_cows()
+            ds_synth = get_synthetic()
+            
+            dataset_hybrid = DatasetDict()
+            for split in ['train', 'validation']:
+                dataset_hybrid[split] = concatenate_datasets([
+                    ds_cows[split], 
+                    ds_synth[split]
+                ])
+            return dataset_hybrid.shuffle(seed=42)
+
+        elif mode == "cows":
+            return get_cows()
+        
+        else: # mode == "synthetic" o por defecto
+            return get_synthetic()
+            
+        
     def prepare_data(self):
         """Preprocesa el dataset una sola vez por checkpoint"""
         # Actualizar el config de DataTransformation
@@ -31,12 +64,7 @@ class HyperparameterTuner:
 
         data_transformation = DataTransformation(config=self.data_transformation_config)
 
-        if "COWS" in self.config.source_data_URL:            
-            self.raw_dataset = load_dataset(self.config.source_data_URL, split={'train': 'train[:30%]', 'validation': 'validation[:20%]'})
-            self.raw_dataset = self.raw_dataset.rename_columns({"input_text":"corrupted", "target_text":"sentence"})
-        else:
-            self.raw_dataset = load_dataset(self.config.source_data_URL)
-
+        self.raw_dataset = self.load_dataset_custom()        
         
         self.dataset = self.raw_dataset.map(data_transformation.preprocess_function, batched=True, remove_columns=self.raw_dataset['train'].column_names)
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_checkpoint)
@@ -51,7 +79,7 @@ class HyperparameterTuner:
             # Actualizar el config de ModelTrainer para la búsqueda de hiperpárametros 
             self.trainer_config.project_name = self.config.project_name
             self.trainer_config.model_ckpt = self.model_checkpoint
-            self.trainer_config.run_name = f"{self.config.run_name}-trial-{trial.number}"
+            self.trainer_config.run_name = f"{self.config.mode}-trial-{trial.number}"
             self.trainer_config.epochs = self.config.epochs
             self.trainer_config.load_best_model = False
             self.trainer_config.push_to_hub = False
@@ -140,7 +168,7 @@ class HyperparameterTuner:
         
         # Guardar resultados en un JSON
         
-        output_path = os.path.join(self.config.root_dir, f"best_params_{model_name}-{self.config.run_name}.json")
+        output_path = os.path.join(self.config.root_dir, f"best_params_{model_name}-{self.config.mode}.json")
         
         with open(output_path, "w") as f:
             json.dump(study.best_params, f, indent=4)

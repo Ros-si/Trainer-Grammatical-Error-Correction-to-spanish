@@ -49,18 +49,19 @@ model_evaluation:
   metric_file_name: "metrics.json"
 
 hyperparameter_tuning:
-  root_dir: artifacts/hiperparameter_tuning
-  source_data_URL: "Ro551/COWSL2H_GEC_cleaned" #"Ro551/WikiCorrupted_spanish_to_GEC-GED_mini" 
+  root_dir: artifacts/hyperparameter_tuning
+  source_synthetic: "Ro551/WikiCorrupted_spanish_to_GEC-GED_mini"
+  source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned" 
+  mode: "hybrid" # puede ser "synthetic", "cowsl2h", "hybrid"
   models_ckpt: ["facebook/m2m100_418M", "Helsinki-NLP/opus-mt-es-en", "google/mt5-small"] #, "facebook/mbart-large-50"]
   project_name: "Hypertuning_GEC-LoRA"
-  run_name: "dsCOWSL2H"
   epochs: 3
-  n_trials: 4
+  n_trials: 10
   lr: [0.0000464, 0.0001]
   wd: [0.01, 0.1]
   bs: [1, 2]
   gradient_accumulation_steps: [4, 16]
-  use_lora: false
+  use_lora: true
   lora_config:
     r: [4, 8, 16]
     lora_alpha: [4, 8, 16, 32, 64]
