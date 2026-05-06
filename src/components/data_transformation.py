@@ -57,15 +57,19 @@ class DataTransformation:
 
     def initiate_data_transformation(self):
         """
-        Función principal que orquesta la transformación de datos: carga el dataset, aplica la tokenización y guarda los resultados en disco, en caso de estar configurado para hacerlo, en modo hypertuning no se guarda. Devuelve las rutas de los datasets transformados y del tokenizador.
+        Función principal que orquesta la transformación de datos: 1. Carga el dataset de la etapa de ingestion
+        2. Aplica la tokenización 
+        3. Guarda los resultados en disco, en caso de estar configurado para hacerlo, en modo hypertuning no se guarda. 
+        
+        Return
+        ------
+            Devuelve las rutas de los datasets transformados y del tokenizador.
         """
         try:
-            logging.info("Iniciando transformación de datos...")
-            
-            # 1. Cargar dataset desde la etapa de Ingestión
+            logging.info("Iniciando transformación de datos...")           
             ds = load_from_disk(self.config.dataset_cache_dir)
             
-            # 2. Aplicar el preprocesamiento
+            # Aplicar el preprocesamiento
             logging.info("Aplicando tokenizacion al dataset...")
             tokenized_dataset = ds.map(
                 self.preprocess_function,
@@ -73,17 +77,15 @@ class DataTransformation:
                 remove_columns=ds['train'].column_names 
             )
 
-            # 3. Guardar dataset tokenizado
+            # Guardar dataset tokenizado
             if self.config.save_to_disk:
                 self.data_test_transformation()  # Transformar y guardar los datasets de prueba
                 logging.info("Guardando datasets tokenizados en artifacts...")
                 tokenized_dataset['train'].save_to_disk(self.config.transformed_train_path)
-                #tokenized_dataset['test'].save_to_disk(self.config.transformed_test_path)
                 tokenized_dataset['validation'].save_to_disk(self.config.transformed_validation_path)
             else:
                 logging.info("Omitiendo guardado en disco (Hypertuning Mode)")
 
-            # 4. Guardar el tokenizador (para Inferencia)
             self.tokenizer.save_pretrained(self.config.preprocessor_obj_file_path)
 
             logging.info("Transformación completada")

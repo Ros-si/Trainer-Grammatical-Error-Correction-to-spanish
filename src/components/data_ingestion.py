@@ -29,7 +29,7 @@ class DataIngestion:
                   
     def download_dataset(self):
         """
-        Descarga y guarda el dataset en formato Arrow
+        Descarga y guarda el dataset en formato Arrow segun el modo definido en la configuración (synthetic, cowsl2h o hybrid)
         """
         if self.config.mode == "synthetic":
             logging.info("Modo de ingesta: synthetic...")
