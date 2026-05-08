@@ -6,13 +6,12 @@ class HypertuningPipeline:
     """
     Pipeline para la etapa de optimización de busqueda de hiperparametros de los modelos. Gestiona la configuración, ejecuta la búsqueda.
      1. Gestiona la configuración utilizando ConfigurationManager para obtener los parámetros necesarios para la búsqueda de hiperparametros.
-     2. Ejecuta la búsqueda de hiperparametros para cada ckeckpoint definido
+     2. Ejecuta la búsqueda de hiperparametros para cada checkpoint definido
     """
     def __init__(self):
         pass
 
-    def main(self):                
-
+    def main(self):            
         config_manager = ConfigurationManager()
         hypertune_config =config_manager.get_hypertuning_config()
         model_trainer_config = config_manager.get_model_trainer_config() 
