@@ -18,7 +18,7 @@ class ModelEvaluationPipeline:
         evaluation.save_metrics_to_local(metrics)
         df = pd.DataFrame([metrics])
         
-        # CreaR la tabla de WandB a partir del DataFrame
+        # Crear la tabla de WandB a partir del DataFrame
         metrics_table = wandb.Table(columns=["Dataset", "F0.5", "Precision", "Recall", "TP", "FP", "FN"])
             
         for set_name, m in metrics.items():
@@ -32,7 +32,7 @@ class ModelEvaluationPipeline:
                 m["errant_FN"]
             )
         
-        # Guardar metricas en WandB si la sesion existe
+        # Guardar metricas en WandB
         wandb.log({"final_evaluation_summary": metrics_table})
         logging.info("Métricas enviadas a WandB:", metrics)
 

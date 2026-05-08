@@ -15,13 +15,18 @@ class ModelEvaluation:
         self.config = config
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
 
-
     def save_metrics_to_local(self, metrics):
+        """
+        Guarda las métricas calculadas en un archivo JSON local para su posterior análisis
+        Parameters
+        ----------
+        metrics : dict
+            Diccionario con las métricas calculadas 
+        """
         path = os.path.join(self.config.root_dir, self.config.metric_file_name)
         with open(path, "w") as f:
             json.dump(metrics, f, indent=4)
-        logging.info(f"Metricas guardadas localmente en: {path}")
-        
+        logging.info(f"Metricas guardadas localmente en: {path}")    
 
     def _parse_metrics(self, output):
         """
@@ -31,6 +36,9 @@ class ModelEvaluation:
         ----------
         output : str
             La salida de ERRANT que contiene el resultado de las métricas 
+        Return
+        ------
+            Diccionario con las métricas extraídas (TP, FP, FN, Precision, Recall, F0.5)
         """
         for line in output.splitlines():
             if line.strip() and line[0].isdigit():
@@ -50,6 +58,20 @@ class ModelEvaluation:
     def run_errant_pipeline(self, source_path, gold_path, pred_path, set_name):
         """
         Ejecuta el pipeline de ERRANT para un conjunto específico
+        Parameters
+        ----------
+        source_path : str
+            Ruta al archivo de texto con las oraciones originales (corrupted)
+        gold_path : str
+            Ruta al archivo de texto con las oraciones corregidas de referencia (sentence)
+        pred_path : str
+            Ruta al archivo de texto con las oraciones corregidas por el modelo (predicción)
+        set_name : str
+            Nombre del conjunto evaluado ("synthetic", "cowsl2h", "merged") 
+        
+        Return
+        ------
+            Diccionario con las métricas calculadas para el conjunto evaluado
         """
         logging.info(f"Iniciando pipeline de ERRANT para: {set_name}...")
         
@@ -74,6 +96,9 @@ class ModelEvaluation:
     def evaluate_single_dataset(self, dataset, set_name, model, tokenizer):
         """
         Genera predicciones y calcula métricas para un dataset específico 
+        Return
+        ------
+            Diccionario con las métricas calculadas para el dataset evaluado
         """
         logging.info(f"Evaluando sobre el conjunto: {set_name} ({len(dataset)} ejemplos)")
         
@@ -113,6 +138,10 @@ class ModelEvaluation:
     def run_full_evaluation(self):
         """
         Carga los datos, realiza la evaluación triple y loguea a WandB.
+
+        Return
+        -------      
+            Diccionario con las métricas para cada conjunto evaluado
         """
         logging.info("Iniciando Evaluación Triple (Sintético, COWSL2H, Combinado)...")
         
