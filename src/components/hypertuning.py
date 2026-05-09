@@ -150,7 +150,7 @@ class HyperparameterTuner:
         self.prepare_data()
         model_name = self.model_checkpoint.split("/")[-1]
 
-        tuning_dir = os.path.join("artifacts", "hypertuning")
+        tuning_dir = self.config.root_dir #"artifacts", "hypertuning")
         os.makedirs(tuning_dir, exist_ok=True)
         db_path = os.path.join(tuning_dir, f"{model_name}_hypertune.db")     
         storage_name = f"sqlite:///{os.path.abspath(db_path)}"   
