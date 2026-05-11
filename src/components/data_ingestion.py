@@ -41,7 +41,14 @@ class DataIngestion:
             logging.info(f"Modo de ingesta: synthetic + COWSL-2H...")
             dataset_synthetic = self.get_data_synthetic()
             dataset_cowsl2h = self.get_data_cowsl2h()
-            dataset = self.concatenate_datasets(dataset_synthetic, dataset_cowsl2h)
+            #dataset = concatenate_datasets(dataset_synthetic, dataset_cowsl2h)
+            dataset= DatasetDict()
+            for split in ['train', 'validation']:
+                dataset[split] = concatenate_datasets([
+                    dataset_cowsl2h[split], 
+                    dataset_synthetic[split]
+                ])
+            dataset = dataset.shuffle(seed=42)
 
         # Guardamos directamente en disco en formato Arrow
         dataset.save_to_disk(self.config.dataset_cache_dir)
