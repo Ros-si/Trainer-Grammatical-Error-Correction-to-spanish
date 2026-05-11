@@ -95,6 +95,7 @@ class DataIngestion:
             # Descargamos el dataset
             ds = load_dataset(self.config.source_cowsl2h)
             del ds['test']
+            ds = ds.rename_columns({"input_text":"corrupted", "target_text":"sentence"})
         else:
             logging.info("El dataset ya existe localmente, omitiendo descarga")
 
