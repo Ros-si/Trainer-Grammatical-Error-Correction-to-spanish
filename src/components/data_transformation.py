@@ -57,7 +57,8 @@ class DataTransformation:
 
     def initiate_data_transformation(self):
         """
-        Función principal que orquesta la transformación de datos: 1. Carga el dataset de la etapa de ingestion
+        Función principal que orquesta la transformación de datos: 
+        1. Carga el dataset de la etapa de ingestion
         2. Aplica la tokenización 
         3. Guarda los resultados en disco, en caso de estar configurado para hacerlo, en modo hypertuning no se guarda. 
         
