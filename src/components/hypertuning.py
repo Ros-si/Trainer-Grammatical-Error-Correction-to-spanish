@@ -71,6 +71,9 @@ class HyperparameterTuner:
 
 
     def objective(self, trial):
+        """
+
+        """
         try:
             lr = trial.suggest_float("learning_rate", self.config.lr[0], self.config.lr[-1], log=True)
             wd = trial.suggest_float("weight_decay", self.config.wd[0], self.config.wd[-1])
@@ -90,8 +93,8 @@ class HyperparameterTuner:
             if "mt5" in self.trainer_config.model_ckpt:
                 self.trainer_config.fp16 = False
 
-            if "m2m100" in self.trainer_config.model_ckpt:
-                self.trainer_config.optim= "adafactor"
+            #if "m2m100" in self.trainer_config.model_ckpt:
+                #self.trainer_config.optim= "adafactor"
             
             config_wb = {
             "lr": lr,
@@ -150,7 +153,7 @@ class HyperparameterTuner:
         self.prepare_data()
         model_name = self.model_checkpoint.split("/")[-1]
 
-        tuning_dir = self.config.root_dir #"artifacts", "hypertuning")
+        tuning_dir = self.config.root_dir 
         os.makedirs(tuning_dir, exist_ok=True)
         db_path = os.path.join(tuning_dir, f"{model_name}_hypertune.db")     
         storage_name = f"sqlite:///{os.path.abspath(db_path)}"   
@@ -166,8 +169,7 @@ class HyperparameterTuner:
         print(f"Trials completados: {len(study.trials)}")
         study.optimize(self.objective, n_trials=self.config.n_trials)
         
-        # Guardar resultados en un JSON
-        
+        # Guardar resultados en un JSON        
         output_path = os.path.join(self.config.root_dir, f"best_params_{model_name}-{self.config.mode}.json")
         
         with open(output_path, "w") as f:
@@ -177,15 +179,15 @@ class HyperparameterTuner:
     
 
     def cleanup(self):
-        # 1. Eliminar variables pesadas si existen en el scope global
+        """
+        Libera los recursos de hardware y memoria del sistema. Eliminando referencias a modelos y trainers, forzando la recolección de basura de Python y liberando la caché de memoria CUDA para evitar errores de Out-of-Memory entre experimentos.
+        """
         if 'model' in globals(): del globals()['model']
         if 'trainer' in globals(): del globals()['trainer']
             
         # 2. Recolector de basura de Python
-        gc.collect()
-            
+        gc.collect()            
         # 3. Vaciar caché de PyTorch
-        torch.cuda.empty_cache()
-            
+        torch.cuda.empty_cache()            
         # 4.Resetear estadísticas de memoria
         torch.cuda.reset_peak_memory_stats()        
