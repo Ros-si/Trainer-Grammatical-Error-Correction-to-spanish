@@ -11,7 +11,7 @@ data_ingestion:
 data_transformation:
   root_dir: artifacts/data_transformation
   tokenizer_name: "google/mt5-small" #"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #
-  model_id: "mT5-small" #"marianMT" #"facebook/m2m100_418M" #"Helsinki-NLP/opus-mt-es-en"
+  model_id: "marianMT" #"mT5-small" #"facebook/m2m100_418M" #"Helsinki-NLP/opus-mt-es-en"
   save_to_disk: true  
   max_input_length: 128
   max_target_length: 128
