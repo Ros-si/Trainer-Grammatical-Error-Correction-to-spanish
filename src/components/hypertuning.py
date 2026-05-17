@@ -93,8 +93,8 @@ class HyperparameterTuner:
             if "mt5" in self.trainer_config.model_ckpt:
                 self.trainer_config.fp16 = False
 
-            if "m2m100" in self.trainer_config.model_ckpt:
-                self.trainer_config.optim= "adafactor"
+            #if "m2m100" in self.trainer_config.model_ckpt:
+            #    self.trainer_config.optim= "adafactor"
             
             config_wb = {
             "lr": lr,
