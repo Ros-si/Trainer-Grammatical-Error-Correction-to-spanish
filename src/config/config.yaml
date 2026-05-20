@@ -56,8 +56,8 @@ hyperparameter_tuning:
   models_ckpt: ["facebook/m2m100_418M"] #"facebook/mbart-large-50"] "google/mt5-small", "Helsinki-NLP/opus-mt-es-en", 
   project_name: "Hypertuning_GEC-dataHybrid"  #"Hypertuning_GEC-LoRA" 
   epochs: 3
-  n_trials: 1
-  lr: [0.0005, 0.001]  #[0.0001, 0.002] #->lora #[0.00015, 0.0003]mt5 # general:[0.00001, 0.001] 
+  n_trials: 10
+  lr: [0.00015, 0.0003] #->lora #[0.00015, 0.0003]mt5 # general:[0.00001, 0.001] 
   wd: [0.01, 0.1]
   bs: [1, 2]
   gradient_accumulation_steps: [4, 16]

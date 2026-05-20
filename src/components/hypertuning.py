@@ -104,16 +104,16 @@ class HyperparameterTuner:
             }
 
             if self.config.use_lora:
-                r = trial.suggest_categorical("r", self.config.lora_config.r)
+                #r = trial.suggest_categorical("r", self.config.lora_config.r)
                 alpha = trial.suggest_categorical("lora_alpha", self.config.lora_config.lora_alpha)
                 dropout = trial.suggest_categorical("lora_dropout", self.config.lora_config.lora_dropout)
                 
                 self.trainer_config.use_lora = True
                 self.trainer_config.lora_config.lora_alpha = alpha
-                self.trainer_config.lora_config.r = r
+                self.trainer_config.lora_config.r = alpha #r
                 self.trainer_config.lora_config.lora_dropout = dropout
                 config_lora = {
-                    "r":r,
+                    "r":alpha, #r,
                     "alpha":alpha,
                     "dropout":dropout
                 }
