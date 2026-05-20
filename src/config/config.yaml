@@ -2,11 +2,11 @@ artifacts_root: artifacts
 
 data_ingestion:
   root_dir: artifacts/data_ingestion
-  source_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED" #"Ro551/Wiki-Corrupted_spanish_to_GEC-GED"
+  source_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED_large" #"Ro551/WikiCorrupted_spanish_to_GEC-GED" #"Ro551/Wiki-Corrupted_spanish_to_GEC-GED"
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned"
   dataset_cache_dir: artifacts/data_ingestion/hf_dataset
   dataset_test_cache_dir: artifacts/data_ingestion/hf_dataset_test
-  mode: "synthetic" #"merged"
+  mode: "synthetic" #puede ser "synthetic", "cowsl2h", "merged"
 
 data_transformation:
   root_dir: artifacts/data_transformation
@@ -19,9 +19,9 @@ data_transformation:
 model_trainer:
   root_dir: artifacts/model_trainer
   model_ckpt: "google/mt5-small" #"Helsinki-NLP/opus-mt-es-en" 
-  run_name: "dsSint_testParamHybr" #"merged" 
+  run_name: "synthetic_dsLarge" #"merged" 
   project_name: "GEC-Spanish-trainer"
-  num_train_epochs: 4
+  num_train_epochs: 2
   lr: 0.0002776847747276842 #0.00015888 #0.000028126
   per_device_train_batch_size: 2
   per_device_eval_batch_size: 8
