@@ -12,7 +12,13 @@ MODEL_CONFIGS = {
     },
     "mT5_small_dsSint": {
         "base_model": "google/mt5-small",
-        "adapter_model": "Ro551/mt5-small-GEC-spanish-dsSint",
+        "adapter_model": "Ro551/mt5-small-es_wiki-Cowsl2h-GEC_evalWER",
+        "is_lora": False,
+        "is_m2m100": False
+    },
+    "mT5_small_dsSint2": {
+        "base_model": "google/mt5-small",
+        "adapter_model": "Ro551/mt5-small-es_wiki-Cowsl2h-GEC-WER_42",
         "is_lora": False,
         "is_m2m100": False
     },
@@ -108,8 +114,7 @@ def execute_inference(text, model_name):
                 outputs = model.generate(
                     **inputs,
                     max_length=128,
-                    num_beams=5,
-                    early_stopping=True
+                    num_beams=5
                 )
                 
         corrected_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
