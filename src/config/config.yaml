@@ -10,8 +10,8 @@ data_ingestion:
 
 data_transformation:
   root_dir: artifacts/data_transformation
-  tokenizer_name: "google/mt5-small" #"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #
-  model_id: "mT5-small" #"marianMT" "facebook/m2m100_418M" #"Helsinki-NLP/opus-mt-es-en"
+  tokenizer_name: "Ro551/mt5-small-GEC-spanish-synthetic_dsLarge" #"google/mt5-small" #"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #
+  model_id: "Ro551/mt5-small-GEC-spanish-synthetic_dsLarge" #"mT5-small" #"marianMT" "facebook/m2m100_418M" #"Helsinki-NLP/opus-mt-es-en"
   save_to_disk: true  
   max_input_length: 128
   max_target_length: 128
