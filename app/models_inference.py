@@ -48,24 +48,24 @@ def load_model_and_tokenizer(model_key):
     # Si el modelo solicitado ya se encuentra en caché, entonces reutilizarlo 
     if MODEL_CACHE["current_name"] == model_key:
         return MODEL_CACHE["model"], MODEL_CACHE["tokenizer"]
-    
+    """
     # Liberar memoria de modelos anteriores para evitar Out-of-Memory (OOM)
     if MODEL_CACHE["model"] is not None:
         del MODEL_CACHE["model"]
         del MODEL_CACHE["tokenizer"]
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
-            
+    """        
     config_info = MODEL_CONFIGS[model_key]
     base_path = config_info["base_model"]
     adapter_path = config_info["adapter_model"]
     
     #print(f"[INFO] Cargando Tokenizador para: {base_path}...")
-    tokenizer = AutoTokenizer.from_pretrained(base_path)
+    tokenizer = AutoTokenizer.from_pretrained(adapter_path)
     
     #print(f"[INFO] Cargando Modelo Base en {DEVICE}: {base_path}...")
     model = AutoModelForSeq2SeqLM.from_pretrained(
-        base_path, 
+        adapter_path, 
         torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32
     )
     
@@ -93,29 +93,20 @@ def execute_inference(text, model_name):
         config_info = MODEL_CONFIGS[model_name]
         
         # Tratamiento especial de inicialización de tokens requerido nativamente por M2M100
-        if config_info["is_m2m100"]:
+        if "m2m100" in config_info:
             tokenizer.src_lang = "es"
-            inputs = tokenizer(text, return_tensors="pt").to(DEVICE)
-            # Forzar al decodificador a generar tokens en idioma español
-            forced_bos_token_id = tokenizer.get_lang_id("es")
-            
-            with torch.no_grad():
-                outputs = model.generate(
-                    **inputs,
-                    forced_bos_token_id=forced_bos_token_id,
-                    max_length=128,
-                    num_beams=5,
-                    early_stopping=True
-                )
-        else:
-            # Flujo estándar para arquitecturas Seq2Seq tradicionales (mT5 / MarianMT)
-            inputs = tokenizer(text, return_tensors="pt").to(DEVICE)
-            with torch.no_grad():
-                outputs = model.generate(
-                    **inputs,
-                    max_length=128,
-                    num_beams=5
-                )
+            tokenizer.tgt_lang = "es"   
+        elif "mbart" in config_info:
+            tokenizer.src_lang = "es_XX"
+            tokenizer.tgt_lang = "es_XX"
+
+        inputs = tokenizer(text, return_tensors="pt").to(DEVICE)
+        with torch.no_grad():
+            outputs = model.generate(
+                **inputs,
+                max_length=128,
+                num_beams=5
+            )
                 
         corrected_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
         return corrected_text
