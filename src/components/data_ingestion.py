@@ -19,10 +19,8 @@ class DataIngestion:
         ds_cowsl2h = load_dataset(self.config.source_cowsl2h, split="test")
 
         ds_cowsl2h = ds_cowsl2h.rename_columns({"input_text":"corrupted", "target_text":"sentence"})
-        ds_synthetic.remove_columns(['tokens', 'error_tags', 'error_type', 'span', 'annotation', 'corrupted_tagged'])
+        ds_synthetic = ds_synthetic.remove_columns(['tokens', 'error_tags', 'error_type', 'span', 'annotation', 'corrupted_tagged'])
         
-        ds_synthetic = ds_synthetic.cast(ds_cowsl2h.features)
-
         ds_synthetic.save_to_disk(os.path.join(self.config.dataset_test_cache_dir, "synthetic"))
         ds_cowsl2h.save_to_disk(os.path.join(self.config.dataset_test_cache_dir, "cowsl2h"))
         
