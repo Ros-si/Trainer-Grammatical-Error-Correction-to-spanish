@@ -105,7 +105,7 @@ class DataTransformation:
         ds_synth = load_from_disk(os.path.join(self.config.dataset_test_cache_dir,"synthetic"))
         # Test COWSL2H 
         ds_cow = load_from_disk(os.path.join(self.config.dataset_test_cache_dir,"cowsl2h"))
-        ds_cow = ds_cow.cast(ds_synth.features)
+        
         # Test Combinado
         ds_combined = concatenate_datasets([ds_synth, ds_cow])
         evaluation_map = {
