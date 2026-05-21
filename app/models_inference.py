@@ -4,29 +4,25 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from peft import PeftModel, PeftConfig
 
 MODEL_CONFIGS = {
-    "marianMT_lora-best": {
+    "marianMT_merged-lora-best": {
         "base_model": "Helsinki-NLP/opus-mt-es-en" ,
         "adapter_model": "Ro551/opus-mt-es-en-GEC-spanish-LORA-merged",
-        "is_lora": True,
-        "is_m2m100": True
+        "is_lora": True
     },
     "mT5_small_dsSint": {
         "base_model": "google/mt5-small",
-        "adapter_model": "Ro551/mt5-small-es_wiki-Cowsl2h-GEC_evalWER",
-        "is_lora": False,
-        "is_m2m100": False
+        "adapter_model": "Ro551/mt5-small-GEC-spanish-dsSint",
+        "is_lora": False
     },
-    "mT5_small_dsSint2": {
+    "mT5_small_dsmergeg": {
         "base_model": "google/mt5-small",
-        "adapter_model": "Ro551/mt5-small-es_wiki-Cowsl2h-GEC-WER_42",
-        "is_lora": False,
-        "is_m2m100": False
+        "adapter_model": "Ro551/mt5-small-GEC-spanish-merged",
+        "is_lora": False
     },
     "MarianMT_dsSint": {
         "base_model": "Helsinki-NLP/opus-mt-es-es", 
         "adapter_model": "Ro551/opus-mt-es-en-GEC-spanish-dsSint",
-        "is_lora": False,
-        "is_m2m100": False
+        "is_lora": False
     }
 }
 
@@ -48,25 +44,24 @@ def load_model_and_tokenizer(model_key):
     # Si el modelo solicitado ya se encuentra en caché, entonces reutilizarlo 
     if MODEL_CACHE["current_name"] == model_key:
         return MODEL_CACHE["model"], MODEL_CACHE["tokenizer"]
-    """
+   
     # Liberar memoria de modelos anteriores para evitar Out-of-Memory (OOM)
     if MODEL_CACHE["model"] is not None:
         del MODEL_CACHE["model"]
         del MODEL_CACHE["tokenizer"]
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
-    """        
     config_info = MODEL_CONFIGS[model_key]
     base_path = config_info["base_model"]
     adapter_path = config_info["adapter_model"]
     
     #print(f"[INFO] Cargando Tokenizador para: {base_path}...")
-    tokenizer = AutoTokenizer.from_pretrained(adapter_path)
+    tokenizer = AutoTokenizer.from_pretrained(base_path)
     
     #print(f"[INFO] Cargando Modelo Base en {DEVICE}: {base_path}...")
     model = AutoModelForSeq2SeqLM.from_pretrained(
         adapter_path, 
-        torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32
+        dtype=torch.float16 if torch.cuda.is_available() else torch.float32
     )
     
     # Si el modelo requiere acoplar la matriz de adaptación de bajo rango (LoRA)
