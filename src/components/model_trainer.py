@@ -129,7 +129,7 @@ class ModelTrainer:
             metric_for_best_model="gleu", #"eval_loss",# La métrica para decidir cuál es el mejor
             greater_is_better=True, #False para eval_loss # Queremos que el Loss sea lo más bajo posible
             generation_max_length=self.config.generation_max_length,
-            save_total_limit=1,
+            save_total_limit=2,
             predict_with_generate=True,
             fp16=self.config.fp16,
             push_to_hub=self.config.push_to_hub, 
