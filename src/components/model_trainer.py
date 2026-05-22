@@ -147,8 +147,7 @@ class ModelTrainer:
             data_collator=data_collator,
             compute_metrics=custom_compute_metrics
         )
-
-        trainer.train()
+        trainer.train(resume_from_checkpoint=self.config.re_train)
         #trainer.save_model(os.path.join(self.config.root_dir, f"{model_name}-final_model"))
         if self.config.push_to_hub:
             trainer.push_to_hub(commit_message="Model trained and pushed to Hugging Face Hub")

@@ -4,7 +4,6 @@ from typing import List, Optional
 
 @dataclass()
 class LoRAConfig:
-    r: int
     lora_alpha: int
     lora_dropout: float
     bias: str
@@ -13,7 +12,8 @@ class LoRAConfig:
 class ModelTrainerConfig:
     root_dir: Path       
     model_ckpt: str      
-    run_name: str         
+    run_name: str       
+    re_train: bool  
     project_name: str    
     epochs: int           
     lr: float             

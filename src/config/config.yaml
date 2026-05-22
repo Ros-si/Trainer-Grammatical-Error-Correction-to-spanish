@@ -18,8 +18,9 @@ data_transformation:
 
 model_trainer:
   root_dir: artifacts/model_trainer
-  model_ckpt: "google/mt5-small" #"Helsinki-NLP/opus-mt-es-en" 
+  model_ckpt: "Ro551/WikiCorrupted_spanish_to_GEC-GED_large" #"Helsinki-NLP/opus-mt-es-en" 
   run_name: "synthetic_dsLarge" #"merged" 
+  re_train: true
   project_name: "GEC-Spanish-trainer"
   num_train_epochs: 2
   lr: 0.0002776847747276842 #0.00015888 #0.000028126
@@ -63,7 +64,6 @@ hyperparameter_tuning:
   gradient_accumulation_steps: [4, 16]
   use_lora: true
   lora_config:
-    r: [8, 16]
     lora_alpha: [16, 32, 64, 96]
     lora_dropout: [0.05, 0.15]
     bias: "none"

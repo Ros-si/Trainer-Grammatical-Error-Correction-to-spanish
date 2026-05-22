@@ -100,6 +100,7 @@ class ConfigurationManager:
             root_dir=Path(final_output_dir),
             model_ckpt=config.model_ckpt,
             run_name=config.run_name,
+            re_train=config.re_train,
             project_name=config.project_name,
             epochs=config.num_train_epochs,
             lr=float(config.lr),
