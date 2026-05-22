@@ -23,12 +23,12 @@ model_trainer:
   re_train: true
   project_name: "GEC-Spanish-trainer"
   num_train_epochs: 2
-  lr: 0.0002776847747276842 #0.00015888 #0.000028126
+  lr: 2.16e-04 #0.00015888 #0.000028126
   per_device_train_batch_size: 2
   per_device_eval_batch_size: 8
-  gradient_accumulation_steps: 5
+  gradient_accumulation_steps: 7
   generation_max_length: 128
-  weight_decay: 0.06872353077211746 #0.0977850 #0.0383990 #0.070
+  weight_decay: 3.81e-02 #0.0977850 #0.0383990 #0.070
   optim: "adamw_torch"
   fp16: false
   load_best_model: true
