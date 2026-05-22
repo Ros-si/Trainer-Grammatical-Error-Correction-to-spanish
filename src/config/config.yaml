@@ -20,7 +20,7 @@ model_trainer:
   root_dir: artifacts/model_trainer
   model_ckpt: "Ro551/WikiCorrupted_spanish_to_GEC-GED_large" #"Helsinki-NLP/opus-mt-es-en" 
   run_name: "synthetic_dsLarge" #"merged" 
-  re_train: false
+  re_train: true
   project_name: "GEC-Spanish-trainer"
   num_train_epochs: 2
   lr: 0.0002776847747276842 #0.00015888 #0.000028126
@@ -33,7 +33,7 @@ model_trainer:
   fp16: false
   load_best_model: true
   push_to_hub: true
-  use_lora: true
+  use_lora: false
   lora_config:
     r: 8
     lora_alpha: 64
@@ -54,11 +54,11 @@ hyperparameter_tuning:
   source_synthetic: "Ro551/WikiCorrupted_spanish_to_GEC-GED_mini"
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned" 
   mode: "hybrid" # puede ser "synthetic", "cowsl2h", "hybrid"
-  models_ckpt: ["google/mt5-small"] #"facebook/mbart-large-50"] "google/mt5-small", "Helsinki-NLP/opus-mt-es-en", 
+  models_ckpt: ["Helsinki-NLP/opus-mt-es-en", "google/mt5-small","facebook/m2m100_418M"] #"facebook/mbart-large-50"] "google/mt5-small", "Helsinki-NLP/opus-mt-es-en", 
   project_name: "Hypertuning_GEC-LoRA-dataHybrid"  #"Hypertuning_GEC-dataHybrid"  #
   epochs: 3
-  n_trials: 4
-  lr: [0.00020, 0.0003] #->lora #[0.00015, 0.0003]mt5 # general:[0.00001, 0.001] 
+  n_trials: 10
+  lr: [0.00015, 0.0003] #->lora #[0.00015, 0.0003]mt5 # general:[0.00001, 0.001] 
   wd: [0.01, 0.1]
   bs: [1, 2]
   gradient_accumulation_steps: [4, 16]
