@@ -80,6 +80,7 @@ class HyperparameterTuner:
             bs = trial.suggest_categorical("batch_size", self.config.bs)
             gradient_accumulation_steps = trial.suggest_int("gradient_accumulation_steps", self.config.gradient_accumulation_steps[0], self.config.gradient_accumulation_steps[-1])
             # Actualizar el config de ModelTrainer para la búsqueda de hiperpárametros 
+            self.trainer_config.re_train = False
             self.trainer_config.project_name = self.config.project_name
             self.trainer_config.model_ckpt = self.model_checkpoint
             self.trainer_config.run_name = f"{self.config.mode}-trial-{trial.number}"
