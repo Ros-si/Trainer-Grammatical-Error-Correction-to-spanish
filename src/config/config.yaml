@@ -18,7 +18,7 @@ data_transformation:
 
 model_trainer:
   root_dir: artifacts/model_trainer
-  model_ckpt: "Ro551/WikiCorrupted_spanish_to_GEC-GED_large" #"Helsinki-NLP/opus-mt-es-en" 
+  model_ckpt: "Ro551/mt5-small-GEC-spanish-synthetic_dsLarge" #"Helsinki-NLP/opus-mt-es-en" 
   run_name: "synthetic_dsLarge" #"merged" 
   re_train: true
   project_name: "GEC-Spanish-trainer"
