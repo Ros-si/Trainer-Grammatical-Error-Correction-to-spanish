@@ -20,7 +20,7 @@ model_trainer:
   root_dir: artifacts/model_trainer
   model_ckpt: "Helsinki-NLP/opus-mt-es-en" #"Helsinki-NLP/opus-mt-es-en" 
   run_name: "synthetic_dsLarge" #"merged" 
-  re_train: true
+  re_train: false
   project_name: "GEC-Spanish-trainer"
   num_train_epochs: 2
   lr: 2.16e-04 #0.00015888 #0.000028126
@@ -54,7 +54,7 @@ hyperparameter_tuning:
   source_synthetic: "Ro551/WikiCorrupted_spanish_to_GEC-GED_mini"
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned" 
   mode: "hybrid" # puede ser "synthetic", "cowsl2h", "hybrid"
-  models_ckpt: ["facebook/m2m100_418M"] #"facebook/mbart-large-50"] "google/mt5-small", "Helsinki-NLP/opus-mt-es-en", 
+  models_ckpt: ["facebook/mbart-large-50"] #"facebook/mbart-large-50"] "google/mt5-small", "Helsinki-NLP/opus-mt-es-en", 
   project_name: "Hypertuning_GEC-LoRA-dataHybrid"  #"Hypertuning_GEC-dataHybrid"  #
   epochs: 3
   n_trials: 10
