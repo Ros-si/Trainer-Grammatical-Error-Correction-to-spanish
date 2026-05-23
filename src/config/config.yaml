@@ -22,7 +22,7 @@ model_trainer:
   run_name: "synthetic_dsLarge" #"merged" 
   re_train: false
   project_name: "GEC-Spanish-trainer"
-  num_train_epochs: 2
+  num_train_epochs: 3
   lr: 2.16e-04 #0.00015888 #0.000028126
   per_device_train_batch_size: 2
   per_device_eval_batch_size: 8
