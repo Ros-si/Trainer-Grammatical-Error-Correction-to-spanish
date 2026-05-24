@@ -6,7 +6,7 @@ data_ingestion:
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned"
   dataset_cache_dir: artifacts/data_ingestion/hf_dataset
   dataset_test_cache_dir: artifacts/data_ingestion/hf_dataset_test
-  mode: "synthetic" #puede ser "synthetic", "cowsl2h", "merged"
+  mode: "merged" #puede ser "synthetic", "cowsl2h", "merged"
 
 data_transformation:
   root_dir: artifacts/data_transformation
@@ -54,11 +54,11 @@ hyperparameter_tuning:
   source_synthetic: "Ro551/WikiCorrupted_spanish_to_GEC-GED_mini"
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned" 
   mode: "hybrid" # puede ser "synthetic", "cowsl2h", "hybrid"
-  models_ckpt: ["facebook/mbart-large-50"] #"facebook/mbart-large-50"] "google/mt5-small", "Helsinki-NLP/opus-mt-es-en", 
+  models_ckpt: ["facebook/m2m100_418M"] #"facebook/mbart-large-50"] "google/mt5-small", "Helsinki-NLP/opus-mt-es-en",  "facebook/m2m100_418M"
   project_name: "Hypertuning_GEC-LoRA-dataHybrid"  #"Hypertuning_GEC-dataHybrid"  #
   epochs: 3
-  n_trials: 2
-  lr: [0.0015, 0.003] #->lora #[0.00015, 0.0003]mt5 # general:[0.00001, 0.001] 
+  n_trials: 8
+  lr: [0.00015, 0.003] #->lora #[0.00015, 0.0003]mt5 # general:[0.00001, 0.001] 
   wd: [0.01, 0.1]
   bs: [1, 2]
   gradient_accumulation_steps: [4, 16]
