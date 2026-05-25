@@ -50,7 +50,7 @@ CSS = f"""
     text-decoration: line-through;
     margin-right: 4px;
     opacity: 0.8;
-    color:#686868;
+    color:#ffffff;
     font-weight:bold;
 }}
 """
