@@ -21,7 +21,7 @@ model_trainer:
   model_ckpt: "facebook/mbart-large-50" #"Helsinki-NLP/opus-mt-es-en" 
   run_name: "merged" #"synthetic"
   re_train: false
-  project_name: "GEC-Spanish-trainer"
+  project_name: "GEC-Spanish-trainer-LoRA" #"GEC-Spanish-trainer"
   num_train_epochs: 5
   lr: 2.032e-4 #0.00015888 #0.000028126
   per_device_train_batch_size: 1
