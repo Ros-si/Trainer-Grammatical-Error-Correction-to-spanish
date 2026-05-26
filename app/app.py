@@ -135,8 +135,8 @@ def draw_merge(error):
 
 def get_errors(orig_text, pred_text):
     """
-    Genera una lista de ediciones (spans) con sus coordenadas exactas de palabras
-    utilizando difflib, sin incluir etiquetas (labels) ni categorías (tags).
+    Genera una lista de ediciones (spans) con sus coordenadas de palabras
+    utilizando difflib.
     """
     orig_words = orig_text.split()
     pred_words = pred_text.split()
@@ -232,7 +232,6 @@ with gr.Blocks(css=CSS) as demo:
     btn_correct.click(fn=show_correction, inputs=[text, model_select, type_draw], outputs=[output_text])
     btn_clear.click(fn=clear, outputs=[text, output_text])
 
-    # Formateo correcto de la matriz de ejemplos para evitar desajustes de dimensiones
     formatted_examples = [[ex] for ex in EXAMPLES]
        
     gr.Examples(
