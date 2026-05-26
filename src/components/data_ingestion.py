@@ -42,9 +42,9 @@ class DataIngestion:
             dataset_synthetic = self.get_data_synthetic()
             dataset_cowsl2h = self.get_data_cowsl2h()
             #dataset = concatenate_datasets(dataset_synthetic, dataset_cowsl2h)
-            dataset_synthetic =dataset_synthetic.cast(dataset_cowsl2h.features)
             dataset= DatasetDict()
             for split in ['train', 'validation']:
+                dataset_synthetic[split] = dataset_synthetic[split].cast(dataset_cowsl2h[split].features)
                 dataset[split] = concatenate_datasets([
                     dataset_cowsl2h[split], 
                     dataset_synthetic[split]
