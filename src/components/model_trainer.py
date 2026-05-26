@@ -94,9 +94,9 @@ class ModelTrainer:
             model = get_peft_model(model, peft_config)
             logging.info(f"Parametros entrenables: {model.print_trainable_parameters()}")
             run_name = "LORA-"+run_name 
-        bf16=False
-        if "bart" in model_name:    
-            bf16=True
+        #bf16=False
+        #if "bart" in model_name:    
+        #    bf16=True
         wandb.init(
             project=self.config.project_name, 
             group=f"{model_name}-experiments", 
@@ -134,7 +134,7 @@ class ModelTrainer:
             save_total_limit=2,
             predict_with_generate=True,
             fp16=self.config.fp16,
-            bf16=bf16,
+            #bf16=bf16,
             push_to_hub=self.config.push_to_hub, 
             hub_model_id=f"Ro551/{model_name}-GEC-spanish-{run_name}", 
             hub_strategy="end", # Sube el checkpoint en cada época -> every_save
