@@ -73,7 +73,7 @@ class DataIngestion:
 
             # Se elimina el split y las columnas que no se usaran durante el entrenamiento
             del(ds["test"])
-            dataset =ds.remove_columns(['tokens', 'error_tags', 'error_type', 'span', 'annotation', 'corrupted_tagged'])
+            dataset =ds.remove_columns(['tokens', 'error_tags', 'error_type', 'span', 'annotation', 'corrupted_tagged','aux_corrupted_tagged', 'spaces'])
             del(ds)
         else:
             logging.info("El dataset ya existe localmente, omitiendo descarga")
