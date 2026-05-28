@@ -10,30 +10,30 @@ data_ingestion:
 
 data_transformation:
   root_dir: artifacts/data_transformation
-  tokenizer_name: "facebook/mbart-large-50" #"google/mt5-small" #"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #
-  model_id: "mBart" #"mT5-small" #"marianMT" "facebook/m2m100_418M" #"Helsinki-NLP/opus-mt-es-en"
+  tokenizer_name: "google/mt5-small"  #"facebook/mbart-large-50" ##"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #
+  model_id: "mT5-small" #"mBart" # #"marianMT" "facebook/m2m100_418M" #"Helsinki-NLP/opus-mt-es-en"
   save_to_disk: true  
   max_input_length: 128
   max_target_length: 128
 
 model_trainer:
   root_dir: artifacts/model_trainer
-  model_ckpt: "facebook/mbart-large-50" #"Helsinki-NLP/opus-mt-es-en" 
+  model_ckpt: "google/mt5-small" #"Helsinki-NLP/opus-mt-es-en" 
   run_name: "merged" #"synthetic"
   re_train: false
-  project_name: "GEC-Spanish-trainer-LoRA" #"GEC-Spanish-trainer"
-  num_train_epochs: 5
-  lr: 2.032e-4 #0.00015888 #0.000028126
-  per_device_train_batch_size: 1
+  project_name: "GEC-Spanish-trainer" #"GEC-Spanish-trainer-LoRA" #
+  num_train_epochs: 3
+  lr: 2.78e-04
+  per_device_train_batch_size: 2
   per_device_eval_batch_size: 8
-  gradient_accumulation_steps: 4
+  gradient_accumulation_steps: 5
   generation_max_length: 128
-  weight_decay: 1.016e-2 #0.0977850 #0.0383990 #0.070
+  weight_decay: 6.87e-02
   optim: "adamw_torch"
   fp16: false
   load_best_model: true
   push_to_hub: true
-  use_lora: true
+  use_lora: false
   lora_config:
     r: 64
     lora_alpha: 64
