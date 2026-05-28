@@ -30,7 +30,7 @@ model_trainer:
   generation_max_length: 128
   weight_decay: 6.647e-2
   optim: "adamw_torch"
-  fp16: false
+  fp16: true
   load_best_model: true
   push_to_hub: true
   use_lora: true
