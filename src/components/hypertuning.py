@@ -78,7 +78,7 @@ class HyperparameterTuner:
             lr = trial.suggest_float("learning_rate", self.config.lr[0], self.config.lr[-1], log=True)
             wd = trial.suggest_float("weight_decay", self.config.wd[0], self.config.wd[-1])
             bs = trial.suggest_categorical("batch_size", self.config.bs)
-            gradient_accumulation_steps = 16, #trial.suggest_int("gradient_accumulation_steps", self.config.gradient_accumulation_steps[0], self.config.gradient_accumulation_steps[-1])
+            gradient_accumulation_steps = 16 #trial.suggest_int("gradient_accumulation_steps", self.config.gradient_accumulation_steps[0], self.config.gradient_accumulation_steps[-1])
             # Actualizar el config de ModelTrainer para la búsqueda de hiperpárametros 
             self.trainer_config.re_train = False
             self.trainer_config.project_name = self.config.project_name
