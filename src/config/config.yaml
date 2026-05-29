@@ -58,7 +58,7 @@ hyperparameter_tuning:
   project_name: "Hypertuning_GEC-LoRA-dataHybrid" #"Hypertuning_GEC-dataHybrid"  #
   epochs: 3
   n_trials: 5
-  lr: [0.00015, 0.0003]  #->lora #[0.00015, 0.0003]mt5 # general:[0.00001, 0.001] 
+  lr: [0.00001, 0.001]   #->lora #[0.00015, 0.0003]mt5 # general:[0.00001, 0.001] 
   wd: [0.01, 0.1]
   bs: [1, 2] #1,2
   gradient_accumulation_steps: [16]
