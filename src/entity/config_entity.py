@@ -4,6 +4,7 @@ from typing import List, Optional
 
 @dataclass()
 class LoRAConfig:
+    r: int
     lora_alpha: int
     lora_dropout: float
     bias: str
@@ -79,7 +80,5 @@ class HypertuningConfig():
     n_trials: int
     lr: list[float]
     wd: list[float]
-    bs: list[int]
-    gradient_accumulation_steps: list[int]
     use_lora: bool
     lora_config: Optional[LoRAConfig] = None

@@ -74,11 +74,48 @@ class HyperparameterTuner:
         """
 
         """
+        train_batch_size_FT={"opus-mt-es-en": 16,
+                             "mt5-small": 16, 
+                             "mt5-large": 1,
+                             "m2m100_418M": 4,
+                             "mbart-large-50": 2} 
+        train_batch_size_LoRA={"opus-mt-es-en": 16,
+                             "mt5-small": 16, 
+                             "mt5-large": 4,
+                             "m2m100_418M": 16,
+                             "mbart-large-50": 16} 
+        eval_batch_size_FT={"opus-mt-es-en": 16,
+                             "mt5-small": 16, 
+                             "mt5-large": 2,
+                             "m2m100_418M": 4,
+                             "mbart-large-50": 2} 
+        eval_batch_size_LoRA={"opus-mt-es-en": 16,
+                             "mt5-small": 16, 
+                             "mt5-large": 8,
+                             "m2m100_418M": 16,
+                             "mbart-large-50": 16} 
+        gradient_acc_FT={"opus-mt-es-en": 1,
+                             "mt5-small": 1, 
+                             "mt5-large": 32,
+                             "m2m100_418M": 8,
+                             "mbart-large-50": 16} 
+        gradient_acc_LoRA={"opus-mt-es-en": 1,
+                             "mt5-small": 1, 
+                             "mt5-large": 8,
+                             "m2m100_418M": 2,
+                             "mbart-large-50": 2} 
         try:
             lr = trial.suggest_float("learning_rate", self.config.lr[0], self.config.lr[-1], log=True)
             wd = trial.suggest_float("weight_decay", self.config.wd[0], self.config.wd[-1])
-            bs = trial.suggest_categorical("batch_size", self.config.bs)
-            gradient_accumulation_steps = 16 #trial.suggest_int("gradient_accumulation_steps", self.config.gradient_accumulation_steps[0], self.config.gradient_accumulation_steps[-1])
+            if self.config.use_lora:
+                gradient_accumulation_steps = gradient_acc_LoRA.get(self.trainer_config.model_ckpt.split("/")[-1])
+                tbs = train_batch_size_LoRA.get(self.trainer_config.model_ckpt.split("/")[-1]) 
+                ebs = eval_batch_size_LoRA.get(self.trainer_config.model_ckpt.split("/")[-1])
+            else:
+                gradient_accumulation_steps = gradient_acc_FT.get(self.trainer_config.model_ckpt.split("/")[-1])
+                tbs = train_batch_size_FT.get(self.trainer_config.model_ckpt.split("/")[-1]) 
+                ebs = eval_batch_size_FT.get(self.trainer_config.model_ckpt.split("/")[-1])
+
             # Actualizar el config de ModelTrainer para la búsqueda de hiperpárametros 
             self.trainer_config.re_train = False
             self.trainer_config.project_name = self.config.project_name
@@ -87,13 +124,16 @@ class HyperparameterTuner:
             self.trainer_config.epochs = self.config.epochs
             self.trainer_config.load_best_model = False
             self.trainer_config.push_to_hub = False
-            self.trainer_config.train_batch_size= bs
+            self.trainer_config.train_batch_size= tbs
+            self.trainer_config.eval_batch_size= ebs
             self.trainer_config.weight_decay = wd
             self.trainer_config.lr =lr
+            self.trainer_config.fp16 = True
+            self.trainer_config.optim= "adamw_torch"
             self.trainer_config.gradient_accumulation_steps=gradient_accumulation_steps
+            
             if "mt5" in self.trainer_config.model_ckpt:
                 self.trainer_config.fp16 = False
-
             if "m2m100" in self.trainer_config.model_ckpt:
                 self.trainer_config.optim= "adafactor"
             
@@ -101,22 +141,23 @@ class HyperparameterTuner:
             "lr": lr,
             "weight_decay": wd,
             "checkpoint": self.model_checkpoint,
-            "per_device_train_batch_size": bs
             }
 
             if self.config.use_lora:
-                #r = trial.suggest_categorical("r", self.config.lora_config.r)
-                alpha = trial.suggest_categorical("lora_alpha", self.config.lora_config.lora_alpha)
+                alpha = self.config.lora_config.lora_alpha #trial.suggest_categorical("lora_alpha", self.config.lora_config.lora_alpha)
+                r = trial.suggest_categorical("r", self.config.lora_config.r)
                 dropout = trial.suggest_categorical("lora_dropout", self.config.lora_config.lora_dropout)
                 
                 self.trainer_config.use_lora = True
                 self.trainer_config.lora_config.lora_alpha = alpha
-                self.trainer_config.lora_config.r = alpha #r
+                self.trainer_config.lora_config.r = r
                 self.trainer_config.lora_config.lora_dropout = dropout
+                self.trainer_config.lora_config.bias = self.config.lora_config.bias
                 config_lora = {
-                    "r":alpha, #r,
+                    "r":r,
                     "alpha":alpha,
-                    "dropout":dropout
+                    "dropout":dropout,
+                    "bias": self.config.lora_config.bias
                 }
                 config_wb.update(config_lora)
             

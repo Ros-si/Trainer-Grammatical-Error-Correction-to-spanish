@@ -134,22 +134,21 @@ class ConfigurationManager:
             Objeto que contiene las rutas y parámetros necesarios para la evaluación con ERRANT
         """
         config = self.config.model_evaluation
-        model_id = self.config.data_transformation.model_id  # Obtener el ID del modelo desde la sección de transformación de datos
+        model_id = self.config.data_transformation.model_id  
 
         full_eval_path = os.path.join(config.root_dir, model_id)
         create_directories([full_eval_path])
 
-        #unir "artifacts/model_trainer" + model_id 
         full_model_path = os.path.join(config.model_path, model_id)
 
-        # REPARACIÓN: Reconstruir la ruta del dataset de prueba local (Arrow)
+        # Reconstruir la ruta del dataset de prueba local (Arrow)
         transformed_test_base = os.path.join(self.config.data_transformation.root_dir, model_id)
         transformed_test_path = Path(os.path.join(transformed_test_base, "test"))
 
         model_evaluation_config = ModelEvaluationConfig(
             root_dir=full_eval_path,
             data_path=self.config.data_ingestion.source_URL,
-            data_transformed_test_path=transformed_test_path, # Ruta corregida            
+            data_transformed_test_path=transformed_test_path,     
             model_path=full_model_path,
             tokenizer_path=full_model_path,
             source_file=config.source_file,
@@ -188,8 +187,6 @@ class ConfigurationManager:
             n_trials=config.n_trials,
             lr=config.lr,
             wd=config.wd,
-            bs=config.bs,
-            gradient_accumulation_steps=config.gradient_accumulation_steps,
             use_lora=config.use_lora,
             lora_config=config.lora_config
         )
