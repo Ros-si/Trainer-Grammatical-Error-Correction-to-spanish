@@ -75,32 +75,32 @@ class HyperparameterTuner:
 
         """
         train_batch_size_FT={"opus-mt-es-en": 16,
-                             "mt5-small": 16, 
+                             "mt5-small": 8, 
                              "mt5-large": 1,
                              "m2m100_418M": 4,
                              "mbart-large-50": 2} 
         train_batch_size_LoRA={"opus-mt-es-en": 16,
-                             "mt5-small": 16, 
+                             "mt5-small": 8, 
                              "mt5-large": 4,
                              "m2m100_418M": 16,
                              "mbart-large-50": 16} 
         eval_batch_size_FT={"opus-mt-es-en": 16,
-                             "mt5-small": 16, 
+                             "mt5-small": 8, 
                              "mt5-large": 2,
                              "m2m100_418M": 4,
                              "mbart-large-50": 2} 
         eval_batch_size_LoRA={"opus-mt-es-en": 16,
-                             "mt5-small": 16, 
+                             "mt5-small": 8, 
                              "mt5-large": 8,
                              "m2m100_418M": 16,
                              "mbart-large-50": 16} 
         gradient_acc_FT={"opus-mt-es-en": 1,
-                             "mt5-small": 1, 
+                             "mt5-small": 2, 
                              "mt5-large": 32,
                              "m2m100_418M": 8,
                              "mbart-large-50": 16} 
         gradient_acc_LoRA={"opus-mt-es-en": 1,
-                             "mt5-small": 1, 
+                             "mt5-small": 4, 
                              "mt5-large": 8,
                              "m2m100_418M": 2,
                              "mbart-large-50": 2} 
