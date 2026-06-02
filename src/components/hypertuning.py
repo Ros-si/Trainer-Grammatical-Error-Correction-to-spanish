@@ -107,6 +107,7 @@ class HyperparameterTuner:
         try:
             lr = trial.suggest_float("learning_rate", self.config.lr[0], self.config.lr[-1], log=True)
             wd = trial.suggest_float("weight_decay", self.config.wd[0], self.config.wd[-1])
+            wr = trial.suggest_float("warmup_ratio", 0.05, 0.1)
             if self.config.use_lora:
                 gradient_accumulation_steps = gradient_acc_LoRA.get(self.trainer_config.model_ckpt.split("/")[-1])
                 tbs = train_batch_size_LoRA.get(self.trainer_config.model_ckpt.split("/")[-1]) 
@@ -128,6 +129,7 @@ class HyperparameterTuner:
             self.trainer_config.eval_batch_size= ebs
             self.trainer_config.weight_decay = wd
             self.trainer_config.lr =lr
+            self.trainer_config.warmup_ratio = wr
             self.trainer_config.fp16 = True
             self.trainer_config.optim= "adamw_torch"
             self.trainer_config.gradient_accumulation_steps=gradient_accumulation_steps
@@ -140,6 +142,7 @@ class HyperparameterTuner:
             config_wb = {
             "lr": lr,
             "weight_decay": wd,
+            "warmup_ratio": wr,
             "checkpoint": self.model_checkpoint,
             }
 

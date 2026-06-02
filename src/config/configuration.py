@@ -109,6 +109,7 @@ class ConfigurationManager:
             gradient_accumulation_steps=config.gradient_accumulation_steps,
             generation_max_length=config.generation_max_length,
             weight_decay=config.weight_decay,
+            warmup_ratio=config.warmup_ratio,
             optim=config.optim,
             fp16=config.fp16,
             load_best_model=config.load_best_model,
@@ -187,6 +188,7 @@ class ConfigurationManager:
             n_trials=config.n_trials,
             lr=config.lr,
             wd=config.wd,
+            warmup_ratio=config.warmup_ratio,
             use_lora=config.use_lora,
             lora_config=config.lora_config
         )

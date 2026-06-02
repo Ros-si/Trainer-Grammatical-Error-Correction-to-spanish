@@ -123,6 +123,7 @@ class ModelTrainer:
             per_device_eval_batch_size=self.config.eval_batch_size,
             gradient_accumulation_steps=self.config.gradient_accumulation_steps,
             weight_decay=self.config.weight_decay,
+            warmup_ratio=self.config.warmup_ratio,
             logging_strategy='steps',
             logging_steps=100,
             optim=self.config.optim,               

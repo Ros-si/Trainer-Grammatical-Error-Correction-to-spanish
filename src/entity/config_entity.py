@@ -23,6 +23,7 @@ class ModelTrainerConfig:
     gradient_accumulation_steps: int
     generation_max_length:int
     weight_decay: float
+    warmup_ratio: float
     optim: str            
     fp16: bool            
     load_best_model: bool 
@@ -80,5 +81,6 @@ class HypertuningConfig():
     n_trials: int
     lr: list[float]
     wd: list[float]
+    wr: list[float]
     use_lora: bool
     lora_config: Optional[LoRAConfig] = None
