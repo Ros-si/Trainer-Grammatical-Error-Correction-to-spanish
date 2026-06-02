@@ -188,7 +188,7 @@ class ConfigurationManager:
             n_trials=config.n_trials,
             lr=config.lr,
             wd=config.wd,
-            warmup_ratio=config.warmup_ratio,
+            wr=config.wr,
             use_lora=config.use_lora,
             lora_config=config.lora_config
         )
