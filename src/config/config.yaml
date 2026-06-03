@@ -55,7 +55,7 @@ hyperparameter_tuning:
   source_synthetic: "Ro551/WikiCorrupted_spanish_to_GEC-GED_mini"
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned" 
   mode: "hybrid" # puede ser "synthetic", "cowsl2h", "hybrid"
-  models_ckpt: ["google/mt5-small"] #, "Helsinki-NLP/opus-mt-es-en", "facebook/m2m100_418M"] #"facebook/mbart-large-50"] #, "facebook/m2m100_418M"] #["Helsinki-NLP/opus-mt-es-en", "facebook/mbart-large-50", "facebook/m2m100_418M"] #google/mt5-small",
+  models_ckpt: ["Helsinki-NLP/opus-mt-es-en"] #, "Helsinki-NLP/opus-mt-es-en", "facebook/m2m100_418M"] #"facebook/mbart-large-50"] #, "facebook/m2m100_418M"] #["Helsinki-NLP/opus-mt-es-en", "facebook/mbart-large-50", "facebook/m2m100_418M"] #google/mt5-small",
   project_name: "Hypertuning_GEC_FT" #"Hypertuning_GEC_LoRA"  
   epochs: 3
   n_trials: 5
