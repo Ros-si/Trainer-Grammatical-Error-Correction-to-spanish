@@ -74,39 +74,39 @@ class HyperparameterTuner:
         """
 
         """
-        train_batch_size_FT={"opus-mt-es-en": 16,
+        train_batch_size_FT={"opus-mt-es-en": 8,
                              "mt5-small": 8, 
                              "mt5-large": 1,
                              "m2m100_418M": 4,
                              "mbart-large-50": 2} 
-        train_batch_size_LoRA={"opus-mt-es-en": 16,
+        train_batch_size_LoRA={"opus-mt-es-en": 8,
                              "mt5-small": 8, 
                              "mt5-large": 4,
                              "m2m100_418M": 16,
                              "mbart-large-50": 16} 
-        eval_batch_size_FT={"opus-mt-es-en": 16,
+        eval_batch_size_FT={"opus-mt-es-en": 8,
                              "mt5-small": 8, 
                              "mt5-large": 2,
                              "m2m100_418M": 4,
                              "mbart-large-50": 2} 
-        eval_batch_size_LoRA={"opus-mt-es-en": 16,
+        eval_batch_size_LoRA={"opus-mt-es-en": 8,
                              "mt5-small": 8, 
                              "mt5-large": 8,
                              "m2m100_418M": 16,
                              "mbart-large-50": 16} 
-        gradient_acc_FT={"opus-mt-es-en": 1,
+        gradient_acc_FT={"opus-mt-es-en": 2,
                              "mt5-small": 2, 
                              "mt5-large": 32,
                              "m2m100_418M": 8,
                              "mbart-large-50": 16} 
-        gradient_acc_LoRA={"opus-mt-es-en": 1,
+        gradient_acc_LoRA={"opus-mt-es-en": 2,
                              "mt5-small": 2, 
                              "mt5-large": 8,
                              "m2m100_418M": 2,
                              "mbart-large-50": 2} 
         try:
-            #lr = trial.suggest_float("learning_rate", self.config.lr[0], self.config.lr[-1], log=True)
-            lr= trial.suggest_categorical('lr', self.config.lr)
+            lr = trial.suggest_float("learning_rate", self.config.lr[0], self.config.lr[-1], log=True)
+            #lr= trial.suggest_categorical('lr', self.config.lr)
             wd = trial.suggest_float("weight_decay", self.config.wd[0], self.config.wd[-1])
             wr = trial.suggest_float("warmup_ratio", 0.05, 0.1)
             if self.config.use_lora:
