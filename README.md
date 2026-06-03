@@ -10,9 +10,15 @@ El sistema está diseñado separando de forma modular la fase de búsqueda de hi
 * **Entrenamiento:** Soporte para entrenamiento de modelos seq2seq utilizando la librería Transformers para un ajuste fino completo y eficiente (LoRA).
 * **Evaluación:**  Evaluación final del modelo utilizando el marco de trabajo ERRANT.
 * **Monitoreo:** Registro de métricas de pérdida (Loss Train y Loss Eval), GLEU y ERRANT exportables a plataformas de *tracking* como Weights & Biases (W&B).
-* **Soporte para modelos Seq2Seq:** El flujo de transformación y entrenamiento esta diseñado para modelos encoder-decoder, concretamente para: mt5-small, mt5-large, m2m100_418M, opus-mt-es-en, mbart-large-50, y para el idioma español.
+* **Soporte para modelos Seq2Seq:** El flujo de transformación y entrenamiento esta diseñado para los siguientes modelos encoder-decoder y configurados para el español: 
+   * mt5-small
+   * mt5-large
+   * m2m100_418M
+   * opus-mt-es-en
+   * mbart-large-50
+   
 * **Conjuntos de datos utilizados:**
-   * Síntético: Ro551/WikiCorrupted-spanish_to_GEC-GED
+   * Síntético: https://huggingface.co/datasets/Ro551/WikiCorrupted-spanish_to_GEC-GED
    * COWSL2H: https://github.com/ucdaviscl/cowsl2h
 * **Interfaz de inferencia:** Despliegue de un entorno interactivo basado en **Gradio** para realizar pruebas manuales y visualizar las correcciones generadas por el modelo en tiempo real.
 ---
@@ -56,13 +62,11 @@ Para ejecutar la búsqueda de hiperparámetros antes del entrenamiento, ejecuta 
    ```bash
    python -m src.pipeline.hypertuning_pipeline
    ```
-> !Note
 > Los rangos de búsqueda definidos se encuentran en el archivo /src/config/config.yaml
 
 ## Ejecución del pipeline de entrenamiento
 Los hiperparámetros se definen en el archivo /src/config/config.yaml
 
-> !Note
 > Para entrenar usando la estrategia LoRA (PEFT) se establece en la configuración la variable use_lora=True
 
 Para ejecutar el pipeline de entrenamiento, que contempla la ingesta, transformacion, entrenamiento y evaluación se ejecuta el comando en terminal:
