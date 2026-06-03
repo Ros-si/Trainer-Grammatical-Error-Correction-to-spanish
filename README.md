@@ -16,7 +16,7 @@ El sistema está diseñado separando de forma modular la fase de búsqueda de hi
    * m2m100_418M
    * opus-mt-es-en
    * mbart-large-50
-   
+
 * **Conjuntos de datos utilizados:**
    * Síntético: https://huggingface.co/datasets/Ro551/WikiCorrupted-spanish_to_GEC-GED
    * COWSL2H: https://github.com/ucdaviscl/cowsl2h
@@ -36,7 +36,7 @@ El pipeline está diseñado para operar con arquitecturas del tipo Encoder-Decod
 
 ---
 
-## 🛠️ Requisitos e Instalación
+## Requisitos e instalación
 
 Este entorno está optimizado para **Python 3.10+** y sistemas con soporte **CUDA**.
 
