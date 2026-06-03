@@ -77,4 +77,4 @@ Para ejecutar el pipeline de entrenamiento, que contempla la ingesta, transforma
 El resultado final sera:
 * Artefactos correspondientes a cada etapa en la ruta local /artifacts.
 * Checkpoint del modelo entrenado en el hub de Hugging Face.
-* Monitereo  de entrenamiento y evaluación en la plataforma Weights &amp; Biases. 
+* Monitoreo  de entrenamiento y métricas de evaluación en la plataforma Weights &amp; Biases. 
