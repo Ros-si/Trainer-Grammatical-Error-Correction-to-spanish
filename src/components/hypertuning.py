@@ -103,7 +103,7 @@ class HyperparameterTuner:
                              "mt5-small": 2, 
                              "mt5-large": 8,
                              "m2m100_418M": 2,
-                             "mbart-large-50": 2} 
+                             "mbart-large-50": 1} 
         try:
             lr = trial.suggest_float("learning_rate", self.config.lr[0], self.config.lr[-1], log=True)
             #lr= trial.suggest_categorical('lr', self.config.lr)
