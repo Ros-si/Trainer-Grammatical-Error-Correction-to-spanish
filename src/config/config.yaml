@@ -18,23 +18,23 @@ data_transformation:
 
 model_trainer:
   root_dir: artifacts/model_trainer
-  model_ckpt: "facebook/mbart-large-50" #"Helsinki-NLP/opus-mt-es-en" 
+  model_ckpt: "Helsinki-NLP/opus-mt-es-en" 
   run_name: "merged" #"synthetic"
   re_train: false
   project_name: "Trainer-GEC-LoRA" # "Trainer-GEC_FT"
   num_train_epochs: 2
-  lr: 0.00044406688888615583
-  per_device_train_batch_size: 16
-  per_device_eval_batch_size: 16
-  gradient_accumulation_steps: 1
+  lr: 0.0013223040248761528
+  per_device_train_batch_size: 8
+  per_device_eval_batch_size: 8
+  gradient_accumulation_steps: 2
   generation_max_length: 128
-  weight_decay: 0.08330777153297025
-  warmup_ratio: 0.08309212265191754
+  weight_decay: 0.029630281275212823
+  warmup_ratio: 0.09857017609527079
   optim: "adamw_torch"
   fp16: true
   load_best_model: true
   push_to_hub: true
-  use_lora: false
+  use_lora: true
   lora_config:
     r: 32
     lora_alpha: 16
