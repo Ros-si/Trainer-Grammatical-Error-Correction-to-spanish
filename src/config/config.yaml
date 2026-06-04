@@ -10,8 +10,8 @@ data_ingestion:
 
 data_transformation:
   root_dir: artifacts/data_transformation
-  tokenizer_name: "facebook/mbart-large-50" #"Helsinki-NLP/opus-mt-es-en" #"facebook/mbart-large-50" ##"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #
-  model_id: "mbart" #"mBart" # #"marianMT" "facebook/m2m100_418M" #"Helsinki-NLP/opus-mt-es-en"
+  tokenizer_name: "Helsinki-NLP/opus-mt-es-en"  #"facebook/mbart-large-50" #"Helsinki-NLP/opus-mt-es-en" #"facebook/mbart-large-50" ##"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #
+  model_id: "marianMT" #"mBart" # #"marianMT" "facebook/m2m100_418M" #"Helsinki-NLP/opus-mt-es-en"
   save_to_disk: true  
   max_input_length: 128
   max_target_length: 128
