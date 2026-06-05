@@ -34,7 +34,7 @@ model_trainer:
   fp16: false
   load_best_model: true
   push_to_hub: true
-  use_lora: true
+  use_lora: false
   lora_config:
     r: 32
     lora_alpha: 16
@@ -58,7 +58,7 @@ hyperparameter_tuning:
   models_ckpt: ["facebook/m2m100_418M"] #, "Helsinki-NLP/opus-mt-es-en", "facebook/m2m100_418M"] #"facebook/mbart-large-50"] #, "facebook/m2m100_418M"] #["Helsinki-NLP/opus-mt-es-en", "facebook/mbart-large-50", "facebook/m2m100_418M"] #google/mt5-small",
   project_name: "Hypertuning_GEC_FT" #"Hypertuning_GEC_LoRA"  
   epochs: 3
-  n_trials: 5
+  n_trials: 2
   lr: [0.00001, 0.0006]  # mt5large-smal:[0.00005, 0.001] #[0.000005, 0.0002] #->lora  ft:[0.00001, 0.0006] 
   wd: [0.00, 0.1]
   wr: [0.05, 0.1]
