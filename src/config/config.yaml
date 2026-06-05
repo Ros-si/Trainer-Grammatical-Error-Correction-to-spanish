@@ -24,9 +24,9 @@ model_trainer:
   project_name: "Trainer-GEC-LoRA" # "Trainer-GEC_FT"
   num_train_epochs: 2
   lr: 0.00044107500561578277
-  per_device_train_batch_size: 8
-  per_device_eval_batch_size: 8
-  gradient_accumulation_steps: 2
+  per_device_train_batch_size: 16
+  per_device_eval_batch_size: 16
+  gradient_accumulation_steps: 1
   generation_max_length: 128
   weight_decay: 0.05934091895283298
   warmup_ratio: 0.08950396527674138
