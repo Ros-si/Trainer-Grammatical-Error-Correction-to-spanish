@@ -30,7 +30,7 @@ model_trainer:
   generation_max_length: 128
   weight_decay: 0.05934091895283298
   warmup_ratio: 0.08950396527674138
-  optim: "adamw_torch"
+  optim: "adafactor" #"adamw_torch"
   fp16: false
   load_best_model: true
   push_to_hub: true
