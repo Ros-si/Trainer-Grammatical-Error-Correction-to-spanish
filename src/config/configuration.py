@@ -156,6 +156,7 @@ class ConfigurationManager:
             gold_file=config.gold_file,
             pred_file=config.pred_file,
             metric_file_name=config.metric_file_name
+            use_lora=self.config.model_trainer.use_lora
         )
 
         return model_evaluation_config

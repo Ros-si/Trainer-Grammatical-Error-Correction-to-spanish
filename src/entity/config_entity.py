@@ -68,6 +68,7 @@ class ModelEvaluationConfig:
     gold_file: Path
     pred_file: Path
     metric_file_name: Path
+    use_lora: str
 
 @dataclass()
 class HypertuningConfig():
