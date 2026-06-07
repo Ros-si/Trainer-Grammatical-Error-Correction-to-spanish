@@ -155,7 +155,7 @@ class ConfigurationManager:
             source_file=config.source_file,
             gold_file=config.gold_file,
             pred_file=config.pred_file,
-            metric_file_name=config.metric_file_name
+            metric_file_name=config.metric_file_name,
             use_lora=self.config.model_trainer.use_lora
         )
 
