@@ -6,7 +6,7 @@ data_ingestion:
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned"
   dataset_cache_dir: artifacts/data_ingestion/hf_dataset
   dataset_test_cache_dir: artifacts/data_ingestion/hf_dataset_test
-  mode: "merged" #puede ser "synthetic", "cowsl2h", "merged"
+  mode: "synthetic" #puede ser "synthetic", "cowsl2h", "merged"
 
 data_transformation:
   root_dir: artifacts/data_transformation
@@ -19,7 +19,7 @@ data_transformation:
 model_trainer:
   root_dir: artifacts/model_trainer
   model_ckpt: "Helsinki-NLP/opus-mt-es-en" 
-  run_name: "merged" #"merged" #"synthetic"
+  run_name: "synthetic" #"merged" #"synthetic"
   re_train: false
   project_name: "Trainer-GEC_FT" #"Trainer-GEC-LoRA" # "Trainer-GEC_FT"
   num_train_epochs: 2
