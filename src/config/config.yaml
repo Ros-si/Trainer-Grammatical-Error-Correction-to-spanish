@@ -21,7 +21,7 @@ model_trainer:
   model_ckpt: "Helsinki-NLP/opus-mt-es-en" 
   run_name: "merged" #"merged" #"synthetic"
   re_train: false
-  project_name: "Trainer-GEC_LoRA" #"Trainer-GEC-LoRA" # "Trainer-GEC_FT"
+  project_name: "Trainer-GEC_FT" #"Trainer-GEC-LoRA" # "Trainer-GEC_FT"
   num_train_epochs: 2
   lr: 8.441362564622899e-05
   per_device_train_batch_size: 8
