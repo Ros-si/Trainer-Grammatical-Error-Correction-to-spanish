@@ -6,7 +6,7 @@ data_ingestion:
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned"
   dataset_cache_dir: artifacts/data_ingestion/hf_dataset
   dataset_test_cache_dir: artifacts/data_ingestion/hf_dataset_test
-  mode: "merged" #puede ser "synthetic", "cowsl2h", "merged"
+  mode: "cowsl2h" #puede ser "synthetic", "cowsl2h", "merged"
 
 data_transformation:
   root_dir: artifacts/data_transformation
@@ -19,10 +19,10 @@ data_transformation:
 model_trainer:
   root_dir: artifacts/model_trainer
   model_ckpt: "facebook/mbart-large-50" 
-  run_name: "merged" #"merged" #"synthetic"
+  run_name: "cowsl2h" #"merged" #"synthetic"
   re_train: false
   project_name: "Trainer-GEC_LoRA" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
-  num_train_epochs: 2
+  num_train_epochs: 3
   lr: 0.00044406688888615583
   per_device_train_batch_size: 16
   per_device_eval_batch_size: 16
