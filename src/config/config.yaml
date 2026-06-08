@@ -23,18 +23,18 @@ model_trainer:
   re_train: false
   project_name: "Trainer-GEC_LoRA" #"Trainer-GEC-LoRA" # "Trainer-GEC_FT"
   num_train_epochs: 2
-  lr: 0.0013223040248761528
+  lr: 8.441362564622899e-05
   per_device_train_batch_size: 8
   per_device_eval_batch_size: 8
   gradient_accumulation_steps: 2
   generation_max_length: 128
-  weight_decay: 0.029630281275212823
-  warmup_ratio: 0.09857017609527079
+  weight_decay: 0.04278921502407456
+  warmup_ratio: 0.09363965565984424
   optim: "adamw_torch" #"adafactor" 
   fp16: true
   load_best_model: true
   push_to_hub: true
-  use_lora: true
+  use_lora: false
   lora_config: 
     r: 32
     lora_alpha: 16
