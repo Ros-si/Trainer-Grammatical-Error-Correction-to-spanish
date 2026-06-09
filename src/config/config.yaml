@@ -6,31 +6,31 @@ data_ingestion:
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned"
   dataset_cache_dir: artifacts/data_ingestion/hf_dataset
   dataset_test_cache_dir: artifacts/data_ingestion/hf_dataset_test
-  mode: "cowsl2h" #puede ser "synthetic", "cowsl2h", "merged"
+  mode: "merged" #puede ser "synthetic", "cowsl2h", "merged"
 
 data_transformation:
   root_dir: artifacts/data_transformation
-  tokenizer_name: "facebook/mbart-large-50"  #"facebook/mbart-large-50" #"Helsinki-NLP/opus-mt-es-en" #"facebook/mbart-large-50" ##"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #
-  model_id: "mBart" #"m2m100" #"mBart" # #"marianMT" 
+  tokenizer_name: "facebook/m2m100_418M"  #"facebook/mbart-large-50" #"Helsinki-NLP/opus-mt-es-en" #"facebook/mbart-large-50" ##"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #
+  model_id: "m2m100" #"m2m100" #"mBart" # #"marianMT" 
   save_to_disk: true  
   max_input_length: 128
   max_target_length: 128
 
 model_trainer:
   root_dir: artifacts/model_trainer
-  model_ckpt: "facebook/mbart-large-50" 
-  run_name: "cowsl2h" #"merged" #"synthetic"
+  model_ckpt: "facebook/m2m100_418M" 
+  run_name: "merged" #"merged" #"synthetic"
   re_train: false
   project_name: "Trainer-GEC_LoRA" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
   num_train_epochs: 3
-  lr: 0.00044406688888615583
+  lr: 0.00044107500561578277
   per_device_train_batch_size: 16
   per_device_eval_batch_size: 16
   gradient_accumulation_steps: 1
   generation_max_length: 128
-  weight_decay: 0.08330777153297025
-  warmup_ratio: 0.08309212265191754
-  optim: "adamw_torch" #"adafactor"->m2m100
+  weight_decay: 0.05934091895283298
+  warmup_ratio: 0.08950396527674138
+  optim: "adafactor" #->m2m100  # "adamw_torch" 
   fp16: true
   load_best_model: true
   push_to_hub: true
@@ -38,7 +38,7 @@ model_trainer:
   lora_config: 
     r: 32
     lora_alpha: 16
-    lora_dropout: 0.05
+    lora_dropout: 0.15
     bias: "none"
 
 model_evaluation:
