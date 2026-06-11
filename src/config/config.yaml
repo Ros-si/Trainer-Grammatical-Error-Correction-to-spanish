@@ -22,7 +22,7 @@ model_trainer:
   run_name: "synthetic" #"merged" #"synthetic" cowsl2h
   re_train: false
   project_name: "Trainer-GEC_LoRA" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
-  num_train_epochs: 2
+  num_train_epochs: 3
   lr: 0.00044406688888615583
   per_device_train_batch_size: 16
   per_device_eval_batch_size: 16
