@@ -21,22 +21,22 @@ model_trainer:
   model_ckpt: "google/mt5-small" 
   run_name: "cowsl2h" #"merged" #"synthetic" cowsl2h
   re_train: false
-  project_name: "Trainer-GEC_FT" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
+  project_name: "Trainer-GEC_LoRA" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
   num_train_epochs: 3
-  lr: 0.0005125104186712581
+  lr: 0.001635475313478006
   per_device_train_batch_size: 8
   per_device_eval_batch_size: 8
   gradient_accumulation_steps: 2
   generation_max_length: 128
-  weight_decay: 0.001158437329836226
-  warmup_ratio: 0.08931724594470192
+  weight_decay: 0.08516137956996712 
+  warmup_ratio: 0.0993688388184371 
   optim: "adamw_torch" #"adafactor" #->m2m100  # "adamw_torch" 
   fp16: false
   load_best_model: true
   push_to_hub: true
-  use_lora: false
+  use_lora: true
   lora_config: 
-    r: 32
+    r: 64
     lora_alpha: 16
     lora_dropout: 0.15
     bias: "none"
