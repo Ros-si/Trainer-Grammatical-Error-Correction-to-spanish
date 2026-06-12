@@ -2,11 +2,11 @@ artifacts_root: artifacts
 
 data_ingestion:
   root_dir: artifacts/data_ingestion
-  source_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED_med" #"Ro551/WikiCorrupted-spanish_to_GEC-GED" #
+  source_URL: "Ro551/WikiCorrupted-spanish_to_GEC-GED" #"Ro551/WikiCorrupted_spanish_to_GEC-GED_med" #"Ro551/WikiCorrupted-spanish_to_GEC-GED" #
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned"
   dataset_cache_dir: artifacts/data_ingestion/hf_dataset
   dataset_test_cache_dir: artifacts/data_ingestion/hf_dataset_test
-  mode: "cowsl2h" #puede ser "synthetic", "cowsl2h", "merged"
+  mode: "synthetic" #puede ser "synthetic", "cowsl2h", "merged"
 
 data_transformation:
   root_dir: artifacts/data_transformation
@@ -19,22 +19,22 @@ data_transformation:
 model_trainer:
   root_dir: artifacts/model_trainer
   model_ckpt: "google/mt5-small" 
-  run_name: "cowsl2h" #"merged" #"synthetic" cowsl2h
+  run_name: "synthetic" #"merged" #"synthetic" cowsl2h
   re_train: false
-  project_name: "Trainer-GEC_LoRA" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
-  num_train_epochs: 3
-  lr: 0.001635475313478006
+  project_name: "Trainer-GEC_FT" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
+  num_train_epochs: 2
+  lr: 0.0005125104186712581
   per_device_train_batch_size: 8
   per_device_eval_batch_size: 8
   gradient_accumulation_steps: 2
   generation_max_length: 128
-  weight_decay: 0.08516137956996712 
-  warmup_ratio: 0.0993688388184371 
+  weight_decay: 0.001158437329836226
+  warmup_ratio: 0.08931724594470192
   optim: "adamw_torch" #"adafactor" #->m2m100  # "adamw_torch" 
   fp16: false
   load_best_model: true
   push_to_hub: true
-  use_lora: true
+  use_lora: false
   lora_config: 
     r: 64
     lora_alpha: 16
