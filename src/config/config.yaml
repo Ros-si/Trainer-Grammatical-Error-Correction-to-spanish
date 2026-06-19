@@ -21,20 +21,20 @@ model_trainer:
   model_ckpt: "facebook/m2m100_418M" 
   run_name: "cowsl2h" #"merged" #"synthetic" cowsl2h
   re_train: false
-  project_name: "Trainer-GEC_LoRA" #_exps" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
+  project_name: "Trainer-GEC_FT" #_exps" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
   num_train_epochs: 4
-  lr: 0.00044107500561578277
-  per_device_train_batch_size: 16
-  per_device_eval_batch_size: 16
-  gradient_accumulation_steps: 2
+  lr: 4.3060297566589666e-05
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 16
   generation_max_length: 128
-  weight_decay: 0.05934091895283298
-  warmup_ratio: 0.08950396527674138
+  weight_decay: 0.021765283920508905
+  warmup_ratio: 0.060453811040672545
   optim: "adafactor" #->m2m100  # "adamw_torch" #
   fp16: true
   load_best_model: true
   push_to_hub: true
-  use_lora: true
+  use_lora: false
   lora_config: 
     r: 32
     lora_alpha: 16
