@@ -6,39 +6,39 @@ data_ingestion:
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned"
   dataset_cache_dir: artifacts/data_ingestion/hf_dataset
   dataset_test_cache_dir: artifacts/data_ingestion/hf_dataset_test
-  mode: "synthetic" #puede ser "synthetic", "cowsl2h", "merged"
+  mode: "cowsl2h" #puede ser "synthetic", "cowsl2h", "merged"
 
 data_transformation:
   root_dir: artifacts/data_transformation
-  tokenizer_name: "facebook/m2m100_418M" #"Helsinki-NLP/opus-mt-es-en" #"facebook/mbart-large-50" ##"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #google/mt5-large google/mt5-small
-  model_id: "m2m100" #"mBart" # #"marianMT, mt5-small, mt5-large" 
+  tokenizer_name: "facebook/mbart-large-50" #"Helsinki-NLP/opus-mt-es-en" #"facebook/mbart-large-50" ##"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #google/mt5-large google/mt5-small
+  model_id: "mBart" #"m2m100" #"mBart" # #"marianMT, mt5-small, mt5-large" 
   save_to_disk: true  
   max_input_length: 128
   max_target_length: 128
 
 model_trainer:
   root_dir: artifacts/model_trainer
-  model_ckpt: "facebook/m2m100_418M" 
-  run_name: "synthetic" #"merged" #"synthetic" cowsl2h
+  model_ckpt: "facebook/mbart-large-50" 
+  run_name: "cowsl2h" #"merged" #"synthetic" cowsl2h
   re_train: false
-  project_name: "Trainer-GEC_FT" #_exps" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
-  num_train_epochs: 2
-  lr: 4.3060297566589666e-05
-  per_device_train_batch_size: 1
-  per_device_eval_batch_size: 1
-  gradient_accumulation_steps: 16
+  project_name: "Trainer-GEC_LoRA" #_exps" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
+  num_train_epochs: 4
+  lr: 0.00044406688888615583
+  per_device_train_batch_size: 16
+  per_device_eval_batch_size: 16
+  gradient_accumulation_steps: 1
   generation_max_length: 128
-  weight_decay: 0.021765283920508905
-  warmup_ratio: 0.060453811040672545
-  optim: "adafactor" #->m2m100  # "adamw_torch" #
+  weight_decay: 0.08330777153297025
+  warmup_ratio: 0.08309212265191754
+  optim: "adamw_torch" #"adafactor" #->m2m100  # "adamw_torch" #
   fp16: true
   load_best_model: true
   push_to_hub: true
-  use_lora: false
+  use_lora: true
   lora_config: 
     r: 32
     lora_alpha: 16
-    lora_dropout: 0.15
+    lora_dropout: 0.05
     bias: "none"
 
 model_evaluation:
