@@ -10,33 +10,33 @@ data_ingestion:
 
 data_transformation:
   root_dir: artifacts/data_transformation
-  tokenizer_name: "google/mt5-large" #"Helsinki-NLP/opus-mt-es-en" #"facebook/mbart-large-50" ##"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #google/mt5-large google/mt5-small
-  model_id: "mt5-large" #"m2m100" #"mBart" # #"marianMT, mt5-small, mt5-large" 
+  tokenizer_name: "google/mt5-small" #"Helsinki-NLP/opus-mt-es-en" #"facebook/mbart-large-50" ##"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #google/mt5-large google/mt5-small
+  model_id: "mt5-small" #"m2m100" #"mBart" # #"marianMT, mt5-small, mt5-large" 
   save_to_disk: true  
   max_input_length: 128
   max_target_length: 128
 
 model_trainer:
   root_dir: artifacts/model_trainer
-  model_ckpt: "google/mt5-large" 
+  model_ckpt: "google/mt5-small" 
   run_name: "cowsl2h" #"merged" #"synthetic" cowsl2h
   re_train: false
   project_name: "Trainer-GEC_LoRA" #_exps" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
   num_train_epochs: 4
-  lr: 0.0004542233703472283
-  per_device_train_batch_size: 4
-  per_device_eval_batch_size: 4
-  gradient_accumulation_steps: 4
+  lr: 0.001635475313478006
+  per_device_train_batch_size: 8
+  per_device_eval_batch_size: 8
+  gradient_accumulation_steps: 2
   generation_max_length: 128
-  weight_decay: 0.0792019347166952
-  warmup_ratio: 0.07566828197066039
+  weight_decay: 0.08516137956996712
+  warmup_ratio: 0.0993688388184371
   optim: "adamw_torch" #"adafactor" #->m2m100  # "adamw_torch" #
   fp16: false
   load_best_model: true
   push_to_hub: true
   use_lora: true
   lora_config: 
-    r: 32
+    r: 64
     lora_alpha: 16
     lora_dropout: 0.15
     bias: "none"
