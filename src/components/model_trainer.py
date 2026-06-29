@@ -125,7 +125,7 @@ class ModelTrainer:
             weight_decay=self.config.weight_decay,
             warmup_ratio=self.config.warmup_ratio,
             logging_strategy='steps',
-            logging_steps=100,
+            logging_steps=500,
             optim=self.config.optim,               
             max_grad_norm=1.0,
             load_best_model_at_end=self.config.load_best_model,      
