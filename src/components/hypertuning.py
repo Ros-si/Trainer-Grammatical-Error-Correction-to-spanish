@@ -94,7 +94,7 @@ class HyperparameterTuner:
                              "mbart-large-50": 16} 
         eval_batch_size_FT={"opus-mt-es-en": 8,
                              "mt5-small": 8, 
-                             "mt5-large": 2,
+                             "mt5-large": 1,
                              "m2m100_418M": 4,
                              "mbart-large-50": 2} 
         eval_batch_size_LoRA={"opus-mt-es-en": 8,
