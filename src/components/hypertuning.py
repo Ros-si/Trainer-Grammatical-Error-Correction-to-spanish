@@ -34,7 +34,10 @@ class HyperparameterTuner:
             return ds.rename_columns({"input_text": "corrupted", "target_text": "sentence"})
 
         def get_synthetic():
-            return load_dataset(self.config.source_synthetic)
+            ds = load_dataset(self.config.source_synthetic)
+            dataset = ds.remove_columns(['tokens', 'error_tags', 'error_type', 'span', 'annotation', 'corrupted_tagged','aux_corrupted_tagged', 'spaces'])
+            return dataset
+            
 
         # logica de selección de dataset según el modo configurado
         if mode == "hybrid":
