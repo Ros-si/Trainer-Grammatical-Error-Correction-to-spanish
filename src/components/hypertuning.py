@@ -147,6 +147,8 @@ class HyperparameterTuner:
                 self.trainer_config.fp16 = False
             if "m2m100" in self.trainer_config.model_ckpt:
                 self.trainer_config.optim= "adafactor"
+            if not self.config.use_lora and "mbart" in self.trainer_config.model_ckpt:
+                self.trainer_config.fp16 = False
             
             config_wb = {
             "lr": lr,
