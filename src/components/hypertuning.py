@@ -43,7 +43,12 @@ class HyperparameterTuner:
         if mode == "hybrid":
             ds_cows = get_cows()
             ds_synth = get_synthetic()
-            ds_synth =ds_synth.cast(ds_cows.features)
+            features_referencia = ds_cows["train"].features
+
+            if isinstance(ds_synth, dict) or hasattr(ds_synth, "keys"):
+                for split in ds_synth.keys():
+                    ds_synth[split] = ds_synth[split].cast(features_referencia)
+                    
             dataset_hybrid = DatasetDict()
             for split in ['train', 'validation']:
                 dataset_hybrid[split] = concatenate_datasets([
