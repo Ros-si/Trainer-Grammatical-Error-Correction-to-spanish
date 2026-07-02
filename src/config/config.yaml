@@ -25,7 +25,7 @@ model_trainer:
   num_train_epochs: 2
   lr: 9.175332375538101e-05
   per_device_train_batch_size: 2
-  per_device_eval_batch_size: 4
+  per_device_eval_batch_size: 2
   gradient_accumulation_steps: 16
   generation_max_length: 128
   weight_decay: 0.043269589552847425
