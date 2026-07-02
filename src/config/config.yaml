@@ -24,8 +24,8 @@ model_trainer:
   project_name: "Trainer-GEC_FT" #_exps" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
   num_train_epochs: 4
   lr: 9.175332375538101e-05
-  per_device_train_batch_size: 1
-  per_device_eval_batch_size: 1
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 8
   gradient_accumulation_steps: 16
   generation_max_length: 128
   weight_decay: 0.043269589552847425
