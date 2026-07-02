@@ -118,7 +118,7 @@ class ModelTrainer:
             num_train_epochs=self.config.epochs,
             eval_strategy="epoch",
             save_strategy="epoch",
-            gradient_checkpointing=True,
+            gradient_checkpointing=False, #True,
             per_device_train_batch_size=self.config.train_batch_size,
             per_device_eval_batch_size=self.config.eval_batch_size,
             gradient_accumulation_steps=self.config.gradient_accumulation_steps,
