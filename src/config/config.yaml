@@ -22,7 +22,7 @@ model_trainer:
   run_name: "cowsl2h" #"merged" #"synthetic" cowsl2h
   re_train: false
   project_name: "Trainer-GEC_FT" #_exps" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
-  num_train_epochs: 4
+  num_train_epochs: 2
   lr: 9.175332375538101e-05
   per_device_train_batch_size: 4
   per_device_eval_batch_size: 8
@@ -30,7 +30,7 @@ model_trainer:
   generation_max_length: 128
   weight_decay: 0.043269589552847425
   warmup_ratio: 0.05586177114362126
-  optim: "adamw_bnb_8bit"  #"adafactor" #->m2m100  # "adamw_torch" #
+  optim: "adamw_torch"  #"adamw_bnb_8bit"  #"adafactor" #->m2m100  # "adamw_torch" #
   fp16: false
   load_best_model: true
   push_to_hub: true
