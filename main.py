@@ -30,12 +30,13 @@ try:
    logging.info(f"--- {STAGE_NAME} completada ---\n\n============")
 
    # Etapa 4: MODEL EVALUATION
+   """
    STAGE_NAME = "Etapa: Model Evaluation"
    logging.info(f"--- {STAGE_NAME} iniciada ---") 
    model_evaluation = ModelEvaluationPipeline()
    model_evaluation.main()
    logging.info(f"--- {STAGE_NAME} completada ---\n\n============")
-   
+   """
    if wandb.run is not None:
        wandb.finish() 
 

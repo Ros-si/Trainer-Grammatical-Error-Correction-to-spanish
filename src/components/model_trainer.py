@@ -95,7 +95,7 @@ class ModelTrainer:
             logging.info(f"Parametros entrenables: {model.print_trainable_parameters()}")
             run_name = "LORA-"+run_name 
         bf16=False
-        if "bart" in model_name:    
+        if "bart" in model_name or "m2m100" in model_name:    
             bf16=True
         wandb.init(
             project=self.config.project_name, 
@@ -118,7 +118,7 @@ class ModelTrainer:
             num_train_epochs=self.config.epochs,
             eval_strategy="epoch",
             save_strategy="epoch",
-            gradient_checkpointing=False, #True,
+            gradient_checkpointing=True,
             per_device_train_batch_size=self.config.train_batch_size,
             per_device_eval_batch_size=self.config.eval_batch_size,
             gradient_accumulation_steps=self.config.gradient_accumulation_steps,
@@ -132,7 +132,7 @@ class ModelTrainer:
             metric_for_best_model="gleu", #"eval_loss",# La métrica para decidir cuál es el mejor
             greater_is_better=True, #False para eval_loss # Queremos que el Loss sea lo más bajo posible
             generation_max_length=self.config.generation_max_length,
-            save_total_limit=1,
+            save_total_limit=2,
             predict_with_generate=True,
             fp16=self.config.fp16,
             bf16=bf16,
