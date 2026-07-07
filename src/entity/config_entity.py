@@ -25,7 +25,8 @@ class ModelTrainerConfig:
     weight_decay: float
     warmup_ratio: float
     optim: str            
-    fp16: bool            
+    fp16: bool       
+    bf16: bool     
     load_best_model: bool 
     push_to_hub: bool     
     use_lora: bool

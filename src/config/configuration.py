@@ -112,6 +112,7 @@ class ConfigurationManager:
             warmup_ratio=config.warmup_ratio,
             optim=config.optim,
             fp16=config.fp16,
+            bf16=config.bf16,
             load_best_model=config.load_best_model,
             push_to_hub=config.push_to_hub,
             use_lora=config.use_lora,
