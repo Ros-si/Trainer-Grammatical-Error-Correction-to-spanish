@@ -2,8 +2,7 @@ artifacts_root: artifacts
 
 data_ingestion:
   root_dir: artifacts/data_ingestion
-  source_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED_large" #"Ro551/WikiCorrupted-spanish_to_GEC-GED" #"Ro551/WikiCorrupted_spanish_to_GEC-GED_med" #"Ro551/WikiCorrupted-spanish_to_GEC-GED" #
-  source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned"
+  source_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED"
   dataset_cache_dir: artifacts/data_ingestion/hf_dataset
   dataset_test_cache_dir: artifacts/data_ingestion/hf_dataset_test
   mode: "merged" #puede ser "synthetic", "cowsl2h", "merged"
@@ -21,7 +20,7 @@ model_trainer:
   model_ckpt: "facebook/m2m100_418M"
   run_name: "merged" #"merged" #"synthetic" cowsl2h
   re_train: false
-  project_name: "Trainer-GEC_LoRA" #_exps" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
+  project_name: "Trainer-GEC_LoRA" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
   num_train_epochs: 2
   lr: 0.00044107500561578277
   per_device_train_batch_size: 16
@@ -30,7 +29,7 @@ model_trainer:
   generation_max_length: 128
   weight_decay: 0.05934091895283298  
   warmup_ratio: 0.08950396527674138 
-  optim: "adafactor"  #"adamw_bnb_8bit"  #"adafactor" #->m2m100  # "adamw_torch" #
+  optim: "adafactor"   #"adafactor" #->m2m100  # "adamw_torch" 
   fp16: true
   bf16: false
   load_best_model: true
@@ -56,8 +55,8 @@ hyperparameter_tuning:
   source_synthetic: "Ro551/WikiCorrupted_spanish_to_GEC-GED_min" #"Ro551/WikiCorrupted_spanish_to_GEC-GED_mini"
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned" 
   mode: "hybrid" # puede ser "synthetic", "cowsl2h", "hybrid"
-  models_ckpt: ["google/mt5-large"] #["facebook/mbart-large-50"] #
-  project_name: "Hypertuning_GEC_FT" #"Hypertuning_GEC_LoRA"  
+  models_ckpt: ["google/mt5-large"] 
+  project_name: "Hypertuning_GEC_FT" 
   epochs: 3
   n_trials: 5
   lr: [0.00001, 0.0006] 

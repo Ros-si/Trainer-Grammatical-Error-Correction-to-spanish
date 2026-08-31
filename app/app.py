@@ -1,7 +1,7 @@
 import gradio as gr
 import html
 import difflib
-from models_inference import execute_inference, MODEL_CONFIGS
+from models_inference import execute_inference, MODEL_CONFIGS, preload_all_models
 import spacy
 from spacy.tokens import Doc
 
@@ -241,4 +241,8 @@ with gr.Blocks(css=CSS) as demo:
         fn=show_correction,
         cache_examples=False,
     )
-demo.launch(server_name="0.0.0.0", server_port=7860)
+#demo.launch(server_name="0.0.0.0", server_port=7860)
+if __name__ == "__main__":
+    print("[INFO] Inicializando la interfaz y cargando modelos...")
+    preload_all_models()
+    demo.launch(server_name="0.0.0.0", server_port=7860)

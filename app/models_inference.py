@@ -3,28 +3,19 @@ import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from peft import PeftModel, PeftConfig
 
-MODEL_CONFIGS = {
-    "marianMT_merged-lora-best": {
-        "base_model": "Helsinki-NLP/opus-mt-es-en" ,
-        "adapter_model": "Ro551/opus-mt-es-en-GEC-spanish-LORA-merged",
-        "is_lora": True
-    },
-    "mT5_small_dsSint": {
-        "base_model": "google/mt5-small",
-        "adapter_model": "Ro551/mt5-small-GEC-spanish-dsSint",
+MODEL_CONFIGS = {    
+    "mbart-large-50-FT-best": {
+        "base_model": "facebook/mbart-large-50" ,
+        "adapter_model": "Ro551/mbart-large-50-GEC-spanish-merged",
         "is_lora": False
-    },
-    "mT5_small_dsmergeg": {
-        "base_model": "google/mt5-small",
-        "adapter_model": "Ro551/mt5-small-GEC-spanish-merged",
-        "is_lora": False
-    },
-    "MarianMT_dsSint": {
-        "base_model": "Helsinki-NLP/opus-mt-es-en", 
-        "adapter_model": "Ro551/opus-mt-es-en-GEC-spanish-dsSint",
-        "is_lora": False
+    }, 
+    "mbart-large-50-LoRA-best": {
+            "base_model": "facebook/mbart-large-50" ,
+            "adapter_model": "Ro551/mbart-large-50-GEC-spanish-LORA-merged",
+            "is_lora": True
     }
 }
+
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -44,7 +35,7 @@ def load_model_and_tokenizer(model_key):
     base_path = config_info["base_model"]
     adapter_path = config_info["adapter_model"]
     
-    tokenizer = AutoTokenizer.from_pretrained(base_path)
+    tokenizer = AutoTokenizer.from_pretrained(adapter_path)
     
     model = AutoModelForSeq2SeqLM.from_pretrained(
         adapter_path, 
@@ -81,7 +72,7 @@ def preload_all_models():
             print(f"[ERROR] No se pudo precargar {model_key}: {str(e)}")
             
     print("="*50)
-    print("[SUCCESS] ¡Todos los modelos están calientes en memoria e inferencia lista!")
+    print("[SUCCESS] Todos los modelos están en memoria e inferencia lista")
     print("="*50 + "\n")
 
 def execute_inference(text, model_name):
@@ -93,10 +84,10 @@ def execute_inference(text, model_name):
         model, tokenizer = load_model_and_tokenizer(model_name)
         config_info = MODEL_CONFIGS[model_name]
         
-        if "m2m100" in config_info:
+        if "m2m100" in model_name:
             tokenizer.src_lang = "es"
             tokenizer.tgt_lang = "es"   
-        elif "mbart" in config_info:
+        elif "mbart" in model_name:
             tokenizer.src_lang = "es_XX"
             tokenizer.tgt_lang = "es_XX"
 
@@ -115,4 +106,4 @@ def execute_inference(text, model_name):
         print(f"[ERROR] Error crítico durante la inferencia: {str(e)}")
         return f"[Error del Servidor] No se pudo procesar el modelo. Detalles: {str(e)}"
 
-preload_all_models()
+#preload_all_models()
