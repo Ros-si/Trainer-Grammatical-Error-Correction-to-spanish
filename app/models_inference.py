@@ -105,5 +105,3 @@ def execute_inference(text, model_name):
     except Exception as e:
         print(f"[ERROR] Error crítico durante la inferencia: {str(e)}")
         return f"[Error del Servidor] No se pudo procesar el modelo. Detalles: {str(e)}"
-
-#preload_all_models()

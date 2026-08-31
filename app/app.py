@@ -206,7 +206,7 @@ def show_correction(text, model_name, type_draw):
     return output
 
 def clear():
-    return "", "", ""
+    return "", ""
 
 with gr.Blocks(css=CSS) as demo:
     gr.Markdown(f"<h1 class='gradio-title'>{TITLE}</h1>") 
@@ -241,8 +241,8 @@ with gr.Blocks(css=CSS) as demo:
         fn=show_correction,
         cache_examples=False,
     )
-#demo.launch(server_name="0.0.0.0", server_port=7860)
+
 if __name__ == "__main__":
     print("[INFO] Inicializando la interfaz y cargando modelos...")
     preload_all_models()
-    demo.launch(server_name="0.0.0.0", server_port=7860)
+    demo.launch()
