@@ -1,12 +1,26 @@
 import gradio as gr
+import torch
 import html
 import difflib
-from models_inference import execute_inference, MODEL_CONFIGS, preload_all_models
 import spacy
-from spacy.tokens import Doc
+from models_inference import execute_inference, preload_all_models, MODEL_CONFIGS
 
 nlp = spacy.load("es_core_news_md")
-TITLE = "Corrector de Errores Gramaticales del Español"
+
+print("=" * 60)
+print("CUDA disponible:", torch.cuda.is_available())
+print("Dispositivo:", "cuda" if torch.cuda.is_available() else "cpu")
+print("=" * 60)
+
+# Cache global para la última inferencia realizada
+LAST_PREDICTION_CACHE = {
+    "text": None,
+    "model_name": None,
+    "prediction": None
+}
+
+nlp = spacy.load("es_core_news_md")
+TITLE = "Corrector de Errores Gramaticales del idioma Español"
 
 DESCRIPTION = """
 **Demo interactiva para la correcion de errores gramaticales en el idioma español.**
@@ -19,7 +33,7 @@ DESCRIPTION = """
 
 EXAMPLES = [
     "Pepito jugar en el parque",
-    "muchos perros juegan en la parque tambien muchos niño salen. de la escuels",
+    "muchos perros juegan en la, parque tambien muchos niño salen de la escuels",
     "Las gata pasear por el jardin bello", 
     "Mañana Tomy viajarear a Londres"
     ]
@@ -113,102 +127,85 @@ LEYEND=f"""
     </div>
 </div>
 """
-
-def draw_corrected(error):
-    html_out = f"<span class='correction-word'>{html.escape(error['target'])}</span>"
-    return html_out
-
-def draw_error(error):
-     html_out = f"""
-        <span class='correction-box-error'>
-            <span class='src-word'>{html.escape(error['source'])}</span>
-        </span>
-        """
-     return html_out
-
-def draw_merge(error):
-    if not error['source']:
-        return draw_corrected(error)
-    if not error['target']:
-        return draw_error(error)
-    return draw_error(error) + " " + draw_corrected(error)
-
-def get_errors(orig_text, pred_text):
+def render_diff_html(orig_text, pred_text, mode="Corrección"):
     """
-    Genera una lista de ediciones (spans) con sus coordenadas de palabras
-    utilizando difflib.
+    Compara orig_text y pred_text token por token y genera el HTML 
+    en una sola pasada, garantizando alineación perfecta sin duplicar palabras.
     """
-    orig_words = orig_text.split()
-    pred_words = pred_text.split()
+    orig_doc = nlp(orig_text)
+    pred_doc = nlp(pred_text)
     
-    matcher = difflib.SequenceMatcher(None, orig_words, pred_words)
-    spans = []
+    orig_words = [t.text for t in orig_doc]
+    pred_words = [t.text for t in pred_doc]
+    
+    # autojunk=False evita que difflib desalinee palabras o puntuaciones repetidas
+    matcher = difflib.SequenceMatcher(None, orig_words, pred_words, autojunk=False)
+    html_out = []
     
     for tag, i1, i2, j1, j2 in matcher.get_opcodes():
-        # Filtrar solo los bloques que contengan modificaciones
-        if tag != 'equal':
-            spans.append({
-                "source": " ".join(orig_words[i1:i2]),
-                "target": " ".join(pred_words[j1:j2]),
-                "src_start": i1,
-                "src_end": i2,
-                "tgt_start": j1,
-                "tgt_end": j2
-            })
-            print("spnas:", spans)
+        # Reconstruir fragmentos preservando espacios originales
+        src_str = "".join([t.text_with_ws for t in orig_doc[i1:i2]])
+        tgt_str = "".join([t.text_with_ws for t in pred_doc[j1:j2]])
+        
+        src_clean = src_str.strip()
+        tgt_clean = tgt_str.strip()
+        
+        # Obtener el espaciado correcto
+        ws = ""
+        if tag in ('equal', 'replace', 'insert') and j2 > 0:
+            ws = pred_doc[j2 - 1].whitespace_
+        elif tag == 'delete' and i2 > 0:
+            ws = orig_doc[i2 - 1].whitespace_
+
+        if tag == 'equal':
+            html_out.append(html.escape(tgt_str))
             
-    return spans
+        elif tag == 'replace':
+            if mode == "Original":
+                html_out.append(f"<span class='correction-box-error'><span class='src-word'>{html.escape(src_clean)}</span></span>{ws}")
+            elif mode == "Corrección":
+                html_out.append(f"<span class='correction-word'>{html.escape(tgt_clean)}</span>{ws}")
+            else:  # "Ambos"
+                html_out.append(f"<span class='correction-box-error'><span class='src-word'>{html.escape(src_clean)}</span></span> <span class='correction-word'>{html.escape(tgt_clean)}</span>{ws}")
+                
+        elif tag == 'delete':
+            if mode in ("Original", "Ambos"):
+                html_out.append(f"<span class='correction-box-error'><span class='src-word'>{html.escape(src_clean)}</span></span>{ws}")
+                
+        elif tag == 'insert':
+            if mode in ("Corrección", "Ambos"):
+                html_out.append(f"<span class='correction-word'>{html.escape(tgt_clean)}</span>{ws}")
+                
+    return "".join(html_out)
 
-
-def render_with_draw(orig_text, pred_text, draw_fn):
-    doc = nlp(pred_text)
-    tokens = [token.text for token in doc]
-    spaces = [token.whitespace_ for token in doc]
-    errors = get_errors(orig_text, pred_text)
-
-    for error in reversed(errors):
-        start = error['tgt_start']
-        end = error['tgt_end']
-
-        if start == end:
-            if 0 <= start <= len(tokens):
-                tokens.insert(start, draw_fn(error))
-                spaces.insert(start, spaces[start] if start < len(spaces) else "")
-        else:
-            tokens[start] = draw_fn(error)
-            if start + 1 < end:
-                del tokens[start+1:end]
-                del spaces[start+1:end]
-
-    return "".join([t + s for t, s in zip(tokens, spaces)])
-
-def render_corrected(orig_text, pred_text):
-    return render_with_draw(orig_text, pred_text, draw_corrected)
-
-def render_original(orig_text, pred_text):
-    return render_with_draw(orig_text, pred_text, draw_error)
-
-def render_merge(orig_text, pred_text):
-    return render_with_draw(orig_text, pred_text, draw_merge)
-
-def get_predict(text, model_name):
-    predict = execute_inference(text, model_name)
-    return predict
 
 def show_correction(text, model_name, type_draw):
-    predict = get_predict(text, model_name)
-    if type_draw == "Original":
-        output = render_original(text, predict)
-    elif type_draw == "Corrección":
-        output = render_corrected(text, predict)
+    global LAST_PREDICTION_CACHE
+    
+    if not text or not text.strip():
+        return ""
+
+    # Si el texto y el modelo son idénticos a los almacenados, reutiliza la predicción
+    if (LAST_PREDICTION_CACHE["text"] == text and 
+        LAST_PREDICTION_CACHE["model_name"] == model_name and 
+        LAST_PREDICTION_CACHE["prediction"] is not None):
+        
+        predict = LAST_PREDICTION_CACHE["prediction"]
     else:
-        output = render_merge(text, predict)
-    return output
+        # Si cambiaron, ejecuta la inferencia y actualiza la caché
+        predict = execute_inference(text, model_name)
+        LAST_PREDICTION_CACHE["text"] = text
+        LAST_PREDICTION_CACHE["model_name"] = model_name
+        LAST_PREDICTION_CACHE["prediction"] = predict
+        
+    return render_diff_html(text, predict, mode=type_draw)
 
 def clear():
+    global LAST_PREDICTION_CACHE
+    LAST_PREDICTION_CACHE = {"text": None, "model_name": None, "prediction": None}
     return "", ""
 
-with gr.Blocks(css=CSS) as demo:
+with gr.Blocks() as demo:
     gr.Markdown(f"<h1 class='gradio-title'>{TITLE}</h1>") 
     gr.Markdown(DESCRIPTION)
 
@@ -216,26 +213,40 @@ with gr.Blocks(css=CSS) as demo:
         text = gr.Textbox(label="Texto de entrada", placeholder="Texto con errores...", lines=3)
 
     with gr.Row():
-        model_select = gr.Dropdown(MODELS, label="Seleccionar modelo")
+        model_select = gr.Dropdown(MODELS, label="Seleccionar modelo", value=MODELS[0])
+        
     with gr.Row():
         btn_correct = gr.Button("Procesar", variant="primary")
         btn_clear = gr.Button("Limpiar", variant="secondary")
-    type_draw= gr.Radio(choices=["Original", "Corrección", "Ambos"],
-                                label="Tipo de visualización",
-                                value="Corrección"   
-                               )
+        
+    type_draw = gr.Radio(
+        choices=["Original", "Corrección", "Ambos"],
+        label="Tipo de visualización",
+        value="Corrección"   
+    )
+    
     gr.Markdown("### Resultado")
-    output_text=gr.HTML(label="Correción")
+    output_text = gr.HTML(label="Correción")
     gr.HTML(LEYEND)
    
-   
-    btn_correct.click(fn=show_correction, inputs=[text, model_select, type_draw], outputs=[output_text])
+    # Evento al presionar el botón "Procesar"
+    btn_correct.click(
+        fn=show_correction, 
+        inputs=[text, model_select, type_draw], 
+        outputs=[output_text]
+    )
+    
+    # Evento reactivo al cambiar de radio button (cambio instantáneo sin re-ejecutar el modelo)
+    type_draw.change(
+        fn=show_correction, 
+        inputs=[text, model_select, type_draw], 
+        outputs=[output_text]
+    )
+    
     btn_clear.click(fn=clear, outputs=[text, output_text])
 
-    formatted_examples = [[ex] for ex in EXAMPLES]
-       
     gr.Examples(
-        examples=formatted_examples,
+        examples=[[ex] for ex in EXAMPLES],
         inputs=[text, model_select, type_draw],
         outputs=[output_text],
         fn=show_correction,
@@ -245,4 +256,4 @@ with gr.Blocks(css=CSS) as demo:
 if __name__ == "__main__":
     print("[INFO] Inicializando la interfaz y cargando modelos...")
     preload_all_models()
-    demo.launch()
+    demo.launch(css=CSS)

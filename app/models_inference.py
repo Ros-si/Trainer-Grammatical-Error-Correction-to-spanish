@@ -1,18 +1,40 @@
+import os
+os.environ["HF_HOME"] = "/tmp/huggingface"
 
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from peft import PeftModel, PeftConfig
+from peft import PeftModel
 
 MODEL_CONFIGS = {    
-    "mbart-large-50-FT-best": {
+    "best_ds-SynthCOWS_mbart-large-50-FT": {
         "base_model": "facebook/mbart-large-50" ,
         "adapter_model": "Ro551/mbart-large-50-GEC-spanish-merged",
         "is_lora": False
     }, 
-    "mbart-large-50-LoRA-best": {
-            "base_model": "facebook/mbart-large-50" ,
-            "adapter_model": "Ro551/mbart-large-50-GEC-spanish-LORA-merged",
-            "is_lora": True
+    "best_ds-SynthCOWS_mbart-large-50-LoRA": {
+                "base_model": "facebook/mbart-large-50" ,
+                "adapter_model": "Ro551/mbart-large-50-GEC-spanish-LORA-merged",
+                "is_lora": True
+    },
+    "best_ds-COWSL_m2m100-418M-FT": {
+        "base_model": "facebook/m2m100_418M" ,
+        "adapter_model": "Ro551/m2m100_418M-GEC-spanish-cowsl2h",
+        "is_lora": False
+    },
+    "best_ds-Synth_mbart-large-50-FT": {
+        "base_model": "facebook/mbart-large-50" ,
+        "adapter_model": "Ro551/mbart-large-50-GEC-spanish-synthetic",
+        "is_lora": False
+    },
+    "ds-SynthCOWS_mt5-small-FT": {
+        "base_model": "google/mt5-small" ,
+        "adapter_model": "Ro551/mt5-small-GEC-spanish-merged",
+        "is_lora": False
+    },
+    "ds-SynthCOWS_marianmt-small-FT": {
+        "base_model": "Helsinki-NLP/opus-mt-es-en" ,
+        "adapter_model": "Ro551/opus-mt-es-en-GEC-spanish-merged",
+        "is_lora": False
     }
 }
 
@@ -39,7 +61,7 @@ def load_model_and_tokenizer(model_key):
     
     model = AutoModelForSeq2SeqLM.from_pretrained(
         adapter_path, 
-        torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32
+        dtype=torch.float16 if torch.cuda.is_available() else torch.float32
     )
     
     if config_info["is_lora"] and adapter_path:
