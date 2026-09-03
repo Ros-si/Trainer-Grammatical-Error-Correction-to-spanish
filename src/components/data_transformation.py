@@ -16,7 +16,12 @@ class DataTransformation:
         try:
             logging.info(f"Cargando tokenizer para: {self.config.tokenizer_name}")
             self.tokenizer = AutoTokenizer.from_pretrained(self.config.tokenizer_name, use_fast=True)
-            
+
+            if self.config.special_tokens_dict:
+                logging.info(f"Agregando tokens especiales al tokenizer: {self.config.special_tokens_dict}")
+                special_tokens_dict = {'additional_special_tokens': self.config.special_tokens_dict}
+                self.tokenizer.add_special_tokens(special_tokens_dict)
+                
             # Configuraciones arquitectura
             model_name = str(self.config.tokenizer_name).lower()
             

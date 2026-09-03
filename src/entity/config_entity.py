@@ -56,7 +56,7 @@ class DataTransformationConfig:
     transformed_validation_path: Path
     preprocessor_obj_file_path: Path # Para guardar el tokenizer.save_pretrained()
     save_to_disk: bool
-
+    special_tokens_dict: List[str]
 
 @dataclass()
 class ModelEvaluationConfig:

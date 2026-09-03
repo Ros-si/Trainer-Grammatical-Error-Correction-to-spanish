@@ -129,8 +129,7 @@ LEYEND=f"""
 """
 def render_diff_html(orig_text, pred_text, mode="Corrección"):
     """
-    Compara orig_text y pred_text token por token y genera el HTML 
-    en una sola pasada, garantizando alineación perfecta sin duplicar palabras.
+        Compara el texto original y el texto predicho, token por token y genera el HTML
     """
     orig_doc = nlp(orig_text)
     pred_doc = nlp(pred_text)

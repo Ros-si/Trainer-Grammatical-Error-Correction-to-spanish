@@ -63,7 +63,7 @@ class HyperparameterTuner:
         else: # mode == "synthetic" o por defecto
             return get_synthetic()
             
-        
+        z
     def prepare_data(self):
         """Preprocesa el dataset una sola vez por checkpoint"""
         # Actualizar el config de DataTransformation

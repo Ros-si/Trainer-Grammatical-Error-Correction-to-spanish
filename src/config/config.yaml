@@ -9,32 +9,35 @@ data_ingestion:
 
 data_transformation:
   root_dir: artifacts/data_transformation
-  tokenizer_name: "facebook/m2m100_418M"  #"Helsinki-NLP/opus-mt-es-en" #"facebook/mbart-large-50" ##"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #google/mt5-large google/mt5-small
-  model_id: "m2m100" #"mBart" # #"marianMT, mt5-small, mt5-large" 
+  tokenizer_name: "google/mt5-small"  #"Helsinki-NLP/opus-mt-es-en" #"facebook/mbart-large-50" ##"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #google/mt5-large google/mt5-small
+  model_id: "mt5-small" #"mBart" # #"marianMT, mt5-small, mt5-large" 
   save_to_disk: true  
   max_input_length: 128
   max_target_length: 128
+  special_tokens_dict: ["[FIRST_NAME]", "[LAST_NAME]","[CITY]","[STATE]","[UNIVERSITY]","[AGE]","[NUMBER]","[PLACE]","[BIRTH_DATE]","[EMAIL]","[ADDRESS]"]
+
+
 
 model_trainer:
   root_dir: artifacts/model_trainer
-  model_ckpt: "facebook/m2m100_418M"
+  model_ckpt: "google/mt5-small"
   run_name: "merged" #"merged" #"synthetic" cowsl2h
   re_train: false
-  project_name: "Trainer-GEC_LoRA" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
+  project_name: "Trainer-GEC_FT-exp" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
   num_train_epochs: 2
-  lr: 0.00044107500561578277
-  per_device_train_batch_size: 16
-  per_device_eval_batch_size: 16
+  lr: 0.0.0005125104186712581
+  per_device_train_batch_size: 8
+  per_device_eval_batch_size: 8
   gradient_accumulation_steps: 2
   generation_max_length: 128
-  weight_decay: 0.05934091895283298  
-  warmup_ratio: 0.08950396527674138 
-  optim: "adafactor"   #"adafactor" #->m2m100  # "adamw_torch" 
-  fp16: true
+  weight_decay: 0.001158437329836226  
+  warmup_ratio: 0.08931724594470192
+  optim: "adamw torch"   #"adafactor" #->m2m100  # "adamw_torch" 
+  fp16: false
   bf16: false
   load_best_model: true
   push_to_hub: true
-  use_lora: true
+  use_lora: false
   lora_config: 
     r: 32
     lora_alpha: 16

@@ -74,7 +74,8 @@ class ConfigurationManager:
             transformed_validation_path=Path(os.path.join(model_specific_dir, "validation")),
             # Ruta para guardar el tokenizador con .save_pretrained()
             preprocessor_obj_file_path=Path(os.path.join(model_specific_dir, "tokenizer")),
-            save_to_disk=config.save_to_disk
+            save_to_disk=config.save_to_disk,
+            special_tokens_dict=config.special_tokens_dict
         )
         return data_transformation_config
 
