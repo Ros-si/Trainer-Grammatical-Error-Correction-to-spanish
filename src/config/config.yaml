@@ -36,8 +36,8 @@ model_trainer:
   optim: "adamw torch"   #"adafactor" #->m2m100  # "adamw_torch" 
   fp16: false
   bf16: false
-  load_best_model: true
-  push_to_hub: true
+  load_best_model: false
+  push_to_hub: false
   use_lora: false
   lora_config: 
     r: 32
