@@ -8,6 +8,7 @@ from datasets import load_from_disk
 from src.logger import logging
 from src.entity.config_entity import ModelEvaluationConfig
 from peft import PeftConfig, PeftModel
+from transformers.trainer_utils import get_last_checkpoint
 
 class ModelEvaluation:
     def __init__(self, config: ModelEvaluationConfig):
@@ -145,9 +146,11 @@ class ModelEvaluation:
         logging.info("Iniciando Evaluación Triple (Sintético, COWSL2H, Combinado)...")
         
         # Cargar Modelo y Tokenizer
-        tokenizer = AutoTokenizer.from_pretrained(self.config.tokenizer_path)
+        model_path= get_last_checkpoint(self.config.model_path)
+
+        tokenizer = AutoTokenizer.from_pretrained(model_path)
         if self.config.use_lora:
-            peft_config = PeftConfig.from_pretrained(self.config.model_path)
+            peft_config = PeftConfig.from_pretrained(model_path)
             base_model = AutoModelForSeq2SeqLM.from_pretrained(peft_config.base_model_name_or_path)
             model = PeftModel.from_pretrained(base_model, self.config.model_path)
             model.config.tie_word_embeddings = False
