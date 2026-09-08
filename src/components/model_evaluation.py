@@ -152,12 +152,12 @@ class ModelEvaluation:
         if self.config.use_lora:
             peft_config = PeftConfig.from_pretrained(model_path)
             base_model = AutoModelForSeq2SeqLM.from_pretrained(peft_config.base_model_name_or_path)
-            model = PeftModel.from_pretrained(base_model, self.config.model_path)
+            model = PeftModel.from_pretrained(base_model, model_path)
             model.config.tie_word_embeddings = False
             model = model.to(self.device)
             logging.info("Modelo LoRA (PEFT) cargado exitosamente para evaluación.")
         else:
-            model = AutoModelForSeq2SeqLM.from_pretrained(self.config.model_path).to(self.device)
+            model = AutoModelForSeq2SeqLM.from_pretrained(model_path).to(self.device)
             logging.info("Modelo estándar cargado exitosamente para evaluación.")
 
         evaluation_map = {
