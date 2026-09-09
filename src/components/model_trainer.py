@@ -81,9 +81,6 @@ class ModelTrainer:
         model_name = self.config.model_ckpt.split("/")[-1]
         run_name = self.config.run_name
 
-        # Redimensionar la matriz de embeddings del modelo (por el uso de special tokens)
-        model.resize_token_embeddings(len(tokenizer))
-
         # Configurar LoRA si está activado
         if self.config.use_lora:
             peft_config = LoraConfig(
@@ -100,6 +97,10 @@ class ModelTrainer:
         #bf16=False
         #if "bart" in model_name or "m2m100" in model_name:    
         #    bf16=True
+
+        # Redimensionar la matriz de embeddings del modelo (por el uso de special tokens)
+        model.resize_token_embeddings(len(tokenizer))
+
         wandb.init(
             project=self.config.project_name, 
             group=f"{model_name}-experiments", 
