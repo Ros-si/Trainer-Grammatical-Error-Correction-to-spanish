@@ -159,7 +159,7 @@ class ModelEvaluation:
         else:
             model = AutoModelForSeq2SeqLM.from_pretrained(model_path).to(self.device)
             logging.info("Modelo estándar cargado exitosamente para evaluación.")
-
+        model.resize_token_embeddings(len(tokenizer))
         evaluation_map = {
             "synthetic": load_from_disk(os.path.join(self.config.data_transformed_test_path,"synthetic")),
             "cowsl2h": load_from_disk(os.path.join(self.config.data_transformed_test_path,"cowsl2h")),

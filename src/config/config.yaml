@@ -17,8 +17,6 @@ data_transformation:
   max_target_length: 128
   special_tokens_dict: ["[FIRST_NAME]", "[LAST_NAME]","[CITY]","[STATE]","[UNIVERSITY]","[AGE]","[NUMBER]","[PLACE]","[BIRTH_DATE]","[EMAIL]","[ADDRESS]"]
 
-
-
 model_trainer:
   root_dir: artifacts/model_trainer
   model_ckpt: "google/mt5-small"
