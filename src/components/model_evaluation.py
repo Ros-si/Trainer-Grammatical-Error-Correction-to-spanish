@@ -146,7 +146,7 @@ class ModelEvaluation:
         logging.info("Iniciando Evaluación Triple (Sintético, COWSL2H, Combinado)...")
         
         # Cargar Modelo y Tokenizer
-        model_path= get_last_checkpoint(self.config.model_path)
+        model_path=self.config.model_path # get_last_checkpoint(self.config.model_path)
 
         tokenizer = AutoTokenizer.from_pretrained(model_path)
         if self.config.use_lora:
