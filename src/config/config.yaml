@@ -35,7 +35,7 @@ model_trainer:
   fp16: true
   bf16: false
   load_best_model: true
-  push_to_hub: false
+  push_to_hub: true
   use_lora: true
   lora_config: 
     r: 32
