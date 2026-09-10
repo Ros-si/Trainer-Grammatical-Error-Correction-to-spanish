@@ -104,7 +104,7 @@ class ModelTrainer:
         wandb.init(
             project=self.config.project_name, 
             group=f"{model_name}-experiments", 
-            name=f"{model_name}-{run_name}",
+            name=f"{model_name}-{run_name}-EXP",
             reinit=True,
             config=config_wb
             )

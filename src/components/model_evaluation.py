@@ -146,12 +146,14 @@ class ModelEvaluation:
         logging.info("Iniciando Evaluación Triple (Sintético, COWSL2H, Combinado)...")
         
         # Cargar Modelo y Tokenizer
-        model_path=self.config.model_path # get_last_checkpoint(self.config.model_path)
+        model_path = get_last_checkpoint(self.config.model_path)
 
         tokenizer = AutoTokenizer.from_pretrained(model_path)
         if self.config.use_lora:
             peft_config = PeftConfig.from_pretrained(model_path)
             base_model = AutoModelForSeq2SeqLM.from_pretrained(peft_config.base_model_name_or_path)
+            #base_model.resize_token_embeddings(len(tokenizer))
+
             model = PeftModel.from_pretrained(base_model, model_path)
             model.config.tie_word_embeddings = False
             model = model.to(self.device)
@@ -159,7 +161,7 @@ class ModelEvaluation:
         else:
             model = AutoModelForSeq2SeqLM.from_pretrained(model_path).to(self.device)
             logging.info("Modelo estándar cargado exitosamente para evaluación.")
-        model.resize_token_embeddings(len(tokenizer))
+        #model.resize_token_embeddings(len(tokenizer))
         evaluation_map = {
             "synthetic": load_from_disk(os.path.join(self.config.data_transformed_test_path,"synthetic")),
             "cowsl2h": load_from_disk(os.path.join(self.config.data_transformed_test_path,"cowsl2h")),
