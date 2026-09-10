@@ -99,12 +99,12 @@ class ModelTrainer:
         #    bf16=True
 
         # Redimensionar la matriz de embeddings del modelo (por el uso de special tokens)
-        #model.resize_token_embeddings(len(tokenizer))
+        model.resize_token_embeddings(len(tokenizer))
 
         wandb.init(
             project=self.config.project_name, 
             group=f"{model_name}-experiments", 
-            name=f"{model_name}-{run_name}-EXP",
+            name=f"{model_name}-{run_name}-EXP-ts",
             reinit=True,
             config=config_wb
             )
