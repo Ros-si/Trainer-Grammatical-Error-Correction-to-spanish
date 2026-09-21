@@ -57,8 +57,8 @@ hyperparameter_tuning:
   source_synthetic: "Ro551/WikiCorrupted_spanish_to_GEC-GED_min" #"Ro551/WikiCorrupted_spanish_to_GEC-GED_mini"
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned" 
   mode: "hybrid" # puede ser "synthetic", "cowsl2h", "hybrid"
-  models_ckpt: ["google/mt5-large"] 
-  project_name: "Hypertuning_GEC_FT" 
+  models_ckpt: ["google/mt5-small"] 
+  project_name: "Hypertuning_GEC_FT-test" 
   epochs: 3
   n_trials: 5
   lr: [0.00001, 0.0006] 
