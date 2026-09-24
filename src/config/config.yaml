@@ -2,7 +2,7 @@ artifacts_root: artifacts
 
 data_ingestion:
   root_dir: artifacts/data_ingestion
-  source_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED_large" #"Ro551/WikiCorrupted_spanish_to_GEC-GED"
+  source_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED"
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned"
   dataset_cache_dir: artifacts/data_ingestion/hf_dataset
   dataset_test_cache_dir: artifacts/data_ingestion/hf_dataset_test
@@ -11,7 +11,7 @@ data_ingestion:
 data_transformation:
   root_dir: artifacts/data_transformation
   tokenizer_name: "facebook/mbart-large-50"   #"Helsinki-NLP/opus-mt-es-en" #"facebook/mbart-large-50" ##"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #google/mt5-large google/mt5-small
-  model_id: "mBart" #"mBart" # #"marianMT, mt5-small, mt5-large" 
+  model_id: "mBart" #"marianMT, mt5-small, m2m100
   save_to_disk: true  
   max_input_length: 128
   max_target_length: 128
@@ -19,10 +19,10 @@ data_transformation:
 
 model_trainer:
   root_dir: artifacts/model_trainer
-  model_ckpt: "facebook/mbart-large-50" #"facebook/m2m100_418M" # "google/mt5-large" # "Helsinki-NLP/opus-mt-es-en" # "facebook/mbart-large-50" # "google/mt5-small" # "google/mt5-large"
-  run_name: "merged-large" #"merged" #"synthetic" cowsl2h
+  model_ckpt: "facebook/mbart-large-50" #"facebook/m2m100_418M"  # "Helsinki-NLP/opus-mt-es-en" # "facebook/mbart-large-50" # "google/mt5-small" 
+  run_name: "merged" #"synthetic" cowsl2h
   re_train: false
-  project_name: "Trainer-GEC_FT" #"Trainer-GEC_LoRA" # "Trainer-GEC_FT"
+  project_name: "Trainer-GEC_FT" #"Trainer-GEC_LoRA" 
   num_train_epochs: 2
   lr: 9.175332375538101e-05
   per_device_train_batch_size: 16
@@ -31,7 +31,7 @@ model_trainer:
   generation_max_length: 128
   weight_decay: 0.043269589552847425  
   warmup_ratio: 0.05586177114362126 
-  optim: "adamw_torch"  #"adafactor" #->m2m100  # "adamw_torch" 
+  optim: "adamw_torch" 
   fp16: false
   bf16: true
   load_best_model: true
@@ -54,7 +54,7 @@ model_evaluation:
 
 hyperparameter_tuning:
   root_dir: artifacts/hyperparameter_tuning
-  source_synthetic: "Ro551/WikiCorrupted_spanish_to_GEC-GED_min" #"Ro551/WikiCorrupted_spanish_to_GEC-GED_mini"
+  source_synthetic: "Ro551/WikiCorrupted_spanish_to_GEC-GED_mini" 
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned" 
   mode: "hybrid" # puede ser "synthetic", "cowsl2h", "hybrid"
   models_ckpt: ["google/mt5-small"] 
