@@ -30,12 +30,13 @@ DESCRIPTION = """
 2. Selecciona el modelo para la correción.
 3. Presiona **Procesar** para observar el **Resultado** de la versión corregida por el modelo seleccionado.
 """
-
+   
 EXAMPLES = [
     "Pepito jugar en el parque",
-    "muchos perros juegan en la, parque tambien muchos niño salen de la escuels",
-    "Las gata pasear por el jardin bello", 
-    "Mañana Tomy viajarear a Londres"
+    "muchos perros juegan en la parque tambien muchos niño salen de la Escuela",
+    "Tiempo después decidir permanecer en el ciudad y estudiar en la universidad publica, donde graduó con honores.", 
+    "Mañana Tomy viajarear a Londres",
+    "Algunas asociadas enfermedades con el acido graso, son la obesidad y el cáncer de próstata"
     ]
 
 MODELS =list(MODEL_CONFIGS.keys())
