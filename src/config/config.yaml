@@ -6,12 +6,12 @@ data_ingestion:
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned"
   dataset_cache_dir: artifacts/data_ingestion/hf_dataset
   dataset_test_cache_dir: artifacts/data_ingestion/hf_dataset_test
-  mode: "merged" #puede ser "synthetic", "cowsl2h", "merged"
+  mode: "cowsl2h" #puede ser "synthetic", "cowsl2h", "merged"
 
 data_transformation:
   root_dir: artifacts/data_transformation
-  tokenizer_name: "facebook/mbart-large-50"   #"Helsinki-NLP/opus-mt-es-en" #"facebook/mbart-large-50" ##"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #google/mt5-large google/mt5-small
-  model_id: "mBart" #"marianMT, mt5-small, m2m100
+  tokenizer_name: "Helsinki-NLP/opus-mt-es-en"   #"Helsinki-NLP/opus-mt-es-en" #"facebook/mbart-large-50" ##"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #google/mt5-large google/mt5-small
+  model_id: "marianMT" #"mBart" #"marianMT, mt5-small, m2m100
   save_to_disk: true  
   max_input_length: 128
   max_target_length: 128
@@ -19,21 +19,21 @@ data_transformation:
 
 model_trainer:
   root_dir: artifacts/model_trainer
-  model_ckpt: "facebook/mbart-large-50" #"facebook/m2m100_418M"  # "Helsinki-NLP/opus-mt-es-en" # "facebook/mbart-large-50" # "google/mt5-small" 
-  run_name: "merged" #"synthetic" cowsl2h
+  model_ckpt: "Helsinki-NLP/opus-mt-es-en" #"facebook/m2m100_418M"  # "Helsinki-NLP/opus-mt-es-en" # "facebook/mbart-large-50" # "google/mt5-small" 
+  run_name: "cowsl2h" #"synthetic" cowsl2h
   re_train: false
-  project_name: "Trainer-GEC_FT" #"Trainer-GEC_LoRA" 
+  project_name: "Trainer-GEC_FT_exp" #"Trainer-GEC_LoRA" 
   num_train_epochs: 2
-  lr: 9.175332375538101e-05
+  lr: 2.0e-05
   per_device_train_batch_size: 16
   per_device_eval_batch_size: 16
-  gradient_accumulation_steps: 16
+  gradient_accumulation_steps: 2
   generation_max_length: 128
-  weight_decay: 0.043269589552847425  
-  warmup_ratio: 0.05586177114362126 
+  weight_decay: 0.01
+  warmup_ratio: 0.06
   optim: "adamw_torch" 
-  fp16: false
-  bf16: true
+  fp16: true
+  bf16: false
   load_best_model: true
   push_to_hub: true
   use_lora: false

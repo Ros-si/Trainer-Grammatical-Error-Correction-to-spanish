@@ -208,11 +208,14 @@ class HyperparameterTuner:
     def run_tuning(self):
         self.prepare_data()
         model_name = self.model_checkpoint.split("/")[-1]
-
+        if self.config.use_lora:
+            strategy = "LORA"
+        else:
+            strategy = "FT"
         tuning_dir = self.config.root_dir 
         os.makedirs(tuning_dir, exist_ok=True)
-        db_path = os.path.join(tuning_dir, f"{model_name}_hypertune.db")     
-        storage_name = f"sqlite:///{os.path.abspath(db_path)}"   
+        db_path = os.path.join(tuning_dir, f"{model_name}-{strategy}-{self.config.mode}")     
+        storage_name = f"sqlite:///{os.path.abspath(db_path)}.db"   
         print(f"[*] Iniciando/Retomando estudio en: {db_path}")
 
         
@@ -225,8 +228,8 @@ class HyperparameterTuner:
         print(f"Trials completados: {len(study.trials)}")
         study.optimize(self.objective, n_trials=self.config.n_trials)
         
-        # Guardar resultados en un JSON        
-        output_path = os.path.join(self.config.root_dir, f"best_params_{model_name}-{self.config.mode}.json")
+        # Guardar resultados en un JSON      
+        output_path = os.path.join(self.config.root_dir, f"best_params_{db_path}.json")
         
         with open(output_path, "w") as f:
             json.dump(study.best_params, f, indent=4)
