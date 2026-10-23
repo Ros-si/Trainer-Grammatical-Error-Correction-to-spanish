@@ -22,25 +22,25 @@ model_trainer:
   model_ckpt: "Helsinki-NLP/opus-mt-es-en" #"facebook/m2m100_418M"  # "Helsinki-NLP/opus-mt-es-en" # "facebook/mbart-large-50" # "google/mt5-small" 
   run_name: "cowsl2h-exp" #"synthetic" cowsl2h
   re_train: false
-  project_name: "Trainer-GEC_FT" #"Trainer-GEC_LoRA" 
+  project_name: "Trainer-GEC_LoRA" #"Trainer-GEC_LoRA" 
   num_train_epochs: 3
-  lr: 0.001635475313478006
+  lr: 0.0013223040248761528
   per_device_train_batch_size: 8
   per_device_eval_batch_size: 8
   gradient_accumulation_steps: 2
   generation_max_length: 128
-  weight_decay: 0.01
-  warmup_ratio: 0.06
+  weight_decay: 0.029630281275212823
+  warmup_ratio: 0.09857017609527079
   optim: "adamw_torch" 
-  fp16: false
+  fp16: true
   bf16: false
   load_best_model: true
   push_to_hub: true
   use_lora: false
   lora_config: 
-    r: 128
+    r: 64
     lora_alpha: 16
-    lora_dropout: 0.15
+    lora_dropout: 0.05
     bias: "none"
 
 model_evaluation:
