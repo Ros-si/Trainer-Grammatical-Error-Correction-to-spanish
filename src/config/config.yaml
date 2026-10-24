@@ -6,7 +6,7 @@ data_ingestion:
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned"
   dataset_cache_dir: artifacts/data_ingestion/hf_dataset
   dataset_test_cache_dir: artifacts/data_ingestion/hf_dataset_test
-  mode: "cowsl2h" #puede ser "synthetic", "cowsl2h", "merged"
+  mode: "synthetic" #puede ser "synthetic", "cowsl2h", "merged"
 
 data_transformation:
   root_dir: artifacts/data_transformation
@@ -20,10 +20,10 @@ data_transformation:
 model_trainer:
   root_dir: artifacts/model_trainer
   model_ckpt: "Helsinki-NLP/opus-mt-es-en" #"facebook/m2m100_418M"  # "Helsinki-NLP/opus-mt-es-en" # "facebook/mbart-large-50" # "google/mt5-small" 
-  run_name: "cowsl2h-exp" #"synthetic" cowsl2h
+  run_name: "synthetic-exp" #"synthetic" cowsl2h
   re_train: false
   project_name: "Trainer-GEC_LoRA" #"Trainer-GEC_LoRA" 
-  num_train_epochs: 4
+  num_train_epochs: 2
   lr: 0.0013223040248761528
   per_device_train_batch_size: 8
   per_device_eval_batch_size: 8
