@@ -10,8 +10,8 @@ data_ingestion:
 
 data_transformation:
   root_dir: artifacts/data_transformation
-  tokenizer_name: "Helsinki-NLP/opus-mt-es-en"   #"Helsinki-NLP/opus-mt-es-en" #"facebook/mbart-large-50" ##"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #google/mt5-large google/mt5-small
-  model_id: "marianMT" #"mBart" #"marianMT, mt5-small, m2m100
+  tokenizer_name: "google/mt5-small"   #"Helsinki-NLP/opus-mt-es-en" #"facebook/mbart-large-50" ##"Helsinki-NLP/opus-mt-es-en"  #"facebook/m2m100_418M" #google/mt5-large google/mt5-small
+  model_id: "mt5-small" #"mBart" #"marianMT, mt5-small, m2m100
   save_to_disk: true  
   max_input_length: 128
   max_target_length: 128
@@ -19,28 +19,28 @@ data_transformation:
 
 model_trainer:
   root_dir: artifacts/model_trainer
-  model_ckpt: "Helsinki-NLP/opus-mt-es-en" #"facebook/m2m100_418M"  # "Helsinki-NLP/opus-mt-es-en" # "facebook/mbart-large-50" # "google/mt5-small" 
+  model_ckpt: "google/mt5-small" #"facebook/m2m100_418M"  # "Helsinki-NLP/opus-mt-es-en" # "facebook/mbart-large-50" # "google/mt5-small" 
   run_name: "synthetic-exp" #"synthetic" cowsl2h
   re_train: false
   project_name: "Trainer-GEC_LoRA" #"Trainer-GEC_LoRA" 
   num_train_epochs: 4
-  lr: 0.0013223040248761528
+  lr: 0.001635475313478006
   per_device_train_batch_size: 8
   per_device_eval_batch_size: 8
   gradient_accumulation_steps: 2
   generation_max_length: 128
-  weight_decay: 0.029630281275212823
-  warmup_ratio: 0.09857017609527079
+  weight_decay: 0.08516137956996712
+  warmup_ratio: 0.0993688388184371
   optim: "adamw_torch" 
-  fp16: true
+  fp16: false
   bf16: false
   load_best_model: true
   push_to_hub: true
   use_lora: false
   lora_config: 
-    r: 64
+    r: 128
     lora_alpha: 16
-    lora_dropout: 0.05
+    lora_dropout: 0.15
     bias: "none"
 
 model_evaluation:
