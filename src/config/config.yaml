@@ -38,7 +38,7 @@ model_trainer:
   push_to_hub: true
   use_lora: false
   lora_config: 
-    r: 64
+    r: 32
     lora_alpha: 16
     lora_dropout: 0.05
     bias: "none"
