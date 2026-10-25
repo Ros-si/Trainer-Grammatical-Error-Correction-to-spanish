@@ -2,7 +2,7 @@ artifacts_root: artifacts
 
 data_ingestion:
   root_dir: artifacts/data_ingestion
-  source_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED_L" #"Ro551/WikiCorrupted_spanish_to_GEC-GED"  #
+  source_URL: "Ro551/WikiCorrupted_spanish_to_GEC-GED" #"Ro551/WikiCorrupted_spanish_to_GEC-GED"  #
   source_cowsl2h: "Ro551/COWSL2H_GEC_cleaned"
   dataset_cache_dir: artifacts/data_ingestion/hf_dataset
   dataset_test_cache_dir: artifacts/data_ingestion/hf_dataset_test
@@ -20,7 +20,7 @@ data_transformation:
 model_trainer:
   root_dir: artifacts/model_trainer
   model_ckpt: "google/mt5-small" #"facebook/m2m100_418M"  # "Helsinki-NLP/opus-mt-es-en" # "facebook/mbart-large-50" # "google/mt5-small" 
-  run_name: "merged-exp-dsL" #"synthetic" cowsl2h -dsL
+  run_name: "merged-exp" #"synthetic" cowsl2h -dsL
   re_train: false
   project_name: "Trainer-GEC_LoRA" #"Trainer-GEC_LoRA" 
   num_train_epochs: 4
@@ -38,7 +38,7 @@ model_trainer:
   push_to_hub: true
   use_lora: true
   lora_config: 
-    r: 64
+    r: 128
     lora_alpha: 16
     lora_dropout: 0.15
     bias: "none"
