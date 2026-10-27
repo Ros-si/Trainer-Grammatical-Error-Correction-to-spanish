@@ -20,7 +20,7 @@ data_transformation:
 model_trainer:
   root_dir: artifacts/model_trainer
   model_ckpt: "google/mt5-small" #"facebook/m2m100_418M"  # "Helsinki-NLP/opus-mt-es-en" # "facebook/mbart-large-50" # "google/mt5-small" 
-  run_name: "merged-exp-r-128" #"synthetic" cowsl2h -dsL
+  run_name: "merged-exp-r128" #"synthetic" cowsl2h -dsL
   re_train: false
   project_name: "Trainer-GEC_LoRA" #"Trainer-GEC_LoRA" 
   num_train_epochs: 2
