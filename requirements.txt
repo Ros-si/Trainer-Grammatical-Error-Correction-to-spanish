@@ -1,4 +1,4 @@
-torch==2.4.0
+torch==2.7.0
 transformers>=5.5.0
 huggingface_hub>= 1.5.0
 datasets>=4.6.1
@@ -7,6 +7,6 @@ wandb>=0.25.1
 gradio>=6.14.0
 errant>=3.0.0
 optuna>=4.8.0
-spacy>=3.7.0,<3.9.0
+spacy==3.8.11
 https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1.tar.gz 
 git+https://github.com/gotutiyan/gec-metrics.git
