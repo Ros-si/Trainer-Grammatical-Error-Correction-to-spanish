@@ -8,6 +8,6 @@ wandb>=0.25.1
 gradio>=6.14.0
 errant>=3.0.0
 optuna>=4.8.0
-spacy==3.8.11
+spacy==3.7.2
 https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1.tar.gz 
 git+https://github.com/gotutiyan/gec-metrics.git
